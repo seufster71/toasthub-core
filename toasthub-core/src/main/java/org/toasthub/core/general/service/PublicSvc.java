@@ -29,7 +29,7 @@ import org.toasthub.core.general.model.BaseEntity;
 import org.toasthub.core.general.model.MenuItem;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
-import org.toasthub.core.preference.model.AppCachePage;
+import org.toasthub.core.preference.model.AppCachePageUtil;
 
 @Service("PublicSvc")
 public class PublicSvc implements ServiceProcessor {
@@ -51,7 +51,7 @@ public class PublicSvc implements ServiceProcessor {
 	AppCacheMenu appCacheMenu;
 	
 	@Autowired 
-	AppCachePage appCachePage;
+	AppCachePageUtil appCachePageUtil;
 
 	// Constructors
 	public PublicSvc() {}
@@ -61,7 +61,7 @@ public class PublicSvc implements ServiceProcessor {
 		String action = (String) request.getParams().get(BaseEntity.ACTION);
 		
 		this.setupDefaults(request);
-		appCachePage.getPageInfo(request,response);
+		appCachePageUtil.getPageInfo(request,response);
 		switch (action) {
 		case "INIT": 
 			this.init(request, response);
@@ -81,7 +81,7 @@ public class PublicSvc implements ServiceProcessor {
 		response.addParam(BaseEntity.APPNAME,entityManagerMainSvc.getAppName());
 		response.addParam(BaseEntity.HTMLPREFIX, entityManagerMainSvc.getHTMLPrefix());
 		// default language code
-		response.addParam("userLang", appCachePage.getDefaultLang());
+		response.addParam("userLang", appCachePageUtil.getDefaultLang());
 		
 	}
 	

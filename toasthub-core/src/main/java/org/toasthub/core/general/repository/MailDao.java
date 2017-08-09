@@ -84,7 +84,6 @@ public class MailDao implements Serializable {
 	public void sendMailTLS(String email, String urlParams) throws Exception{
 		//boolean status = false;
 		String serverName = TenantContext.getURLDomain();
-		String contextPath = TenantContext.getContextpath();
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		executor.submit(() -> {
 		Session session = Session.getInstance(props,

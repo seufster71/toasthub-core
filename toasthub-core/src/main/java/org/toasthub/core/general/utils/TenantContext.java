@@ -2,15 +2,14 @@ package org.toasthub.core.general.utils;
 
 public class TenantContext {
 
-	private static final ThreadLocal<String> CONTEXT = new ThreadLocal<String>();
-	private static final ThreadLocal<String> hostname = new ThreadLocal<String>();
-	private static final ThreadLocal<String> contextPath = new ThreadLocal<String>();
+	private static ThreadLocal<String> tenant = new ThreadLocal<String>();
+	private static ThreadLocal<String> hostname = new ThreadLocal<String>();
 	
 	public static void setTenantId(String tenantId) {
-		CONTEXT.set(tenantId);
+		tenant.set(tenantId);
 	}
 	public static String getTenantId() {
-		return CONTEXT.get();
+		return tenant.get();
 	}
 	
 	public static void setURLDomain(String name){
@@ -20,10 +19,10 @@ public class TenantContext {
     	return hostname.get();
     }
 	
-	public static String getContextpath() {
-		return contextPath.get();
+	public static void clear() {
+		tenant.remove();
+		hostname.remove();
 	}
-	public static void setContextPath(String name){
-		contextPath.set(name);
-	}
+	
+	
 }

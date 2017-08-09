@@ -31,7 +31,8 @@ import org.toasthub.core.general.model.MenuItem;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 import org.toasthub.core.general.repository.MenuDao;
-import org.toasthub.core.preference.model.AppCachePage;
+import org.toasthub.core.preference.model.AppCachePageUtil;
+
 
 @Service("MenuSvc")
 public class MenuSvcImpl implements ServiceProcessor, MenuSvc {
@@ -44,7 +45,7 @@ public class MenuSvcImpl implements ServiceProcessor, MenuSvc {
 	protected UtilSvc utilSvc;
 	
 	@Autowired
-	protected AppCachePage appCachePage;
+	protected AppCachePageUtil appCachePageUtil;
 	
 	// Constructors
 	public MenuSvcImpl() {}
@@ -57,7 +58,7 @@ public class MenuSvcImpl implements ServiceProcessor, MenuSvc {
 		Long count = 0l;
 		switch (action) {
 		case "INIT": 
-			appCachePage.getPageInfo(request,response);
+			appCachePageUtil.getPageInfo(request,response);
 			//appCachePage.getGlobalInfo(request,response);
 			
 			this.initParams(request);
@@ -72,7 +73,7 @@ public class MenuSvcImpl implements ServiceProcessor, MenuSvc {
 			break;
 		case "LIST":
 			request.addParam("appPageParamLoc", "response");
-			appCachePage.getPageInfo(request,response);
+			appCachePageUtil.getPageInfo(request,response);
 			
 			this.initParams(request);
 			this.itemColumns(request, response);

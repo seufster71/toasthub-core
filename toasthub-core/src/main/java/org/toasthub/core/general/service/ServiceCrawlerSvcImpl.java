@@ -36,7 +36,7 @@ public class ServiceCrawlerSvcImpl implements ServiceProcessor, ServiceCrawlerSv
 	ServiceCrawlerDao serviceCrawlerDao;
 	
 	@Autowired
-	UtilSvc utilSvc;
+	protected UtilSvc utilSvc;
 	
 	@Override
 	public void process(RestRequest request, RestResponse response) {

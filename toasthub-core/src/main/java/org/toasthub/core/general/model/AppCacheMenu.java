@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.toasthub.core.general.service.MenuSvc;
 import org.toasthub.core.general.utils.TenantContext;
-import org.toasthub.core.preference.model.AppCachePage;
+import org.toasthub.core.preference.model.AppCachePageUtil;
 import org.toasthub.core.system.model.AppCacheClientDomains;
 
 
@@ -32,7 +32,7 @@ public class AppCacheMenu implements Serializable {
 	AppCacheClientDomains appCacheClientDomains;
 	
 	@Autowired
-	AppCachePage appCachePage;
+	AppCachePageUtil appCachePageUtil;
 	
 	// Constructor
 	public AppCacheMenu(){
@@ -89,7 +89,7 @@ public class AppCacheMenu implements Serializable {
 			List<Menu> myMenus = (List<Menu>) response.getParam(BaseEntity.ITEMS);
 			for(Menu m : myMenus) {
 				// by languages
-				List<String> codes = appCachePage.getAvailableLanguageCodes(tenant);
+				List<String> codes = appCachePageUtil.getAvailableLanguageCodes(tenant);
 				for(String lang : codes) {
 					Map<Integer,MenuItem> menu = menuSvc.getMenu(m.getCode(),m.getApiVersion(),m.getAppVersion(),lang);
 					StringBuilder key = new StringBuilder();
