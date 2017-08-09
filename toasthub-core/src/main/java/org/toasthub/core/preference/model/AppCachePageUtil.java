@@ -271,7 +271,49 @@ public class AppCachePageUtil {
 		key.append("_");
 		key.append((String)request.getParam(BaseEntity.LANG));
 		if (appCachePage.getAppPageOptions() != null && appCachePage.getAppPageOptions().containsKey(key.toString())){
-			// Pull from Memory
+			appPageOptionLoadFromMem(request,response,key.toString());
+		} else {
+			synchronized (this) {
+				// this is done to catch all concurrent users during a cache reload to prevent then from all trying to reloading the cache
+				// only the first shall do the reload.
+				if (appCachePage.getAppPageOptions() != null && appCachePage.getAppPageOptions().containsKey(key.toString())){
+					appPageOptionLoadFromMem(request,response,key.toString());
+				} else {
+					appPageOptionLoadFromDB(request,response,key.toString());
+				}
+			}
+		}
+	}
+	
+	private void appPageOptionLoadFromMem(RestRequest request, RestResponse response, String key) {
+		// Pull from Memory
+		Map<String,Map<String,AppPageOptionValue>> o = null;
+		// add to request or response
+		if (request.containsParam(APPPAGEPARAMLOC) && RESPONSE.equals(request.getParam(APPPAGEPARAMLOC)) ) {
+			if (response.getParams().containsKey(APPPAGEOPTIONS)){
+				o = (Map<String, Map<String,AppPageOptionValue>>) response.getParam(APPPAGEOPTIONS);
+			} else {
+				o = new ConcurrentHashMap<String,Map<String,AppPageOptionValue>>();
+			}
+			o.put((String) request.getParam(APPPAGEOPTIONNAME), appCachePage.getAppPageOptions().get(key));
+			response.addParam(APPPAGEOPTIONS, o);
+		} else {
+			if (request.getParams().containsKey(APPPAGEOPTIONS)){
+				o = (Map<String, Map<String,AppPageOptionValue>>) request.getParam(APPPAGEOPTIONS);
+			} else {
+				o = new ConcurrentHashMap<String,Map<String,AppPageOptionValue>>();
+			}
+			o.put((String) request.getParam(APPPAGEOPTIONNAME), appCachePage.getAppPageOptions().get(key));
+			request.addParam(APPPAGEOPTIONS,o);
+		}
+	}
+	
+	private void appPageOptionLoadFromDB(RestRequest request, RestResponse response, String key) {
+		// Pull from DB
+		Map<String,AppPageOptionValue> appOptions = appPageSvc.getOptionsMap((String)request.getParam(APPPAGEOPTIONNAME), (String)request.getParam(BaseEntity.LANG));
+		if (appOptions != null){
+			// add to cache
+			appCachePage.addAppPageOption(key, appOptions);
 			Map<String,Map<String,AppPageOptionValue>> o = null;
 			// add to request or response
 			if (request.containsParam(APPPAGEPARAMLOC) && RESPONSE.equals(request.getParam(APPPAGEPARAMLOC)) ) {
@@ -280,45 +322,19 @@ public class AppCachePageUtil {
 				} else {
 					o = new ConcurrentHashMap<String,Map<String,AppPageOptionValue>>();
 				}
-				o.put((String) request.getParam(APPPAGEOPTIONNAME), appCachePage.getAppPageOptions().get(key.toString()));
+				o.put((String) request.getParam(APPPAGEOPTIONNAME), appOptions);
 				response.addParam(APPPAGEOPTIONS, o);
-			} else {
+			} else {	
 				if (request.getParams().containsKey(APPPAGEOPTIONS)){
 					o = (Map<String, Map<String,AppPageOptionValue>>) request.getParam(APPPAGEOPTIONS);
 				} else {
 					o = new ConcurrentHashMap<String,Map<String,AppPageOptionValue>>();
 				}
-				o.put((String) request.getParam(APPPAGEOPTIONNAME), appCachePage.getAppPageOptions().get(key.toString()));
-				request.addParam(APPPAGEOPTIONS,o);
+				o.put((String) request.getParam(APPPAGEOPTIONNAME), appOptions);
+				request.addParam(APPPAGEOPTIONS, o);
 			}
 		} else {
-			// Pull from DB
-			Map<String,AppPageOptionValue> appOptions = appPageSvc.getOptionsMap((String)request.getParam(APPPAGEOPTIONNAME), (String)request.getParam(BaseEntity.LANG));
-			if (appOptions != null){
-				// add to cache
-				appCachePage.addAppPageOption(key.toString(), appOptions);
-				Map<String,Map<String,AppPageOptionValue>> o = null;
-				// add to request or response
-				if (request.containsParam(APPPAGEPARAMLOC) && RESPONSE.equals(request.getParam(APPPAGEPARAMLOC)) ) {
-					if (response.getParams().containsKey(APPPAGEOPTIONS)){
-						o = (Map<String, Map<String,AppPageOptionValue>>) response.getParam(APPPAGEOPTIONS);
-					} else {
-						o = new ConcurrentHashMap<String,Map<String,AppPageOptionValue>>();
-					}
-					o.put((String) request.getParam(APPPAGEOPTIONNAME), appOptions);
-					response.addParam(APPPAGEOPTIONS, o);
-				} else {	
-					if (request.getParams().containsKey(APPPAGEOPTIONS)){
-						o = (Map<String, Map<String,AppPageOptionValue>>) request.getParam(APPPAGEOPTIONS);
-					} else {
-						o = new ConcurrentHashMap<String,Map<String,AppPageOptionValue>>();
-					}
-					o.put((String) request.getParam(APPPAGEOPTIONNAME), appOptions);
-					request.addParam(APPPAGEOPTIONS, o);
-				}
-			} else {
-				utilSvc.addStatus(RestResponse.INFO, RestResponse.PAGEOPTIONS, "Page Option issue", response);
-			}
+			utilSvc.addStatus(RestResponse.INFO, RestResponse.PAGEOPTIONS, "Page Option issue", response);
 		}
 	}
 	
@@ -341,6 +357,50 @@ public class AppCachePageUtil {
 		key.append((String)request.getParam(BaseEntity.LANG));
 		if (appCachePage.getAppPageTexts() != null && appCachePage.getAppPageTexts().containsKey(key.toString())){
 			// Pull from memory cache
+			appPageTextLoadFromMem(request,response,key.toString());
+		} else {
+			synchronized (this) {
+				// this is done to catch all concurrent users during a cache reload to prevent then from all trying to reloading the cache
+				// only the first shall do the reload.
+				if (appCachePage.getAppPageTexts() != null && appCachePage.getAppPageTexts().containsKey(key.toString())){
+					// Pull from memory cache
+					appPageTextLoadFromMem(request,response,key.toString());
+				} else {
+					appPageTextLoadFromDB(request,response,key.toString());
+				}
+			}
+		}
+	}
+	
+	private void appPageTextLoadFromMem(RestRequest request, RestResponse response, String key) {
+		// Pull from memory cache
+		Map<String,Map<String,AppPageTextValue>> t = null;
+		if (request.containsParam(APPPAGEPARAMLOC) && RESPONSE.equals(request.getParam(APPPAGEPARAMLOC)) ) {
+			if (response.getParams().containsKey(APPPAGETEXTS)){
+				t = (Map<String, Map<String,AppPageTextValue>>) response.getParam(APPPAGETEXTS);
+			} else {
+				t = new ConcurrentHashMap<String,Map<String,AppPageTextValue>>();
+			}
+			t.put((String) request.getParam(APPPAGETEXTNAME), appCachePage.getAppPageTexts().get(key));
+			response.addParam(APPPAGETEXTS, t);
+		} else {
+			if (request.getParams().containsKey(APPPAGETEXTS)){
+				t = (Map<String, Map<String,AppPageTextValue>>) request.getParam(APPPAGETEXTS);
+			} else {
+				t = new ConcurrentHashMap<String,Map<String,AppPageTextValue>>();
+			}
+			t.put((String) request.getParam(APPPAGETEXTNAME), appCachePage.getAppPageTexts().get(key));
+			request.addParam(APPPAGETEXTS,t);
+		}
+	}
+	
+	private void appPageTextLoadFromDB(RestRequest request, RestResponse response, String key) {
+		// Get from DB and put in cache
+		Map<String,AppPageTextValue> appTexts = appPageSvc.getTextsMap((String)request.getParam(APPPAGETEXTNAME), (String)request.getParam(BaseEntity.LANG));
+		if (appTexts != null){
+			// add to cache
+			appCachePage.addAppPageText(key, appTexts);
+			// add to request or response
 			Map<String,Map<String,AppPageTextValue>> t = null;
 			if (request.containsParam(APPPAGEPARAMLOC) && RESPONSE.equals(request.getParam(APPPAGEPARAMLOC)) ) {
 				if (response.getParams().containsKey(APPPAGETEXTS)){
@@ -348,7 +408,7 @@ public class AppCachePageUtil {
 				} else {
 					t = new ConcurrentHashMap<String,Map<String,AppPageTextValue>>();
 				}
-				t.put((String) request.getParam(APPPAGETEXTNAME), appCachePage.getAppPageTexts().get(key.toString()));
+				t.put((String) request.getParam(APPPAGETEXTNAME), appTexts);
 				response.addParam(APPPAGETEXTS, t);
 			} else {
 				if (request.getParams().containsKey(APPPAGETEXTS)){
@@ -356,37 +416,11 @@ public class AppCachePageUtil {
 				} else {
 					t = new ConcurrentHashMap<String,Map<String,AppPageTextValue>>();
 				}
-				t.put((String) request.getParam(APPPAGETEXTNAME), appCachePage.getAppPageTexts().get(key.toString()));
-				request.addParam(APPPAGETEXTS,t);
+				t.put((String) request.getParam(APPPAGETEXTNAME), appTexts);
+				request.addParam(APPPAGETEXTS, t);
 			}
 		} else {
-			// Get from DB and put in cache
-			Map<String,AppPageTextValue> appTexts = appPageSvc.getTextsMap((String)request.getParam(APPPAGETEXTNAME), (String)request.getParam(BaseEntity.LANG));
-			if (appTexts != null){
-				// add to cache
-				appCachePage.addAppPageText(key.toString(), appTexts);
-				// add to request or response
-				Map<String,Map<String,AppPageTextValue>> t = null;
-				if (request.containsParam(APPPAGEPARAMLOC) && RESPONSE.equals(request.getParam(APPPAGEPARAMLOC)) ) {
-					if (response.getParams().containsKey(APPPAGETEXTS)){
-						t = (Map<String, Map<String,AppPageTextValue>>) response.getParam(APPPAGETEXTS);
-					} else {
-						t = new ConcurrentHashMap<String,Map<String,AppPageTextValue>>();
-					}
-					t.put((String) request.getParam(APPPAGETEXTNAME), appTexts);
-					response.addParam(APPPAGETEXTS, t);
-				} else {
-					if (request.getParams().containsKey(APPPAGETEXTS)){
-						t = (Map<String, Map<String,AppPageTextValue>>) request.getParam(APPPAGETEXTS);
-					} else {
-						t = new ConcurrentHashMap<String,Map<String,AppPageTextValue>>();
-					}
-					t.put((String) request.getParam(APPPAGETEXTNAME), appTexts);
-					request.addParam(APPPAGETEXTS, t);
-				}
-			} else {
-				utilSvc.addStatus(RestResponse.INFO, RestResponse.PAGEOPTIONS, "Page Text issue", response);
-			}
+			utilSvc.addStatus(RestResponse.INFO, RestResponse.PAGEOPTIONS, "Page Text issue", response);
 		}
 	}
 	
