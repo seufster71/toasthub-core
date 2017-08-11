@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.toasthub.core.general.handler.ServiceProcessor;
-import org.toasthub.core.general.model.AppCacheMenu;
+import org.toasthub.core.general.model.AppCacheMenuUtil;
 import org.toasthub.core.general.model.BaseEntity;
 import org.toasthub.core.general.model.MenuItem;
 import org.toasthub.core.general.model.RestRequest;
@@ -48,7 +48,7 @@ public class PublicSvc implements ServiceProcessor {
 	MenuSvc menuSvc;
 	
 	@Autowired 
-	AppCacheMenu appCacheMenu;
+	AppCacheMenuUtil appCacheMenuUtil;
 	
 	@Autowired 
 	AppCachePageUtil appCachePageUtil;
@@ -91,7 +91,7 @@ public class PublicSvc implements ServiceProcessor {
 		
 		ArrayList<String> mylist = (ArrayList<String>) request.getParam(BaseEntity.MENUNAMES);
 		for (String menuName : mylist) {
-			menu = appCacheMenu.getMenu(menuName,(String)request.getParam(BaseEntity.MENUAPIVERSION),(String)request.getParam(BaseEntity.MENUAPPVERSION),(String)request.getParam(BaseEntity.LANG));
+			menu = appCacheMenuUtil.getMenu(menuName,(String)request.getParam(BaseEntity.MENUAPIVERSION),(String)request.getParam(BaseEntity.MENUAPPVERSION),(String)request.getParam(BaseEntity.LANG));
 			menuList.put(menuName, menu);
 		}
 		

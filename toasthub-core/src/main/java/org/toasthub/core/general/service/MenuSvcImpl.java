@@ -101,25 +101,50 @@ public class MenuSvcImpl implements ServiceProcessor, MenuSvc {
 	}
 	
 	public void getMenu(RestRequest request, RestResponse response) {
-		menuDao.getMenu(request, response);
+		try {
+			menuDao.getMenu(request, response);
+		} catch (Exception e) {
+			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Item failed", response);
+			e.printStackTrace();
+		}
 		//List<MenuItem> items = (List<MenuItem>) response.getParam("menuItems");
 		//response.addParam("menuItems", items);
 	}
 	
 	public void getMenus(RestRequest request, RestResponse response) {
-		menuDao.getMenus(request, response);
+		try {
+			menuDao.getMenus(request, response);
+		} catch (Exception e) {
+			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "List failed", response);
+			e.printStackTrace();
+		}
 	}
 	
 	public void getMenuCount(RestRequest request, RestResponse response) {
-		menuDao.getMenuCount(request, response);
+		try {
+			menuDao.getMenuCount(request, response);
+		} catch (Exception e) {
+			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Count failed", response);
+			e.printStackTrace();
+		}
 	}
 	
 	public void getMenuItemCount(RestRequest request, RestResponse response) {
-		menuDao.getMenuItemCount(request, response);
+		try {
+			menuDao.getMenuItemCount(request, response);
+		} catch (Exception e) {
+			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Count failed", response);
+			e.printStackTrace();
+		}
 	}
 	
 	public void getMenuItems(RestRequest request, RestResponse response) {
-		menuDao.getMenuItems(request, response);
+		try {
+			menuDao.getMenuItems(request, response);
+		} catch (Exception e) {
+			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "List failed", response);
+			e.printStackTrace();
+		}
 		// update menu items with parentId
 		List<MenuItem> items = (List<MenuItem>) response.getParam(BaseEntity.ITEMS);
 		for(MenuItem m : items){
@@ -131,27 +156,40 @@ public class MenuSvcImpl implements ServiceProcessor, MenuSvc {
 	}
 	
 	public List<MenuItem> getMenuItems(String menuName, String lang) {
-		return menuDao.getMenuItems(menuName, lang);
+		try {
+			return menuDao.getMenuItems(menuName, lang);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	public Map<Integer,MenuItem> getMenu(String menuName, String apiVersion, String appVersion, String lang) {
-		Menu menu = menuDao.getMenu(menuName,apiVersion, appVersion, lang);
+		Menu menu = null;
+		try {
+			menu = menuDao.getMenu(menuName,apiVersion, appVersion, lang);
+		} catch (Exception e) {
+			return null;
+		}
 		return this.orgMenu(menu);
 	}
 
 	protected Map<Integer,MenuItem> orgMenu(Menu menu) {
-		Set<MenuItem> items = menu.getMenuItems();
-		Map<Integer,MenuItem> topRow = new HashMap<Integer,MenuItem>();
-		for(MenuItem m : items){
-			if (m.getParent() == null){
-				// parent
-				Map<Integer,MenuItem> children = this.findChildren(m, items);
-				m.setChildren(children);
-				topRow.put(m.getOrder(), m);
+		if (menu != null) {
+			Set<MenuItem> items = menu.getMenuItems();
+			Map<Integer,MenuItem> topRow = new HashMap<Integer,MenuItem>();
+			for(MenuItem m : items){
+				if (m.getParent() == null){
+					// parent
+					Map<Integer,MenuItem> children = this.findChildren(m, items);
+					m.setChildren(children);
+					topRow.put(m.getOrder(), m);
+				}
+				
 			}
-			
+			return topRow;
+		} else {
+			return null;
 		}
-		return topRow;
 	}
 	
 	protected Map<Integer,MenuItem> findChildren(MenuItem parent,Set<MenuItem> items) {

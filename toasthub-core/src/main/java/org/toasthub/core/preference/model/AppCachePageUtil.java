@@ -130,6 +130,50 @@ public class AppCachePageUtil {
 		
 		if (appCachePage.getAppPageFormFields() != null && appCachePage.getAppPageFormFields().containsKey(key.toString())){
 			// Pull from memory cache
+			appPageFormFieldLoadFromMem(request,response,key.toString());
+		} else {
+			// Get from DB and put in cache
+			synchronized (this) {
+				// this is done to catch all concurrent users during a cache reload to prevent then from all trying to reloading the cache
+				// only the first shall do the reload.
+				if (appCachePage.getAppPageFormFields() != null && appCachePage.getAppPageFormFields().containsKey(key.toString())){
+					appPageFormFieldLoadFromMem(request,response,key.toString());
+				} else {
+					appPageFormFieldLoadFromDB(request,response,key.toString());
+				}
+			}
+		}
+	}
+	
+	private void appPageFormFieldLoadFromMem(RestRequest request, RestResponse response, String key) {
+		// Pull from Memory
+		Map<String,List<AppPageFormFieldValue>> f = null;
+		// add to request or response
+		if (request.containsParam(APPPAGEPARAMLOC) && RESPONSE.equals(request.getParam(APPPAGEPARAMLOC)) ) {
+			if (response.getParams().containsKey(APPPAGEFORMFIELDS)){
+				f = (Map<String, List<AppPageFormFieldValue>>) response.getParam(APPPAGEFORMFIELDS);
+			} else {
+				f = new ConcurrentHashMap<String,List<AppPageFormFieldValue>>();
+			}
+			f.put((String) request.getParam(APPPAGEFORMNAME), appCachePage.getAppPageFormFields().get(key));
+			response.addParam(APPPAGEFORMFIELDS,f);
+		} else {
+			if (request.getParams().containsKey(APPPAGEFORMFIELDS)){
+				f = (Map<String, List<AppPageFormFieldValue>>) request.getParam(APPPAGEFORMFIELDS);
+			} else {
+				f = new ConcurrentHashMap<String,List<AppPageFormFieldValue>>();
+			}
+			f.put((String) request.getParam(APPPAGEFORMNAME), appCachePage.getAppPageFormFields().get(key));
+			request.addParam(APPPAGEFORMFIELDS,f);
+		}
+	}
+	
+	private void appPageFormFieldLoadFromDB(RestRequest request, RestResponse response, String key) {
+		// Pull from DB
+		List<AppPageFormFieldValue> formFields = appPageSvc.getFormFields((String)request.getParam(APPPAGEFORMNAME), (String)request.getParam(BaseEntity.LANG));
+		if (formFields != null){
+			// add to cache
+			appCachePage.addAppPageFormField(key, formFields);
 			Map<String,List<AppPageFormFieldValue>> f = null;
 			// add to request or response
 			if (request.containsParam(APPPAGEPARAMLOC) && RESPONSE.equals(request.getParam(APPPAGEPARAMLOC)) ) {
@@ -138,7 +182,7 @@ public class AppCachePageUtil {
 				} else {
 					f = new ConcurrentHashMap<String,List<AppPageFormFieldValue>>();
 				}
-				f.put((String) request.getParam(APPPAGEFORMNAME), appCachePage.getAppPageFormFields().get(key.toString()));
+				f.put((String) request.getParam(APPPAGEFORMNAME), formFields);
 				response.addParam(APPPAGEFORMFIELDS,f);
 			} else {
 				if (request.getParams().containsKey(APPPAGEFORMFIELDS)){
@@ -146,37 +190,11 @@ public class AppCachePageUtil {
 				} else {
 					f = new ConcurrentHashMap<String,List<AppPageFormFieldValue>>();
 				}
-				f.put((String) request.getParam(APPPAGEFORMNAME), appCachePage.getAppPageFormFields().get(key.toString()));
+				f.put((String) request.getParam(APPPAGEFORMNAME), formFields);
 				request.addParam(APPPAGEFORMFIELDS,f);
 			}
 		} else {
-			// Get from DB and put in cache
-			List<AppPageFormFieldValue> formFields = appPageSvc.getFormFields((String)request.getParam(APPPAGEFORMNAME), (String)request.getParam(BaseEntity.LANG));
-			if (formFields != null){
-				// add to cache
-				appCachePage.addAppPageFormField(key.toString(), formFields);
-				Map<String,List<AppPageFormFieldValue>> f = null;
-				// add to request or response
-				if (request.containsParam(APPPAGEPARAMLOC) && RESPONSE.equals(request.getParam(APPPAGEPARAMLOC)) ) {
-					if (response.getParams().containsKey(APPPAGEFORMFIELDS)){
-						f = (Map<String, List<AppPageFormFieldValue>>) response.getParam(APPPAGEFORMFIELDS);
-					} else {
-						f = new ConcurrentHashMap<String,List<AppPageFormFieldValue>>();
-					}
-					f.put((String) request.getParam(APPPAGEFORMNAME), formFields);
-					response.addParam(APPPAGEFORMFIELDS,f);
-				} else {
-					if (request.getParams().containsKey(APPPAGEFORMFIELDS)){
-						f = (Map<String, List<AppPageFormFieldValue>>) request.getParam(APPPAGEFORMFIELDS);
-					} else {
-						f = new ConcurrentHashMap<String,List<AppPageFormFieldValue>>();
-					}
-					f.put((String) request.getParam(APPPAGEFORMNAME), formFields);
-					request.addParam(APPPAGEFORMFIELDS,f);
-				}
-			} else {
-				utilSvc.addStatus(RestResponse.INFO, RestResponse.PAGEOPTIONS, "App Page FormField issue", response);
-			}
+			utilSvc.addStatus(RestResponse.INFO, RestResponse.PAGEOPTIONS, "App Page FormField issue", response);
 		}
 	}
 	
@@ -201,6 +219,50 @@ public class AppCachePageUtil {
 		key.append((String)request.getParam(BaseEntity.LANG));
 		if (appCachePage.getAppPageLabels() != null && appCachePage.getAppPageLabels().containsKey(key.toString())){
 			// Pull from memory cache
+			appPageLabelLoadFromMem(request,response,key.toString());
+		} else {
+			// Get from DB and put in cache
+			synchronized (this) {
+				// this is done to catch all concurrent users during a cache reload to prevent then from all trying to reloading the cache
+				// only the first shall do the reload.
+				if (appCachePage.getAppPageLabels() != null && appCachePage.getAppPageLabels().containsKey(key.toString())){
+					appPageLabelLoadFromMem(request,response,key.toString());
+				} else {
+					appPageLabelLoadFromDB(request,response,key.toString());
+				}
+			}
+		}
+	}
+	
+	private void appPageLabelLoadFromMem(RestRequest request, RestResponse response, String key) {
+		// Pull from Memory
+		Map<String,List<AppPageLabelValue>> l = null;
+		// add to request or response
+		if (request.containsParam(APPPAGEPARAMLOC) && RESPONSE.equals(request.getParam(APPPAGEPARAMLOC)) ) {
+			if (response.getParams().containsKey(APPPAGELABELS)){
+				l = (Map<String, List<AppPageLabelValue>>) response.getParam(APPPAGELABELS);
+			} else {
+				l = new ConcurrentHashMap<String,List<AppPageLabelValue>>();
+			}
+			l.put((String) request.getParam(APPPAGELABELNAME), appCachePage.getAppPageLabels().get(key));
+			response.addParam(APPPAGELABELS,l);
+		} else {
+			if (request.getParams().containsKey(APPPAGELABELS)){
+				l = (Map<String, List<AppPageLabelValue>>) request.getParam(APPPAGELABELS);
+			} else {
+				l = new ConcurrentHashMap<String,List<AppPageLabelValue>>();
+			}
+			l.put((String) request.getParam(APPPAGELABELNAME), appCachePage.getAppPageLabels().get(key));
+			request.addParam(APPPAGELABELS,l);
+		}
+	}
+	
+	private void appPageLabelLoadFromDB(RestRequest request, RestResponse response, String key) {
+		// Pull from DB
+		List<AppPageLabelValue> labels = appPageSvc.getLabels((String)request.getParam(APPPAGELABELNAME), (String)request.getParam(BaseEntity.LANG));
+		if (labels != null){
+			// add to cache
+			appCachePage.addAppPageLabel(key, labels);
 			Map<String,List<AppPageLabelValue>> l = null;
 			// add to request or response
 			if (request.containsParam(APPPAGEPARAMLOC) && RESPONSE.equals(request.getParam(APPPAGEPARAMLOC)) ) {
@@ -209,45 +271,19 @@ public class AppCachePageUtil {
 				} else {
 					l = new ConcurrentHashMap<String,List<AppPageLabelValue>>();
 				}
-				l.put((String) request.getParam(APPPAGELABELNAME), appCachePage.getAppPageLabels().get(key.toString()));
-				response.addParam(APPPAGELABELS,l);
+				l.put((String) request.getParam(APPPAGELABELNAME), labels);
+				response.addParam(APPPAGELABELS, l);
 			} else {
 				if (request.getParams().containsKey(APPPAGELABELS)){
 					l = (Map<String, List<AppPageLabelValue>>) request.getParam(APPPAGELABELS);
 				} else {
 					l = new ConcurrentHashMap<String,List<AppPageLabelValue>>();
 				}
-				l.put((String) request.getParam(APPPAGELABELNAME), appCachePage.getAppPageLabels().get(key.toString()));
-				request.addParam(APPPAGELABELS,l);
+				l.put((String) request.getParam(APPPAGELABELNAME), labels);
+				request.addParam(APPPAGELABELS, l);
 			}
 		} else {
-			// Get from DB and put in cache
-			List<AppPageLabelValue> labels = appPageSvc.getLabels((String)request.getParam(APPPAGELABELNAME), (String)request.getParam(BaseEntity.LANG));
-			if (labels != null){
-				// add to cache
-				appCachePage.addAppPageLabel(key.toString(), labels);
-				Map<String,List<AppPageLabelValue>> l = null;
-				// add to request or response
-				if (request.containsParam(APPPAGEPARAMLOC) && RESPONSE.equals(request.getParam(APPPAGEPARAMLOC)) ) {
-					if (response.getParams().containsKey(APPPAGELABELS)){
-						l = (Map<String, List<AppPageLabelValue>>) response.getParam(APPPAGELABELS);
-					} else {
-						l = new ConcurrentHashMap<String,List<AppPageLabelValue>>();
-					}
-					l.put((String) request.getParam(APPPAGELABELNAME), labels);
-					response.addParam(APPPAGELABELS, l);
-				} else {
-					if (request.getParams().containsKey(APPPAGELABELS)){
-						l = (Map<String, List<AppPageLabelValue>>) request.getParam(APPPAGELABELS);
-					} else {
-						l = new ConcurrentHashMap<String,List<AppPageLabelValue>>();
-					}
-					l.put((String) request.getParam(APPPAGELABELNAME), labels);
-					request.addParam(APPPAGELABELS, l);
-				}
-			} else {
-				utilSvc.addStatus(RestResponse.INFO, RestResponse.PAGEOPTIONS, "App Page Label issue", response);
-			}
+			utilSvc.addStatus(RestResponse.INFO, RestResponse.PAGEOPTIONS, "App Page Label issue", response);
 		}
 	}
 	

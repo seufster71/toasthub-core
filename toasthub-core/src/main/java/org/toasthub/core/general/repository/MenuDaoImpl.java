@@ -40,14 +40,14 @@ public class MenuDaoImpl implements MenuDao {
 	@Autowired
 	protected UtilSvc utilSvc;
 
-	public List<MenuItem> getMenuItems(String menuName,String lang) {
+	public List<MenuItem> getMenuItems(String menuName,String lang) throws Exception {
 		List<MenuItem> results = entityManagerDataSvc.getInstance().createQuery("from MenuItem where menu.code = :menuName")
 				.setParameter("menuName", menuName)
 				.getResultList(); 
 		return results;
 	}
 
-	public Menu getMenu(String menuName, String apiVersion, String appVersion, String lang) {
+	public Menu getMenu(String menuName, String apiVersion, String appVersion, String lang) throws Exception {
 		
 		return (Menu) entityManagerDataSvc.getInstance().createQuery("SELECT DISTINCT m FROM Menu AS m JOIN FETCH m.menuItems AS items JOIN FETCH items.values AS values WHERE m.code = :menuName AND m.apiVersion = :apiVersion AND m.appVersion = :appVersion AND values.lang =:lang ")
 				.setParameter("menuName", menuName)
@@ -57,7 +57,7 @@ public class MenuDaoImpl implements MenuDao {
 				.getSingleResult();
 	}
 	
-	public void getMenuItemCount(RestRequest request, RestResponse response) {
+	public void getMenuItemCount(RestRequest request, RestResponse response) throws Exception {
 		Query query = null;
 		String HQLQuery = "SELECT COUNT(*) FROM MenuItem AS m WHERE ";
 		if (request.containsParam(BaseEntity.PARENTID)) {
@@ -74,7 +74,7 @@ public class MenuDaoImpl implements MenuDao {
 		response.addParam(BaseEntity.ITEMCOUNT, (Long) query.getSingleResult());
 	}
 	
-	public void getMenuItems(RestRequest request, RestResponse response) {
+	public void getMenuItems(RestRequest request, RestResponse response) throws Exception {
 		String HQLQuery = "SELECT DISTINCT m FROM MenuItem as m JOIN FETCH m.values WHERE ";
 		if (request.containsParam(BaseEntity.PARENTID)) {
 			HQLQuery += "m.parent.id = :parentId ";
@@ -91,7 +91,7 @@ public class MenuDaoImpl implements MenuDao {
 		response.addParam(BaseEntity.ITEMS, results);
 	}
 	
-	public void getMenus(RestRequest request, RestResponse response) {
+	public void getMenus(RestRequest request, RestResponse response) throws Exception {
 		String HQLQuery = "SELECT m FROM Menu AS m JOIN FETCH m.title AS t JOIN FETCH t.langTexts AS l WHERE m.category =:category ";
 		if ( !(request.containsParam(BaseEntity.SHOWALL) && (Boolean)request.getParam(BaseEntity.SHOWALL)) ){
 			HQLQuery += "AND m.active =:active ";
@@ -127,7 +127,7 @@ public class MenuDaoImpl implements MenuDao {
 		
 	}
 	
-	public void getMenuCount(RestRequest request, RestResponse response) {
+	public void getMenuCount(RestRequest request, RestResponse response) throws Exception {
 		Query query = null;
 		String HQLQuery = "SELECT COUNT(*) FROM Menu AS m JOIN m.title AS t JOIN t.langTexts AS l WHERE m.category =:category ";
 		if ( !(request.containsParam(BaseEntity.SHOWALL) && (Boolean)request.getParam(BaseEntity.SHOWALL)) ){
@@ -151,7 +151,7 @@ public class MenuDaoImpl implements MenuDao {
 		response.addParam(BaseEntity.ITEMCOUNT, (Long) query.getSingleResult());
 	}
 
-	public void getMenu(RestRequest request, RestResponse response){
+	public void getMenu(RestRequest request, RestResponse response) throws Exception {
 		String HQLQuery = "SELECT DISTINCT items FROM MenuItem AS items JOIN FETCH items.values AS values WHERE items.menu.id = :id AND ((:parentId is null and items.parent.id is null) or items.parent.id = :parentId) AND values.lang =:lang order by items.order ";
 		Query query = entityManagerDataSvc.getInstance().createQuery(HQLQuery);
 		query.setParameter("id",new Long((Integer) request.getParam(Menu.ID))).setParameter("lang", request.getParam(BaseEntity.LANG));
@@ -165,7 +165,7 @@ public class MenuDaoImpl implements MenuDao {
 	}
 
 	@Override
-	public void item(RestRequest request, RestResponse response) {
+	public void item(RestRequest request, RestResponse response) throws Exception {
 		if (request.containsParam(BaseEntity.ITEMID) && !"".equals(request.getParam(BaseEntity.ITEMID))) {
 			String HQLQuery = "";
 			if (request.containsParam(BaseEntity.ITEMTYPE) && "menu".equals(request.getParam(BaseEntity.ITEMTYPE))){

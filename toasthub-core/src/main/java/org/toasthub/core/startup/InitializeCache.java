@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import org.toasthub.core.general.model.AppCacheMenu;
+import org.toasthub.core.general.model.AppCacheMenuUtil;
 import org.toasthub.core.general.utils.TenantContext;
 import org.toasthub.core.preference.model.AppCachePageUtil;
 import org.toasthub.core.system.model.AppCacheClientDomainsUtil;
@@ -40,7 +40,7 @@ public class InitializeCache {
 	AppCachePageUtil appCachePageUtil;
 	
 	@Autowired
-	AppCacheMenu appCacheMenu;
+	AppCacheMenuUtil appCacheMenuUtil;
 	
 	@EventListener(ContextRefreshedEvent.class)
 	public void contextRefreshedEvent() {
@@ -55,7 +55,7 @@ public class InitializeCache {
 			appCachePageUtil.loadLanguageCache(tenant);
 			
 			logger.info(" Pre loading language cache " + tenant);
-			appCacheMenu.loadMenuCache(tenant);
+			appCacheMenuUtil.loadMenuCache(tenant);
 			
 			
 		}
