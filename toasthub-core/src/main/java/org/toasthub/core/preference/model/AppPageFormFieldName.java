@@ -33,6 +33,7 @@ import javax.persistence.Transient;
 
 import org.toasthub.core.general.api.View;
 import org.toasthub.core.general.model.BaseEntity;
+import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.Text;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -241,8 +242,8 @@ public class AppPageFormFieldName extends BaseEntity implements Serializable{
 	
 	@Transient
 	public void setMValues(Map<String,String> langMap) {
-		String field = langMap.get(BaseEntity.FIELD);
-		langMap.remove(BaseEntity.FIELD);
+		String field = langMap.get(GlobalConstant.FIELD);
+		langMap.remove(GlobalConstant.FIELD);
 		if (this.values == null) {
 			this.values = new HashSet<AppPageFormFieldValue>();
 		}

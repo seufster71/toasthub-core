@@ -37,7 +37,7 @@ import javax.imageio.ImageIO;
 
 import org.imgscalr.Scalr;
 import org.springframework.stereotype.Service;
-import org.toasthub.core.general.model.BaseEntity;
+import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 import org.toasthub.core.general.model.StatusMessage;
@@ -100,24 +100,24 @@ public class UtilSvc {
 	*/
 	public void setupDefaults(RestRequest request){
 		
-		if (request.getParam(BaseEntity.LANG) == null){
-			request.addParam(BaseEntity.LANG,"en");
+		if (request.getParam(GlobalConstant.LANG) == null){
+			request.addParam(GlobalConstant.LANG,"en");
 		}
 		
-		if (request.getParam(BaseEntity.PAGESTART) == null){
-			request.addParam(BaseEntity.PAGESTART, 0);
+		if (request.getParam(GlobalConstant.PAGESTART) == null){
+			request.addParam(GlobalConstant.PAGESTART, 0);
 		}
 		
-		if (request.getParam(BaseEntity.PAGELIMIT) == null){
-			request.addParam(BaseEntity.PAGELIMIT, 20);
+		if (request.getParam(GlobalConstant.PAGELIMIT) == null){
+			request.addParam(GlobalConstant.PAGELIMIT, 20);
 		}
 		
-		if (!request.containsParam(BaseEntity.SVCAPIVERSION)){
-			request.addParam(BaseEntity.SVCAPIVERSION, "1.0");
+		if (!request.containsParam(GlobalConstant.SVCAPIVERSION)){
+			request.addParam(GlobalConstant.SVCAPIVERSION, "1.0");
 		}
 
-		if (!request.containsParam(BaseEntity.SVCAPPVERSION)){
-			request.addParam(BaseEntity.SVCAPPVERSION, "1.0");
+		if (!request.containsParam(GlobalConstant.SVCAPPVERSION)){
+			request.addParam(GlobalConstant.SVCAPPVERSION, "1.0");
 		}
 	
 	} // setupDefaults
@@ -208,17 +208,17 @@ public class UtilSvc {
 				}
 			}
 		}
-		request.addParam(BaseEntity.VALID, isValid);
+		request.addParam(GlobalConstant.VALID, isValid);
 	} // validateParams 	
 	
 	@SuppressWarnings("unchecked")
 	public void marshallFields(RestRequest request, RestResponse response) throws Exception{
 		
 		// Must have item to map to
-		if (request.getParam(BaseEntity.ITEM) == null){
+		if (request.getParam(GlobalConstant.ITEM) == null){
 			throw new Exception("Missing Item");
 		}
-		Object item = request.getParam(BaseEntity.ITEM);
+		Object item = request.getParam(GlobalConstant.ITEM);
 		String existingObjName = item.getClass().getName();
 		
 		Class stringParams[] = new Class[1];
@@ -341,7 +341,7 @@ public class UtilSvc {
 										if (methodName != null){
 											String fieldName = (String) paramObj.get("field");
 											if (fieldName != null){
-												valuesMap.put(BaseEntity.FIELD, fieldName);
+												valuesMap.put(GlobalConstant.FIELD, fieldName);
 											}
 											Class[] paramMap = new Class[1];
 											paramMap[0] = Map.class;
@@ -357,7 +357,7 @@ public class UtilSvc {
 										if (methodName != null){
 											String fieldName = (String) paramObj.get("field");
 											if (fieldName != null){
-												bvaluesMap.put(BaseEntity.FIELD, fieldName);
+												bvaluesMap.put(GlobalConstant.FIELD, fieldName);
 											}
 											Class[] paramMap = new Class[1];
 											paramMap[0] = Map.class;

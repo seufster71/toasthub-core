@@ -147,8 +147,8 @@ public class MenuItem extends BaseEntity implements Serializable{
 	
 	@Transient
 	public void setMValues(Map<String,String> langMap) throws Exception{
-		String field = langMap.get(BaseEntity.FIELD);
-		langMap.remove(BaseEntity.FIELD);
+		String field = langMap.get(GlobalConstant.FIELD);
+		langMap.remove(GlobalConstant.FIELD);
 		if (this.values == null) {
 			this.values = new HashSet<MenuItemValue>();
 		}

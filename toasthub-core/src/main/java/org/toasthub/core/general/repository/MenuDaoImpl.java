@@ -23,7 +23,7 @@ import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.toasthub.core.general.model.BaseEntity;
+import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.Menu;
 import org.toasthub.core.general.model.MenuItem;
 import org.toasthub.core.general.model.RestRequest;
@@ -60,118 +60,118 @@ public class MenuDaoImpl implements MenuDao {
 	public void getMenuItemCount(RestRequest request, RestResponse response) throws Exception {
 		Query query = null;
 		String HQLQuery = "SELECT COUNT(*) FROM MenuItem AS m WHERE ";
-		if (request.containsParam(BaseEntity.PARENTID)) {
+		if (request.containsParam(GlobalConstant.PARENTID)) {
 			HQLQuery += "m.parent.id = :parentId ";
 		} else {
 			HQLQuery += "m.menu.id = :menuId AND m.parent.id = null";
 		}
 		query = entityManagerDataSvc.getInstance().createQuery(HQLQuery);
-		if (request.containsParam(BaseEntity.PARENTID)) {
-			query.setParameter("parentId", new Long((Integer)request.getParam(BaseEntity.PARENTID)));
+		if (request.containsParam(GlobalConstant.PARENTID)) {
+			query.setParameter("parentId", new Long((Integer)request.getParam(GlobalConstant.PARENTID)));
 		} else {
 			query.setParameter("menuId", new Long((Integer)request.getParam(Menu.ID)));
 		}
-		response.addParam(BaseEntity.ITEMCOUNT, (Long) query.getSingleResult());
+		response.addParam(GlobalConstant.ITEMCOUNT, (Long) query.getSingleResult());
 	}
 	
 	public void getMenuItems(RestRequest request, RestResponse response) throws Exception {
 		String HQLQuery = "SELECT DISTINCT m FROM MenuItem as m JOIN FETCH m.values WHERE ";
-		if (request.containsParam(BaseEntity.PARENTID)) {
+		if (request.containsParam(GlobalConstant.PARENTID)) {
 			HQLQuery += "m.parent.id = :parentId ";
 		} else {
 			HQLQuery += "m.menu.id = :menuId AND m.parent.id = null";
 		}
 		Query query = entityManagerDataSvc.getInstance().createQuery(HQLQuery);
-		if (request.containsParam(BaseEntity.PARENTID)) {
-			query.setParameter("parentId", new Long((Integer)request.getParam(BaseEntity.PARENTID)));
+		if (request.containsParam(GlobalConstant.PARENTID)) {
+			query.setParameter("parentId", new Long((Integer)request.getParam(GlobalConstant.PARENTID)));
 		} else {
 			query.setParameter("menuId", new Long((Integer)request.getParam(Menu.ID)));
 		}
 		List<MenuItem> results = query.getResultList(); 
-		response.addParam(BaseEntity.ITEMS, results);
+		response.addParam(GlobalConstant.ITEMS, results);
 	}
 	
 	public void getMenus(RestRequest request, RestResponse response) throws Exception {
 		String HQLQuery = "SELECT m FROM Menu AS m JOIN FETCH m.title AS t JOIN FETCH t.langTexts AS l WHERE m.category =:category ";
-		if ( !(request.containsParam(BaseEntity.SHOWALL) && (Boolean)request.getParam(BaseEntity.SHOWALL)) ){
+		if ( !(request.containsParam(GlobalConstant.SHOWALL) && (Boolean)request.getParam(GlobalConstant.SHOWALL)) ){
 			HQLQuery += "AND m.active =:active ";
 		}
-		if (request.containsParam(BaseEntity.SEARCHVALUE) && !request.getParam(BaseEntity.SEARCHVALUE).equals("")){
+		if (request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
 			HQLQuery += "AND l.lang =:lang AND l.text LIKE :searchValue "; 
 		}
 		HQLQuery += "ORDER BY m.code ASC";
 		
 		Query query = entityManagerDataSvc.getInstance().createQuery(HQLQuery).setParameter("category", (String) request.getParam("category"));
 
-		if ( !(request.containsParam(BaseEntity.SHOWALL) && (Boolean)request.getParam(BaseEntity.SHOWALL)) ){
-			if (request.containsParam(BaseEntity.ACTIVE)) {
-				query.setParameter("active", (Boolean) request.getParam(BaseEntity.ACTIVE));
+		if ( !(request.containsParam(GlobalConstant.SHOWALL) && (Boolean)request.getParam(GlobalConstant.SHOWALL)) ){
+			if (request.containsParam(GlobalConstant.ACTIVE)) {
+				query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
 			} else {
 				query.setParameter("active", true);
 			}
 		}
-		if (request.containsParam(BaseEntity.SEARCHVALUE) && !request.getParam(BaseEntity.SEARCHVALUE).equals("")){
-			query.setParameter("searchValue", "%"+((String)request.getParam(BaseEntity.SEARCHVALUE)).toLowerCase()+"%");
-			query.setParameter("lang",request.getParam(BaseEntity.LANG));
+		if (request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
+			query.setParameter("searchValue", "%"+((String)request.getParam(GlobalConstant.SEARCHVALUE)).toLowerCase()+"%");
+			query.setParameter("lang",request.getParam(GlobalConstant.LANG));
 		}
-		if (request.containsParam(BaseEntity.PAGELIMIT) && (Integer) request.getParam(BaseEntity.PAGELIMIT) != 0){
-			query.setFirstResult((Integer) request.getParam(BaseEntity.PAGESTART));
-			query.setMaxResults((Integer) request.getParam(BaseEntity.PAGELIMIT));
+		if (request.containsParam(GlobalConstant.PAGELIMIT) && (Integer) request.getParam(GlobalConstant.PAGELIMIT) != 0){
+			query.setFirstResult((Integer) request.getParam(GlobalConstant.PAGESTART));
+			query.setMaxResults((Integer) request.getParam(GlobalConstant.PAGELIMIT));
 		}
 		
 		List<?> results = query.getResultList();
 		for(Object r : results){
 			((Menu) r).setMenuItems(null); 
 		}
-		response.addParam(BaseEntity.ITEMS, (List<Menu>) results);
+		response.addParam(GlobalConstant.ITEMS, (List<Menu>) results);
 		
 	}
 	
 	public void getMenuCount(RestRequest request, RestResponse response) throws Exception {
 		Query query = null;
 		String HQLQuery = "SELECT COUNT(*) FROM Menu AS m JOIN m.title AS t JOIN t.langTexts AS l WHERE m.category =:category ";
-		if ( !(request.containsParam(BaseEntity.SHOWALL) && (Boolean)request.getParam(BaseEntity.SHOWALL)) ){
+		if ( !(request.containsParam(GlobalConstant.SHOWALL) && (Boolean)request.getParam(GlobalConstant.SHOWALL)) ){
 			HQLQuery += "AND m.active =:active ";
 		}
-		if (request.containsParam(BaseEntity.SEARCHVALUE) && !request.getParam(BaseEntity.SEARCHVALUE).equals("")){
+		if (request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
 			HQLQuery += "AND l.lang =:lang AND l.text LIKE :searchValue "; 
 		}
 		query = entityManagerDataSvc.getInstance().createQuery(HQLQuery).setParameter("category", (String) request.getParam("category"));
-		if ( !(request.containsParam(BaseEntity.SHOWALL) && (Boolean)request.getParam(BaseEntity.SHOWALL)) ){
-			if (request.containsParam(BaseEntity.ACTIVE)) {
-				query.setParameter("active", (Boolean) request.getParam(BaseEntity.ACTIVE));
+		if ( !(request.containsParam(GlobalConstant.SHOWALL) && (Boolean)request.getParam(GlobalConstant.SHOWALL)) ){
+			if (request.containsParam(GlobalConstant.ACTIVE)) {
+				query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
 			} else {
 				query.setParameter("active", true);
 			}
 		}
-		if (request.containsParam(BaseEntity.SEARCHVALUE) && !request.getParam(BaseEntity.SEARCHVALUE).equals("")){
-			query.setParameter("searchValue", "%"+((String)request.getParam(BaseEntity.SEARCHVALUE)).toLowerCase()+"%");
-			query.setParameter("lang",request.getParam(BaseEntity.LANG));
+		if (request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
+			query.setParameter("searchValue", "%"+((String)request.getParam(GlobalConstant.SEARCHVALUE)).toLowerCase()+"%");
+			query.setParameter("lang",request.getParam(GlobalConstant.LANG));
 		}
-		response.addParam(BaseEntity.ITEMCOUNT, (Long) query.getSingleResult());
+		response.addParam(GlobalConstant.ITEMCOUNT, (Long) query.getSingleResult());
 	}
 
 	public void getMenu(RestRequest request, RestResponse response) throws Exception {
 		String HQLQuery = "SELECT DISTINCT items FROM MenuItem AS items JOIN FETCH items.values AS values WHERE items.menu.id = :id AND ((:parentId is null and items.parent.id is null) or items.parent.id = :parentId) AND values.lang =:lang order by items.order ";
 		Query query = entityManagerDataSvc.getInstance().createQuery(HQLQuery);
-		query.setParameter("id",new Long((Integer) request.getParam(Menu.ID))).setParameter("lang", request.getParam(BaseEntity.LANG));
-		if (request.containsParam(BaseEntity.PARENTID)){
-			query.setParameter("parentId", new Long((Integer) request.getParam(BaseEntity.PARENTID)));
+		query.setParameter("id",new Long((Integer) request.getParam(Menu.ID))).setParameter("lang", request.getParam(GlobalConstant.LANG));
+		if (request.containsParam(GlobalConstant.PARENTID)){
+			query.setParameter("parentId", new Long((Integer) request.getParam(GlobalConstant.PARENTID)));
 		} else {
 			query.setParameter("parentId",null);
 		}
 		List<MenuItem> items = query.getResultList();
-		response.addParam(BaseEntity.ITEMS, items);
+		response.addParam(GlobalConstant.ITEMS, items);
 	}
 
 	@Override
 	public void item(RestRequest request, RestResponse response) throws Exception {
-		if (request.containsParam(BaseEntity.ITEMID) && !"".equals(request.getParam(BaseEntity.ITEMID))) {
+		if (request.containsParam(GlobalConstant.ITEMID) && !"".equals(request.getParam(GlobalConstant.ITEMID))) {
 			String HQLQuery = "";
-			if (request.containsParam(BaseEntity.ITEMTYPE) && "menu".equals(request.getParam(BaseEntity.ITEMTYPE))){
+			if (request.containsParam(GlobalConstant.ITEMTYPE) && "menu".equals(request.getParam(GlobalConstant.ITEMTYPE))){
 				// menu 
 				HQLQuery = "SELECT m FROM Menu AS m JOIN FETCH m.title AS t JOIN FETCH t.langTexts WHERE m.id = :id ";
-			} else if (request.containsParam(BaseEntity.ITEMTYPE) && ( "subItem".equals(request.getParam(BaseEntity.ITEMTYPE)) || "subSub".equals(request.getParam(BaseEntity.ITEMTYPE))) ){
+			} else if (request.containsParam(GlobalConstant.ITEMTYPE) && ( "subItem".equals(request.getParam(GlobalConstant.ITEMTYPE)) || "subSub".equals(request.getParam(GlobalConstant.ITEMTYPE))) ){
 				// menu item
 				HQLQuery = "SELECT m FROM MenuItem AS m JOIN FETCH m.values AS values WHERE m.id = :id ";
 			} else {
@@ -179,8 +179,8 @@ public class MenuDaoImpl implements MenuDao {
 				return;
 			}
 			Query query = entityManagerDataSvc.getInstance().createQuery(HQLQuery);
-			query.setParameter("id", new Long((Integer) request.getParam(BaseEntity.ITEMID)) );
-			response.addParam(BaseEntity.ITEM, query.getSingleResult());
+			query.setParameter("id", new Long((Integer) request.getParam(GlobalConstant.ITEMID)) );
+			response.addParam(GlobalConstant.ITEM, query.getSingleResult());
 		} else {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Missing ID", response);
 		}

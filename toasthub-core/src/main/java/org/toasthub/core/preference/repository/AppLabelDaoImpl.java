@@ -23,7 +23,7 @@ import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.toasthub.core.general.model.BaseEntity;
+import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 import org.toasthub.core.general.service.EntityManagerDataSvc;
@@ -55,7 +55,7 @@ public class AppLabelDaoImpl implements AppLabelDao {
 		@SuppressWarnings("unchecked")
 		List<AppPageLabelName> labels = entityManagerDataSvc.getInstance()
 				.createQuery("SELECT DISTINCT l FROM AppPageLabelName AS l JOIN FETCH l.title AS t JOIN FETCH t.langTexts AS lt JOIN FETCH l.values WHERE l.pageName.id =:pageNameId")
-				.setParameter("pageNameId", new Long((Integer)request.getParam(BaseEntity.PARENTID)))
+				.setParameter("pageNameId", new Long((Integer)request.getParam(GlobalConstant.PARENTID)))
 				.getResultList();
 			response.addParam("appPageLabel", labels);
 	}
@@ -64,21 +64,21 @@ public class AppLabelDaoImpl implements AppLabelDao {
 	public void itemCount(RestRequest request, RestResponse response) throws Exception {
 		Query query = null;
 		String HQLQuery = "SELECT COUNT(*) FROM AppPageLabelName AS l WHERE l.pageName.id =:pageNameId";
-		query = entityManagerDataSvc.getInstance().createQuery(HQLQuery).setParameter("pageNameId", new Long((Integer)request.getParam(BaseEntity.PARENTID)));
-		response.addParam(BaseEntity.ITEMCOUNT, (Long) query.getSingleResult());
+		query = entityManagerDataSvc.getInstance().createQuery(HQLQuery).setParameter("pageNameId", new Long((Integer)request.getParam(GlobalConstant.PARENTID)));
+		response.addParam(GlobalConstant.ITEMCOUNT, (Long) query.getSingleResult());
 		
 	}
 
 	@Override
 	public void item(RestRequest request, RestResponse response) throws Exception {
-		if (request.containsParam(BaseEntity.ITEMID) && !"".equals(request.getParam(BaseEntity.ITEMID))) {
+		if (request.containsParam(GlobalConstant.ITEMID) && !"".equals(request.getParam(GlobalConstant.ITEMID))) {
 			String queryStr = "SELECT l FROM AppPageLabelName AS l JOIN FETCH l.title AS t JOIN FETCH t.langTexts AS lt JOIN FETCH l.values WHERE l.id =:id";
 			Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
 			
-			query.setParameter("id", new Long((Integer) request.getParam(BaseEntity.ITEMID)));
+			query.setParameter("id", new Long((Integer) request.getParam(GlobalConstant.ITEMID)));
 			AppPageLabelName appPageLabelName = (AppPageLabelName) query.getSingleResult();
 		
-			response.addParam(BaseEntity.ITEM, appPageLabelName);
+			response.addParam(GlobalConstant.ITEM, appPageLabelName);
 		} else {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Missing ID", response);
 		}

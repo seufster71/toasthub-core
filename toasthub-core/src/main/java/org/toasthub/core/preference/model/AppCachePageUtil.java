@@ -25,7 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import org.toasthub.core.general.model.BaseEntity;
+import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.Language;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
@@ -126,7 +126,7 @@ public class AppCachePageUtil {
 		key.append("_");
 		key.append(request.getParam(APPPAGEFORMNAME));
 		key.append("_");
-		key.append((String)request.getParam(BaseEntity.LANG));
+		key.append((String)request.getParam(GlobalConstant.LANG));
 		
 		if (appCachePage.getAppPageFormFields() != null && appCachePage.getAppPageFormFields().containsKey(key.toString())){
 			// Pull from memory cache
@@ -170,7 +170,7 @@ public class AppCachePageUtil {
 	
 	private void appPageFormFieldLoadFromDB(RestRequest request, RestResponse response, String key) {
 		// Pull from DB
-		List<AppPageFormFieldValue> formFields = appPageSvc.getFormFields((String)request.getParam(APPPAGEFORMNAME), (String)request.getParam(BaseEntity.LANG));
+		List<AppPageFormFieldValue> formFields = appPageSvc.getFormFields((String)request.getParam(APPPAGEFORMNAME), (String)request.getParam(GlobalConstant.LANG));
 		if (formFields != null){
 			// add to cache
 			appCachePage.addAppPageFormField(key, formFields);
@@ -216,7 +216,7 @@ public class AppCachePageUtil {
 		key.append("_");
 		key.append(request.getParam(APPPAGELABELNAME));
 		key.append("_");
-		key.append((String)request.getParam(BaseEntity.LANG));
+		key.append((String)request.getParam(GlobalConstant.LANG));
 		if (appCachePage.getAppPageLabels() != null && appCachePage.getAppPageLabels().containsKey(key.toString())){
 			// Pull from memory cache
 			appPageLabelLoadFromMem(request,response,key.toString());
@@ -259,7 +259,7 @@ public class AppCachePageUtil {
 	
 	private void appPageLabelLoadFromDB(RestRequest request, RestResponse response, String key) {
 		// Pull from DB
-		List<AppPageLabelValue> labels = appPageSvc.getLabels((String)request.getParam(APPPAGELABELNAME), (String)request.getParam(BaseEntity.LANG));
+		List<AppPageLabelValue> labels = appPageSvc.getLabels((String)request.getParam(APPPAGELABELNAME), (String)request.getParam(GlobalConstant.LANG));
 		if (labels != null){
 			// add to cache
 			appCachePage.addAppPageLabel(key, labels);
@@ -305,7 +305,7 @@ public class AppCachePageUtil {
 		key.append("_");
 		key.append(request.getParam(APPPAGEOPTIONNAME));
 		key.append("_");
-		key.append((String)request.getParam(BaseEntity.LANG));
+		key.append((String)request.getParam(GlobalConstant.LANG));
 		if (appCachePage.getAppPageOptions() != null && appCachePage.getAppPageOptions().containsKey(key.toString())){
 			appPageOptionLoadFromMem(request,response,key.toString());
 		} else {
@@ -346,7 +346,7 @@ public class AppCachePageUtil {
 	
 	private void appPageOptionLoadFromDB(RestRequest request, RestResponse response, String key) {
 		// Pull from DB
-		Map<String,AppPageOptionValue> appOptions = appPageSvc.getOptionsMap((String)request.getParam(APPPAGEOPTIONNAME), (String)request.getParam(BaseEntity.LANG));
+		Map<String,AppPageOptionValue> appOptions = appPageSvc.getOptionsMap((String)request.getParam(APPPAGEOPTIONNAME), (String)request.getParam(GlobalConstant.LANG));
 		if (appOptions != null){
 			// add to cache
 			appCachePage.addAppPageOption(key, appOptions);
@@ -390,7 +390,7 @@ public class AppCachePageUtil {
 		key.append("_");
 		key.append(request.getParam(APPPAGETEXTNAME));
 		key.append("_");
-		key.append((String)request.getParam(BaseEntity.LANG));
+		key.append((String)request.getParam(GlobalConstant.LANG));
 		if (appCachePage.getAppPageTexts() != null && appCachePage.getAppPageTexts().containsKey(key.toString())){
 			// Pull from memory cache
 			appPageTextLoadFromMem(request,response,key.toString());
@@ -432,7 +432,7 @@ public class AppCachePageUtil {
 	
 	private void appPageTextLoadFromDB(RestRequest request, RestResponse response, String key) {
 		// Get from DB and put in cache
-		Map<String,AppPageTextValue> appTexts = appPageSvc.getTextsMap((String)request.getParam(APPPAGETEXTNAME), (String)request.getParam(BaseEntity.LANG));
+		Map<String,AppPageTextValue> appTexts = appPageSvc.getTextsMap((String)request.getParam(APPPAGETEXTNAME), (String)request.getParam(GlobalConstant.LANG));
 		if (appTexts != null){
 			// add to cache
 			appCachePage.addAppPageText(key, appTexts);
@@ -487,11 +487,11 @@ public class AppCachePageUtil {
 				} else {
 					// Get from DB and put in cache
 					RestRequest LangRequest = new RestRequest();
-					LangRequest.addParam(BaseEntity.ACTIVE, true);
+					LangRequest.addParam(GlobalConstant.ACTIVE, true);
 					RestResponse LangResponse = new RestResponse();
 					languageSvc.getAllLanguages(LangRequest,LangResponse);
-					if (LangResponse.containsParam(BaseEntity.ITEMS)){
-						this.setLanguages((List<Language>) LangResponse.getParam(BaseEntity.ITEMS));
+					if (LangResponse.containsParam(GlobalConstant.ITEMS)){
+						this.setLanguages((List<Language>) LangResponse.getParam(GlobalConstant.ITEMS));
 						response.addParam("languages", appCachePage.getLanguages().get(key));
 					} else {
 						utilSvc.addStatus(RestResponse.INFO, RestResponse.PAGEOPTIONS, "Languages issue", response);
@@ -542,11 +542,11 @@ public class AppCachePageUtil {
 	@SuppressWarnings("unchecked")
 	public void loadLanguageCache(String tenant) {
 		RestRequest LangRequest = new RestRequest();
-		LangRequest.addParam(BaseEntity.ACTIVE, true);
+		LangRequest.addParam(GlobalConstant.ACTIVE, true);
 		RestResponse LangResponse = new RestResponse();
 		languageSvc.getAllLanguages(LangRequest,LangResponse);
-		if (LangResponse.containsParam(BaseEntity.ITEMS)){
-			appCachePage.getLanguages().put(tenant, (List<Language>) LangResponse.getParam(BaseEntity.ITEMS));
+		if (LangResponse.containsParam(GlobalConstant.ITEMS)){
+			appCachePage.getLanguages().put(tenant, (List<Language>) LangResponse.getParam(GlobalConstant.ITEMS));
 		}
 	}
 	

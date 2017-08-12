@@ -25,7 +25,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.toasthub.core.general.handler.ServiceProcessor;
 import org.toasthub.core.general.model.AppCacheMenuUtil;
-import org.toasthub.core.general.model.BaseEntity;
+import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.MenuItem;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
@@ -58,7 +58,7 @@ public class PublicSvc implements ServiceProcessor {
 	
 	// Processor
 	public void process(RestRequest request, RestResponse response) {
-		String action = (String) request.getParams().get(BaseEntity.ACTION);
+		String action = (String) request.getParams().get(GlobalConstant.ACTION);
 		
 		this.setupDefaults(request);
 		appCachePageUtil.getPageInfo(request,response);
@@ -77,9 +77,9 @@ public class PublicSvc implements ServiceProcessor {
 	}
 	
 	public void init(RestRequest request, RestResponse response) {
-		response.addParam(BaseEntity.PAGELAYOUT,entityManagerMainSvc.getPublicLayout());
-		response.addParam(BaseEntity.APPNAME,entityManagerMainSvc.getAppName());
-		response.addParam(BaseEntity.HTMLPREFIX, entityManagerMainSvc.getHTMLPrefix());
+		response.addParam(GlobalConstant.PAGELAYOUT,entityManagerMainSvc.getPublicLayout());
+		response.addParam(GlobalConstant.APPNAME,entityManagerMainSvc.getAppName());
+		response.addParam(GlobalConstant.HTMLPREFIX, entityManagerMainSvc.getHTMLPrefix());
 		// default language code
 		response.addParam("userLang", appCachePageUtil.getDefaultLang());
 		
@@ -89,9 +89,9 @@ public class PublicSvc implements ServiceProcessor {
 		Map<Integer,MenuItem> menu = null;
 		Map<String,Map<Integer,MenuItem>> menuList = new HashMap<String,Map<Integer,MenuItem>>();
 		
-		ArrayList<String> mylist = (ArrayList<String>) request.getParam(BaseEntity.MENUNAMES);
+		ArrayList<String> mylist = (ArrayList<String>) request.getParam(GlobalConstant.MENUNAMES);
 		for (String menuName : mylist) {
-			menu = appCacheMenuUtil.getMenu(menuName,(String)request.getParam(BaseEntity.MENUAPIVERSION),(String)request.getParam(BaseEntity.MENUAPPVERSION),(String)request.getParam(BaseEntity.LANG));
+			menu = appCacheMenuUtil.getMenu(menuName,(String)request.getParam(GlobalConstant.MENUAPIVERSION),(String)request.getParam(GlobalConstant.MENUAPPVERSION),(String)request.getParam(GlobalConstant.LANG));
 			menuList.put(menuName, menu);
 		}
 		
@@ -104,19 +104,19 @@ public class PublicSvc implements ServiceProcessor {
 	
 	public void setupDefaults(RestRequest request){
 		
-		if (!request.containsParam(BaseEntity.MENUAPIVERSION)){
-			request.addParam(BaseEntity.MENUAPIVERSION, "1.0");
+		if (!request.containsParam(GlobalConstant.MENUAPIVERSION)){
+			request.addParam(GlobalConstant.MENUAPIVERSION, "1.0");
 		}
 
-		if (!request.containsParam(BaseEntity.MENUAPPVERSION)){
-			request.addParam(BaseEntity.MENUAPPVERSION, "1.0");
+		if (!request.containsParam(GlobalConstant.MENUAPPVERSION)){
+			request.addParam(GlobalConstant.MENUAPPVERSION, "1.0");
 		}
 		
-		if (!request.containsParam(BaseEntity.MENUNAMES)){
+		if (!request.containsParam(GlobalConstant.MENUNAMES)){
 			ArrayList<String> myList = new ArrayList<String>();
 			myList.add("PUBLIC_MENU_LEFT");
 			myList.add("PUBLIC_MENU_RIGHT");
-			request.addParam(BaseEntity.MENUNAMES, myList);
+			request.addParam(GlobalConstant.MENUNAMES, myList);
 		}
 	}
 	

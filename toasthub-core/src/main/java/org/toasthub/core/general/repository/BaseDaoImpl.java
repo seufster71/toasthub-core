@@ -22,7 +22,7 @@ import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.toasthub.core.general.model.BaseEntity;
+import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 import org.toasthub.core.general.service.EntityManagerDataSvc;
@@ -40,21 +40,21 @@ public class BaseDaoImpl implements BaseDao {
 
 	@Override
 	public void items(RestRequest request, RestResponse response) throws Exception {
-		String itemName = (String) request.getParam(BaseEntity.ITEMNAME);
+		String itemName = (String) request.getParam(GlobalConstant.ITEMNAME);
 		String queryStr = "";
-		if (request.containsParam(BaseEntity.COLUMNS)){
-			String[] columns = (String[]) request.getParam(BaseEntity.COLUMNS);
+		if (request.containsParam(GlobalConstant.COLUMNS)){
+			String[] columns = (String[]) request.getParam(GlobalConstant.COLUMNS);
 			String c = Utils.arrayToComma(columns);
 			queryStr += "SELECT new "+ itemName + "( id," + c + ")";
 		}
 		queryStr += " FROM " + itemName;
 		boolean and = false;
-		if (request.containsParam(BaseEntity.SEARCHCOLUMN) && request.containsParam(BaseEntity.SEARCHVALUE) && !request.getParam(BaseEntity.SEARCHVALUE).equals("")){
+		if (request.containsParam(GlobalConstant.SEARCHCOLUMN) && request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
 			if (!and) { queryStr += " WHERE "; }
-			queryStr += "lower(" + request.getParam(BaseEntity.SEARCHCOLUMN) + ") LIKE :searchValue"; 
+			queryStr += "lower(" + request.getParam(GlobalConstant.SEARCHCOLUMN) + ") LIKE :searchValue"; 
 			and = true;
 		}
-		if (request.containsParam(BaseEntity.OWNER)) {
+		if (request.containsParam(GlobalConstant.OWNER)) {
 			if (and) { queryStr += " AND "; } else { queryStr += " WHERE "; }
 			queryStr += "owner.id =:uid";
 			and = true;
@@ -63,44 +63,44 @@ public class BaseDaoImpl implements BaseDao {
 		if (and) { queryStr += " AND "; } else { queryStr += " WHERE "; }
 		queryStr += "active =:active";
 			
-		if (request.containsParam(BaseEntity.ORDERCOLUMN)) {
+		if (request.containsParam(GlobalConstant.ORDERCOLUMN)) {
 			String direction = "DESC";
-			if (request.containsParam(BaseEntity.ORDERDIR)) {
-				direction = (String) request.getParam(BaseEntity.ORDERDIR);
+			if (request.containsParam(GlobalConstant.ORDERDIR)) {
+				direction = (String) request.getParam(GlobalConstant.ORDERDIR);
 			}
-			queryStr += " ORDER BY "+(String) request.getParam(BaseEntity.ORDERCOLUMN)+" "+direction;
+			queryStr += " ORDER BY "+(String) request.getParam(GlobalConstant.ORDERCOLUMN)+" "+direction;
 		}
 		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
-		if (request.containsParam(BaseEntity.SEARCHCOLUMN) && request.containsParam(BaseEntity.SEARCHVALUE) && !request.getParam(BaseEntity.SEARCHVALUE).equals("")){
-			query.setParameter(BaseEntity.SEARCHVALUE, "%"+((String)request.getParam(BaseEntity.SEARCHVALUE)).toLowerCase()+"%");
+		if (request.containsParam(GlobalConstant.SEARCHCOLUMN) && request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
+			query.setParameter(GlobalConstant.SEARCHVALUE, "%"+((String)request.getParam(GlobalConstant.SEARCHVALUE)).toLowerCase()+"%");
 		}
-		if (request.containsParam(BaseEntity.OWNER)) {
-			query.setParameter("uid", new Long((String) request.getParam(BaseEntity.OWNER)));
+		if (request.containsParam(GlobalConstant.OWNER)) {
+			query.setParameter("uid", new Long((String) request.getParam(GlobalConstant.OWNER)));
 		} 
-		if (request.containsParam(BaseEntity.ACTIVE)) {
-			query.setParameter("active", (Boolean) request.getParam(BaseEntity.ACTIVE));
+		if (request.containsParam(GlobalConstant.ACTIVE)) {
+			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
 		} else {
 			query.setParameter("active", true);
 		}
-		if (request.containsParam(BaseEntity.PAGELIMIT) && (Integer) request.getParam(BaseEntity.PAGELIMIT) != 0){
-			query.setFirstResult((Integer) request.getParam(BaseEntity.PAGESTART));
-			query.setMaxResults((Integer) request.getParam(BaseEntity.PAGELIMIT));
+		if (request.containsParam(GlobalConstant.PAGELIMIT) && (Integer) request.getParam(GlobalConstant.PAGELIMIT) != 0){
+			query.setFirstResult((Integer) request.getParam(GlobalConstant.PAGESTART));
+			query.setMaxResults((Integer) request.getParam(GlobalConstant.PAGELIMIT));
 		}
-		response.addParam(BaseEntity.ITEMS, (List<?>) query.getResultList());
+		response.addParam(GlobalConstant.ITEMS, (List<?>) query.getResultList());
 	}
 	
 	@Override
 	public void itemCount(RestRequest request, RestResponse response) throws Exception {
-		String itemName = (String) request.getParam(BaseEntity.ITEMNAME);
+		String itemName = (String) request.getParam(GlobalConstant.ITEMNAME);
 		String queryStr = "SELECT COUNT(*) FROM " + itemName;
 		
 		boolean and = false;
-		if (request.containsParam(BaseEntity.SEARCHCOLUMN) && request.containsParam(BaseEntity.SEARCHVALUE) && !request.getParam(BaseEntity.SEARCHVALUE).equals("")){
+		if (request.containsParam(GlobalConstant.SEARCHCOLUMN) && request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
 			if (!and) { queryStr += " WHERE "; }
-			queryStr += "lower(" + request.getParam(BaseEntity.SEARCHCOLUMN) + ") LIKE :searchValue"; 
+			queryStr += "lower(" + request.getParam(GlobalConstant.SEARCHCOLUMN) + ") LIKE :searchValue"; 
 			and = true;
 		}
-		if (request.containsParam(BaseEntity.OWNER)) {
+		if (request.containsParam(GlobalConstant.OWNER)) {
 			if (and) { queryStr += " AND "; } else { queryStr += " WHERE "; }
 			queryStr += "owner.id = :uid";
 			and = true;
@@ -110,14 +110,14 @@ public class BaseDaoImpl implements BaseDao {
 		queryStr += "active = :active";
 		
 		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
-		if (request.containsParam(BaseEntity.SEARCHCOLUMN) && request.containsParam(BaseEntity.SEARCHVALUE) && !request.getParam(BaseEntity.SEARCHVALUE).equals("")){
-			query.setParameter(BaseEntity.SEARCHVALUE, "%"+((String) request.getParam(BaseEntity.SEARCHVALUE)).toLowerCase()+"%");
+		if (request.containsParam(GlobalConstant.SEARCHCOLUMN) && request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
+			query.setParameter(GlobalConstant.SEARCHVALUE, "%"+((String) request.getParam(GlobalConstant.SEARCHVALUE)).toLowerCase()+"%");
 		}
-		if (request.containsParam(BaseEntity.OWNER)) {
-			query.setParameter("uid", new Long((String) request.getParam(BaseEntity.OWNER)));
+		if (request.containsParam(GlobalConstant.OWNER)) {
+			query.setParameter("uid", new Long((String) request.getParam(GlobalConstant.OWNER)));
 		} 
-		if (request.containsParam(BaseEntity.ACTIVE)) {
-			query.setParameter("active", (Boolean) request.getParam(BaseEntity.ACTIVE));
+		if (request.containsParam(GlobalConstant.ACTIVE)) {
+			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
 		} else {
 			query.setParameter("active", true);
 		}
@@ -125,17 +125,17 @@ public class BaseDaoImpl implements BaseDao {
 		if (count == null){
 			count = 0l;
 		}
-		response.addParam(BaseEntity.ITEMCOUNT, count);
+		response.addParam(GlobalConstant.ITEMCOUNT, count);
 	}
 	
 	@Override
 	public void item(RestRequest request, RestResponse response) throws Exception {
-		String tableName = (String) request.getParam(BaseEntity.ITEMNAME);
+		String tableName = (String) request.getParam(GlobalConstant.ITEMNAME);
 		if (tableName != null){
 			String queryStr = "FROM " + tableName + " WHERE id = :id";
 			Query query = entityManagerDataSvc.getInstance().createQuery(queryStr)
-					.setParameter("id",new Long((Integer) request.getParam(BaseEntity.ITEMID)));
-			response.addParam(BaseEntity.ITEM, query.getSingleResult());
+					.setParameter("id",new Long((Integer) request.getParam(GlobalConstant.ITEMID)));
+			response.addParam(GlobalConstant.ITEM, query.getSingleResult());
 		} else {
 			
 		}

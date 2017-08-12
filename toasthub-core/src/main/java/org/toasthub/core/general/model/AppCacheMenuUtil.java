@@ -68,12 +68,12 @@ public class AppCacheMenuUtil {
 		String[] categories = AppCacheMenu.categories;
 		for (int i = 0; i < categories.length; i++) {
 			RestRequest request = new RestRequest();
-			request.addParam(BaseEntity.ACTIVE, true);
+			request.addParam(GlobalConstant.ACTIVE, true);
 			request.addParam("category", categories[i]);
 			RestResponse response = new RestResponse();
 			menuSvc.getMenus(request,response);
 			// load each menu
-			List<Menu> myMenus = (List<Menu>) response.getParam(BaseEntity.ITEMS);
+			List<Menu> myMenus = (List<Menu>) response.getParam(GlobalConstant.ITEMS);
 			for(Menu m : myMenus) {
 				// by languages
 				List<String> codes = appCachePageUtil.getAvailableLanguageCodes(tenant);

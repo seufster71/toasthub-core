@@ -53,20 +53,22 @@ public class AppCacheServiceCrawler implements Serializable {
 	}
 	
 	// This is used by frontend web service and should only pull what is in memory.
-	public ServiceProcessor getServiceProcessor(String category, String key, String apiVersion, String appVersion){
+	public ServiceClass getServiceClass(String category, String key, String apiVersion, String appVersion){
 		String tenant = appCacheClientDomains.getClientDomain(TenantContext.getURLDomain()).getAPPDomain();
-		ServiceProcessor sp = null;
+		ServiceClass serviceClass = null;
 		//String categoryKey = category + "-" + appDomain;
 		String apiKey = key  + "-" + apiVersion + "-" + appVersion;
 		if ( this.services != null && this.services.get(tenant) != null && this.services.get(tenant).get(category) != null && this.services.get(tenant).get(category).containsKey(apiKey) ){
 			// Pull from memory
-			ServiceClass sc = this.services.get(tenant).get(category).get(apiKey);
-			sp = (ServiceProcessor) context.getBean(sc.getClassName());
+			serviceClass = this.services.get(tenant).get(category).get(apiKey);
+			if ("LOCAL".equals(serviceClass.getLocation())) {
+				serviceClass.setServiceProcessor((ServiceProcessor) context.getBean(serviceClass.getClassName()));
+			}
 		} else {
 			// do not pull from db it will cause load issue if not available. Also all services should have been loaded.
-			sp = null;
+			serviceClass = null;
 		}
-		return sp;
+		return serviceClass;
 	}
 	
 	// This is used by save or delete is issued and the cache needs to be reloaded

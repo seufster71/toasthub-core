@@ -25,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.toasthub.core.general.handler.ServiceProcessor;
-import org.toasthub.core.general.model.BaseEntity;
+import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.Menu;
 import org.toasthub.core.general.model.MenuItem;
 import org.toasthub.core.general.model.RestRequest;
@@ -53,7 +53,7 @@ public class MenuSvcImpl implements ServiceProcessor, MenuSvc {
 	// Processor
 	@Override
 	public void process(RestRequest request, RestResponse response) {
-		String action = (String) request.getParams().get(BaseEntity.ACTION);
+		String action = (String) request.getParams().get(GlobalConstant.ACTION);
 		
 		Long count = 0l;
 		switch (action) {
@@ -65,7 +65,7 @@ public class MenuSvcImpl implements ServiceProcessor, MenuSvc {
 			this.itemColumns(request, response);
 			
 			this.getMenuCount(request, response);
-			count = (Long) response.getParam(BaseEntity.ITEMCOUNT);
+			count = (Long) response.getParam(GlobalConstant.ITEMCOUNT);
 			if (count != null && count > 0){
 				this.getMenus(request, response);
 			}
@@ -79,7 +79,7 @@ public class MenuSvcImpl implements ServiceProcessor, MenuSvc {
 			this.itemColumns(request, response);
 			
 			this.getMenuCount(request, response);
-			count = (Long) response.getParam(BaseEntity.ITEMCOUNT);
+			count = (Long) response.getParam(GlobalConstant.ITEMCOUNT);
 			if (count != null && count > 0){
 				this.getMenus(request, response);
 			}
@@ -87,11 +87,11 @@ public class MenuSvcImpl implements ServiceProcessor, MenuSvc {
 			break;
 		case "SHOW":
 			this.getMenu(request, response);
-			if (request.containsParam(BaseEntity.PARENTID)){
-				response.addParam(BaseEntity.PARENTID,(Integer) request.getParam(BaseEntity.PARENTID));
+			if (request.containsParam(GlobalConstant.PARENTID)){
+				response.addParam(GlobalConstant.PARENTID,(Integer) request.getParam(GlobalConstant.PARENTID));
 			}
 			response.addParam(Menu.ID,(Integer) request.getParam(Menu.ID));
-			response.addParam(BaseEntity.ID,request.getParam(BaseEntity.ID));
+			response.addParam(GlobalConstant.ID,request.getParam(GlobalConstant.ID));
 			break;
 		default:
 			break;
@@ -146,7 +146,7 @@ public class MenuSvcImpl implements ServiceProcessor, MenuSvc {
 			e.printStackTrace();
 		}
 		// update menu items with parentId
-		List<MenuItem> items = (List<MenuItem>) response.getParam(BaseEntity.ITEMS);
+		List<MenuItem> items = (List<MenuItem>) response.getParam(GlobalConstant.ITEMS);
 		for(MenuItem m : items){
 			if (m.getParent() != null) {
 				m.setParentId(m.getParent().getId());
@@ -207,21 +207,21 @@ public class MenuSvcImpl implements ServiceProcessor, MenuSvc {
 	}
 
 	protected void itemColumns(RestRequest request, RestResponse response) {
-		String itemName = (String) request.getParam(BaseEntity.ITEMNAME);
+		String itemName = (String) request.getParam(GlobalConstant.ITEMNAME);
 		if (itemName != null && itemName.equals("Menu")) {
-			request.addParam(BaseEntity.COLUMNS, Menu.columns);
-			request.addParam(BaseEntity.DATATYPES, Menu.dataTypes);
-			response.addParam(BaseEntity.COLUMNS, request.getParam(BaseEntity.COLUMNS));
-			response.addParam(BaseEntity.DATATYPES, request.getParam(BaseEntity.DATATYPES));
+			request.addParam(GlobalConstant.COLUMNS, Menu.columns);
+			request.addParam(GlobalConstant.DATATYPES, Menu.dataTypes);
+			response.addParam(GlobalConstant.COLUMNS, request.getParam(GlobalConstant.COLUMNS));
+			response.addParam(GlobalConstant.DATATYPES, request.getParam(GlobalConstant.DATATYPES));
 		}
 	}
 	
 	protected void initParams(RestRequest request) {
-		if (!request.containsParam(BaseEntity.SEARCHCOLUMN)){
-			request.addParam(BaseEntity.SEARCHCOLUMN, "title");
+		if (!request.containsParam(GlobalConstant.SEARCHCOLUMN)){
+			request.addParam(GlobalConstant.SEARCHCOLUMN, "title");
 		}
-		if (!request.containsParam(BaseEntity.ITEMNAME)){
-			request.addParam(BaseEntity.ITEMNAME, "Menu");
+		if (!request.containsParam(GlobalConstant.ITEMNAME)){
+			request.addParam(GlobalConstant.ITEMNAME, "Menu");
 		}
 	}
 }

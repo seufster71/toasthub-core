@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.toasthub.core.general.handler.ServiceProcessor;
-import org.toasthub.core.general.model.BaseEntity;
+import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 import org.toasthub.core.general.model.ServiceClass;
@@ -40,7 +40,7 @@ public class ServiceCrawlerSvcImpl implements ServiceProcessor, ServiceCrawlerSv
 	
 	@Override
 	public void process(RestRequest request, RestResponse response) {
-		String action = (String) request.getParams().get(BaseEntity.ACTION);
+		String action = (String) request.getParams().get(GlobalConstant.ACTION);
 		
 		Long count = 0l;
 		switch (action) {
@@ -93,17 +93,17 @@ public class ServiceCrawlerSvcImpl implements ServiceProcessor, ServiceCrawlerSv
 
 	
 	protected void initParams(RestRequest request) {
-		if (!request.containsParam(BaseEntity.SEARCHCOLUMN)){
-			request.addParam(BaseEntity.SEARCHCOLUMN, "serviceName");
+		if (!request.containsParam(GlobalConstant.SEARCHCOLUMN)){
+			request.addParam(GlobalConstant.SEARCHCOLUMN, "serviceName");
 		}
-		if (!request.containsParam(BaseEntity.ITEMNAME)){
-			request.addParam(BaseEntity.ITEMNAME, "ServiceClass");
+		if (!request.containsParam(GlobalConstant.ITEMNAME)){
+			request.addParam(GlobalConstant.ITEMNAME, "ServiceClass");
 		}
-		if (!request.containsParam(BaseEntity.ORDERCOLUMN)) {
-			request.addParam(BaseEntity.ORDERCOLUMN, "category,serviceName");
+		if (!request.containsParam(GlobalConstant.ORDERCOLUMN)) {
+			request.addParam(GlobalConstant.ORDERCOLUMN, "category,serviceName");
 		}
-		if (!request.containsParam(BaseEntity.ORDERDIR)) {
-			request.addParam(BaseEntity.ORDERDIR, "ASC");
+		if (!request.containsParam(GlobalConstant.ORDERDIR)) {
+			request.addParam(GlobalConstant.ORDERDIR, "ASC");
 		}
 	}
 

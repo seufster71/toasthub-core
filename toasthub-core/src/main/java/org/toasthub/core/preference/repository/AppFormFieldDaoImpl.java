@@ -23,7 +23,7 @@ import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.toasthub.core.general.model.BaseEntity;
+import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 import org.toasthub.core.general.service.EntityManagerDataSvc;
@@ -55,7 +55,7 @@ public class AppFormFieldDaoImpl implements AppFormFieldDao {
 		@SuppressWarnings("unchecked")
 		List<AppPageFormFieldName> formFields = entityManagerDataSvc.getInstance()
 				.createQuery("SELECT DISTINCT f FROM AppPageFormFieldName AS f JOIN FETCH f.title AS t JOIN FETCH t.langTexts AS l JOIN FETCH f.values WHERE f.pageName.id =:pageNameId")
-				.setParameter("pageNameId", new Long((Integer)request.getParam(BaseEntity.PARENTID)))
+				.setParameter("pageNameId", new Long((Integer)request.getParam(GlobalConstant.PARENTID)))
 				.getResultList();
 			response.addParam("appPageFormField", formFields);
 	}
@@ -64,21 +64,21 @@ public class AppFormFieldDaoImpl implements AppFormFieldDao {
 	public void itemCount(RestRequest request, RestResponse response) throws Exception {
 		Query query = null;
 		String HQLQuery = "SELECT COUNT(*) FROM AppPageFormFieldName AS f WHERE f.pageName.id =:pageNameId";
-		query = entityManagerDataSvc.getInstance().createQuery(HQLQuery).setParameter("pageNameId", new Long((Integer)request.getParam(BaseEntity.PARENTID)));
-		response.addParam(BaseEntity.ITEMCOUNT, (Long) query.getSingleResult());
+		query = entityManagerDataSvc.getInstance().createQuery(HQLQuery).setParameter("pageNameId", new Long((Integer)request.getParam(GlobalConstant.PARENTID)));
+		response.addParam(GlobalConstant.ITEMCOUNT, (Long) query.getSingleResult());
 		
 	}
 
 	@Override
 	public void item(RestRequest request, RestResponse response) throws Exception {
-		if (request.containsParam(BaseEntity.ITEMID) && !"".equals(request.getParam(BaseEntity.ITEMID))) {
+		if (request.containsParam(GlobalConstant.ITEMID) && !"".equals(request.getParam(GlobalConstant.ITEMID))) {
 			String queryStr = "SELECT f FROM AppPageFormFieldName AS f JOIN FETCH f.title AS t JOIN FETCH t.langTexts as l JOIN FETCH f.values WHERE f.id =:id";
 			Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
 			
-			query.setParameter("id", new Long((Integer) request.getParam(BaseEntity.ITEMID)));
+			query.setParameter("id", new Long((Integer) request.getParam(GlobalConstant.ITEMID)));
 			AppPageFormFieldName appPageFormFieldName = (AppPageFormFieldName) query.getSingleResult();
 		
-			response.addParam(BaseEntity.ITEM, appPageFormFieldName);
+			response.addParam(GlobalConstant.ITEM, appPageFormFieldName);
 		} else {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Missing ID", response);
 		}

@@ -25,7 +25,7 @@ import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.toasthub.core.general.model.BaseEntity;
+import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 import org.toasthub.core.general.model.ServiceClass;
@@ -68,41 +68,41 @@ public class ServiceCrawlerDaoImpl implements ServiceCrawlerDao {
 		String queryStr = "SELECT DISTINCT s FROM ServiceClass AS s ";
 		
 		boolean and = false;
-		if (request.containsParam(BaseEntity.ACTIVE)) {
+		if (request.containsParam(GlobalConstant.ACTIVE)) {
 			if (!and) { queryStr += " WHERE "; }
 			queryStr += "s.active =:active ";
 			and = true;
 		}
 		
-		if (request.containsParam(BaseEntity.SEARCHCOLUMN) && request.containsParam(BaseEntity.SEARCHVALUE) && !request.getParam(BaseEntity.SEARCHVALUE).equals("")){
+		if (request.containsParam(GlobalConstant.SEARCHCOLUMN) && request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
 			if (!and) { queryStr += " WHERE "; }
-			queryStr += "lower(s." + request.getParam(BaseEntity.SEARCHCOLUMN) + ") LIKE :searchValue"; 
+			queryStr += "lower(s." + request.getParam(GlobalConstant.SEARCHCOLUMN) + ") LIKE :searchValue"; 
 			and = true;
 		}
-		if (request.containsParam(BaseEntity.ORDERCOLUMN)) {
+		if (request.containsParam(GlobalConstant.ORDERCOLUMN)) {
 			String direction = "DESC";
-			if (request.containsParam(BaseEntity.ORDERDIR)) {
-				direction = (String) request.getParam(BaseEntity.ORDERDIR);
+			if (request.containsParam(GlobalConstant.ORDERDIR)) {
+				direction = (String) request.getParam(GlobalConstant.ORDERDIR);
 			}
-			queryStr += " ORDER BY "+(String) request.getParam(BaseEntity.ORDERCOLUMN)+" "+direction;
+			queryStr += " ORDER BY "+(String) request.getParam(GlobalConstant.ORDERCOLUMN)+" "+direction;
 		}
 		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
 		
-		if (request.containsParam(BaseEntity.ACTIVE)) {
-			query.setParameter("active", (Boolean) request.getParam(BaseEntity.ACTIVE));
+		if (request.containsParam(GlobalConstant.ACTIVE)) {
+			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
 		} 
 		
-		if (request.containsParam(BaseEntity.SEARCHVALUE) && !request.getParam(BaseEntity.SEARCHVALUE).equals("")){
-			query.setParameter("searchValue", "%"+((String)request.getParam(BaseEntity.SEARCHVALUE)).toLowerCase()+"%");
+		if (request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
+			query.setParameter("searchValue", "%"+((String)request.getParam(GlobalConstant.SEARCHVALUE)).toLowerCase()+"%");
 		}
-		if (request.containsParam(BaseEntity.PAGELIMIT) && (Integer) request.getParam(BaseEntity.PAGELIMIT) != 0){
-			query.setFirstResult((Integer) request.getParam(BaseEntity.PAGESTART));
-			query.setMaxResults((Integer) request.getParam(BaseEntity.PAGELIMIT));
+		if (request.containsParam(GlobalConstant.PAGELIMIT) && (Integer) request.getParam(GlobalConstant.PAGELIMIT) != 0){
+			query.setFirstResult((Integer) request.getParam(GlobalConstant.PAGESTART));
+			query.setMaxResults((Integer) request.getParam(GlobalConstant.PAGELIMIT));
 		}
 		@SuppressWarnings("unchecked")
 		List<ServiceClass> services = query.getResultList();
 
-		response.addParam(BaseEntity.ITEMS, services);
+		response.addParam(GlobalConstant.ITEMS, services);
 		
 	}
 
@@ -111,13 +111,13 @@ public class ServiceCrawlerDaoImpl implements ServiceCrawlerDao {
 	public void itemCount(RestRequest request, RestResponse response) throws Exception {
 		String queryStr = "SELECT COUNT(*) FROM ServiceClass AS s ";
 		boolean and = false;
-		if (request.containsParam(BaseEntity.ACTIVE)) {
+		if (request.containsParam(GlobalConstant.ACTIVE)) {
 			if (!and) { queryStr += " WHERE "; }
 			queryStr += "s.active =:active ";
 			and = true;
 		}
 		
-		if (request.containsParam(BaseEntity.SEARCHVALUE) && !request.getParam(BaseEntity.SEARCHVALUE).equals("")){
+		if (request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
 			if (!and) { queryStr += " WHERE "; }
 			queryStr += "s.serviceName LIKE :searchValue"; 
 			and = true;
@@ -125,33 +125,33 @@ public class ServiceCrawlerDaoImpl implements ServiceCrawlerDao {
 
 		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
 		
-		if (request.containsParam(BaseEntity.ACTIVE)) {
-			query.setParameter("active", (Boolean) request.getParam(BaseEntity.ACTIVE));
+		if (request.containsParam(GlobalConstant.ACTIVE)) {
+			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
 		} 
 		
-		if (request.containsParam(BaseEntity.SEARCHVALUE) && !request.getParam(BaseEntity.SEARCHVALUE).equals("")){
-			query.setParameter("searchValue", "%"+((String)request.getParam(BaseEntity.SEARCHVALUE)).toLowerCase()+"%");
+		if (request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
+			query.setParameter("searchValue", "%"+((String)request.getParam(GlobalConstant.SEARCHVALUE)).toLowerCase()+"%");
 		}
 		
 		Long count = (Long) query.getSingleResult();
 		if (count == null){
 			count = 0l;
 		}
-		response.addParam(BaseEntity.ITEMCOUNT, count);
+		response.addParam(GlobalConstant.ITEMCOUNT, count);
 		
 	}
 
 
 	@Override
 	public void item(RestRequest request, RestResponse response) throws Exception {
-		if (request.containsParam(BaseEntity.ITEMID) && !"".equals(request.getParam(BaseEntity.ITEMID))) {
+		if (request.containsParam(GlobalConstant.ITEMID) && !"".equals(request.getParam(GlobalConstant.ITEMID))) {
 			String queryStr = "SELECT s FROM ServiceClass AS s WHERE s.id =:id";
 			Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
 		
-			query.setParameter("id", new Long((String) request.getParam(BaseEntity.ITEMID)));
+			query.setParameter("id", new Long((String) request.getParam(GlobalConstant.ITEMID)));
 			ServiceClass serviceClass = (ServiceClass) query.getSingleResult();
 			
-			response.addParam(BaseEntity.ITEM, serviceClass);
+			response.addParam(GlobalConstant.ITEM, serviceClass);
 		} else {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Missing ID", response);
 		}

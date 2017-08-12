@@ -23,7 +23,7 @@ import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.toasthub.core.general.model.BaseEntity;
+import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 import org.toasthub.core.general.service.EntityManagerDataSvc;
@@ -59,32 +59,32 @@ public class AppPageDaoImpl implements AppPageDao {
 	public void items(RestRequest request, RestResponse response) throws Exception {
 		String queryStr = "SELECT p FROM AppPageName AS p JOIN FETCH p.title AS t JOIN FETCH t.langTexts AS l WHERE p.category =:category AND p.active =:active";
 		
-		if (request.containsParam(BaseEntity.SEARCHVALUE) && !request.getParam(BaseEntity.SEARCHVALUE).equals("")){
+		if (request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
 			queryStr += " AND l.lang =:lang AND l.text LIKE :searchValue"; 
 		}
 		
 		queryStr += " ORDER BY p.name ASC";
 		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr).setParameter("category", (String) request.getParam("category"));
 	
-		if (request.containsParam(BaseEntity.ACTIVE)) {
-			query.setParameter("active", (Boolean) request.getParam(BaseEntity.ACTIVE));
+		if (request.containsParam(GlobalConstant.ACTIVE)) {
+			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
 		} else {
 			query.setParameter("active", true);
 		}
 		
-		if (request.containsParam(BaseEntity.SEARCHVALUE) && !request.getParam(BaseEntity.SEARCHVALUE).equals("")){
-			query.setParameter("searchValue", "%"+((String)request.getParam(BaseEntity.SEARCHVALUE)).toLowerCase()+"%");
-			query.setParameter("lang",request.getParam(BaseEntity.LANG));
+		if (request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
+			query.setParameter("searchValue", "%"+((String)request.getParam(GlobalConstant.SEARCHVALUE)).toLowerCase()+"%");
+			query.setParameter("lang",request.getParam(GlobalConstant.LANG));
 		}
 		
-		if (request.containsParam(BaseEntity.PAGELIMIT) && (Integer) request.getParam(BaseEntity.PAGELIMIT) != 0){
-			query.setFirstResult((Integer) request.getParam(BaseEntity.PAGESTART));
-			query.setMaxResults((Integer) request.getParam(BaseEntity.PAGELIMIT));
+		if (request.containsParam(GlobalConstant.PAGELIMIT) && (Integer) request.getParam(GlobalConstant.PAGELIMIT) != 0){
+			query.setFirstResult((Integer) request.getParam(GlobalConstant.PAGESTART));
+			query.setMaxResults((Integer) request.getParam(GlobalConstant.PAGELIMIT));
 		}
 		
 		List<?> results = query.getResultList();
 		
-		response.addParam(BaseEntity.ITEMS, (List<AppPageName>) results);
+		response.addParam(GlobalConstant.ITEMS, (List<AppPageName>) results);
 		
 	}
 
@@ -92,34 +92,34 @@ public class AppPageDaoImpl implements AppPageDao {
 	public void itemCount(RestRequest request, RestResponse response) throws Exception {
 		Query query = null;
 		String queryStr = "SELECT COUNT(*) FROM AppPageName AS p JOIN p.title AS t JOIN t.langTexts AS l WHERE p.active = true AND category =:category AND p.active =:active";
-		if (request.containsParam(BaseEntity.SEARCHVALUE) && !request.getParam(BaseEntity.SEARCHVALUE).equals("")){
+		if (request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
 			queryStr += " AND l.lang =:lang AND l.text LIKE :searchValue"; 
 		}
 		query = entityManagerDataSvc.getInstance().createQuery(queryStr).setParameter("category", (String) request.getParam("category"));
 		
-		if (request.containsParam(BaseEntity.ACTIVE)) {
-			query.setParameter("active", (Boolean) request.getParam(BaseEntity.ACTIVE));
+		if (request.containsParam(GlobalConstant.ACTIVE)) {
+			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
 		} else {
 			query.setParameter("active", true);
 		}
 		
-		if (request.containsParam(BaseEntity.SEARCHVALUE) && !request.getParam(BaseEntity.SEARCHVALUE).equals("")){
-			query.setParameter("searchValue", "%"+((String)request.getParam(BaseEntity.SEARCHVALUE)).toLowerCase()+"%");
-			query.setParameter("lang",request.getParam(BaseEntity.LANG));
+		if (request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
+			query.setParameter("searchValue", "%"+((String)request.getParam(GlobalConstant.SEARCHVALUE)).toLowerCase()+"%");
+			query.setParameter("lang",request.getParam(GlobalConstant.LANG));
 		}
 		
-		response.addParam(BaseEntity.ITEMCOUNT, (Long) query.getSingleResult());
+		response.addParam(GlobalConstant.ITEMCOUNT, (Long) query.getSingleResult());
 	
 	}
 
 	@Override
 	public void item(RestRequest request, RestResponse response) throws Exception {
-		if (request.containsParam(BaseEntity.ITEMID) && !"".equals(request.getParam(BaseEntity.ITEMID))) {
+		if (request.containsParam(GlobalConstant.ITEMID) && !"".equals(request.getParam(GlobalConstant.ITEMID))) {
 			String HQLQuery = "SELECT p FROM AppPageName AS p JOIN FETCH p.title AS t JOIN FETCH t.langTexts WHERE p.id = :id ";
 			
 			Query query = entityManagerDataSvc.getInstance().createQuery(HQLQuery);
-			query.setParameter("id", new Long((Integer) request.getParam(BaseEntity.ITEMID)) );
-			response.addParam(BaseEntity.ITEM, query.getSingleResult());
+			query.setParameter("id", new Long((Integer) request.getParam(GlobalConstant.ITEMID)) );
+			response.addParam(GlobalConstant.ITEM, query.getSingleResult());
 		} else {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Missing ID", response);
 		}
