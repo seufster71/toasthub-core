@@ -25,6 +25,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.toasthub.core.general.model.AppCacheMenuUtil;
+import org.toasthub.core.general.model.AppCacheServiceCrawler;
 import org.toasthub.core.general.utils.TenantContext;
 import org.toasthub.core.preference.model.AppCachePageUtil;
 import org.toasthub.core.system.model.AppCacheClientDomainsUtil;
@@ -42,6 +43,9 @@ public class InitializeCache {
 	@Autowired
 	AppCacheMenuUtil appCacheMenuUtil;
 	
+	@Autowired
+	AppCacheServiceCrawler appCacheServiceCrawler;
+	
 	@EventListener(ContextRefreshedEvent.class)
 	public void contextRefreshedEvent() {
 		logger.info(" Pre Loading client domain");
@@ -51,13 +55,15 @@ public class InitializeCache {
 		for (String tenant : tenantList) {
 			TenantContext.setURLDomain(null);
 			TenantContext.setTenantId(tenant);
-			logger.info(" Pre loading language cache " + tenant);
+			logger.info("loading tenant " + tenant);
+			logger.info("loading language cache ");
 			appCachePageUtil.loadLanguageCache(tenant);
 			
-			logger.info(" Pre loading language cache " + tenant);
+			logger.info("loading menu cache ");
 			appCacheMenuUtil.loadMenuCache(tenant);
 			
-			
+			logger.info("Load service cache ");
+			appCacheServiceCrawler.loadServiceCache(tenant);
 		}
 	}
 }

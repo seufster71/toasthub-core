@@ -25,8 +25,7 @@ import org.toasthub.core.general.handler.ServiceProcessor;
 import org.toasthub.core.general.model.BaseEntity;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
-import org.toasthub.core.general.model.ServiceCrawler;
-import org.toasthub.core.general.service.EntityManagerMainSvc;
+import org.toasthub.core.general.model.AppCacheServiceCrawler;
 import org.toasthub.core.general.service.UtilSvc;
 
 import com.fasterxml.jackson.annotation.JsonView;
@@ -36,13 +35,10 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class PublicWS {
 
 	@Autowired 
-	EntityManagerMainSvc entityManagerMainSvc;
-	
-	@Autowired 
 	UtilSvc utilSvc;
 	
 	@Autowired
-	ServiceCrawler serviceCrawler;
+	AppCacheServiceCrawler serviceCrawler;
 	
 	@JsonView(View.Public.class)
 	@RequestMapping(value = "callService", method = RequestMethod.POST)
@@ -55,13 +51,13 @@ public class PublicWS {
 
 		
 		// call service locator
-		ServiceProcessor x = serviceCrawler.getService("PUBLIC",(String) request.getParam(BaseEntity.SERVICE),
-				(String) request.getParam(BaseEntity.SVCAPIVERSION), (String) request.getParam(BaseEntity.SVCAPPVERSION),
-				entityManagerMainSvc.getAppDomain());
+		ServiceProcessor x = serviceCrawler.getServiceProcessor("PUBLIC",(String) request.getParam(BaseEntity.SERVICE),
+				(String) request.getParam(BaseEntity.SVCAPIVERSION), (String) request.getParam(BaseEntity.SVCAPPVERSION));
 		// process 
 		if (x != null) {
 			x.process(request, response);
 		} else {
+			utilSvc.addStatus(RestResponse.ERROR, RestResponse.EXECUTIONFAILED, "Service is not available", response);
 		}
 		
 		return response;

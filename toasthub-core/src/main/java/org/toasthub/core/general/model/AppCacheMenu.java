@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 public class AppCacheMenu implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	// menuName-tenant-apiVerison-appVersion-lang -> order -> menuItem
 	private Map<String,Map<Integer,MenuItem>> menus = new ConcurrentHashMap<String,Map<Integer,MenuItem>>();
 	public static final String[] categories = {"PUBLIC","MEMBER","ADMIN"};
 	

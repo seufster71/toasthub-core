@@ -3,7 +3,6 @@ package org.toasthub.core.general.model;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +33,6 @@ public class AppCacheMenuUtil {
 	
 	// Menus
 	public Map<Integer,MenuItem> getMenu(String menuName, String apiVersion, String appVersion, String lang) {
-		if (appCacheMenu.getMenus() == null) {
-			appCacheMenu.setMenus(new ConcurrentHashMap<String,Map<Integer,MenuItem>>());
-		}
 		Map<Integer,MenuItem> menu = null;
 		StringBuilder key = new StringBuilder();
 		key.append(menuName);
@@ -48,9 +44,21 @@ public class AppCacheMenuUtil {
 		key.append(appVersion);
 		key.append("_");
 		key.append(lang);
-		if (appCacheMenu.getMenus().containsKey(key.toString())){
-			// In cache return menu
+		if (appCacheMenu.getMenus() != null && appCacheMenu.getMenus().containsKey(key.toString())){
+			// Pull from memory
 			menu = appCacheMenu.getMenus().get(key.toString());
+		} else {
+			// Get from DB and put in cache
+			synchronized (this) {
+				// this is done to catch all concurrent users during a cache reload to prevent then from all trying to reloading the cache
+				// only the first shall do the reload.
+				if (appCacheMenu.getMenus() != null && appCacheMenu.getMenus().containsKey(key.toString())){
+					menu = appCacheMenu.getMenus().get(key.toString());
+				} else {
+					menu = menuSvc.getMenu(menuName,apiVersion,appVersion,lang);
+					appCacheMenu.getMenus().put(key.toString(),menu);
+				}
+			}
 		}
 		return menu;
 	}
@@ -102,7 +110,7 @@ public class AppCacheMenuUtil {
 		loadMenuCache(tenant);
 	}
 		
-		public void clearCache(){
-			appCacheMenu.clearCache();
-		}
+	public void clearCache(){
+		appCacheMenu.clearCache();
+	}
 }

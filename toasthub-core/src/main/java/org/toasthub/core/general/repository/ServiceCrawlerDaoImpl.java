@@ -16,9 +16,9 @@
 
 package org.toasthub.core.general.repository;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.persistence.Query;
 
@@ -49,12 +49,12 @@ public class ServiceCrawlerDaoImpl implements ServiceCrawlerDao {
 		// get all services
 		List<ServiceClass> services = (List<ServiceClass>) query.getResultList();
 		
-		Map<String,Map<String,ServiceClass>> results = new HashMap<String,Map<String,ServiceClass>>();
+		Map<String,Map<String,ServiceClass>> results = new ConcurrentHashMap<String,Map<String,ServiceClass>>();
 		
 		for (ServiceClass serviceClass : services) {
 			if (!results.containsKey(serviceClass.getCategory())){
 				// if category does not exist create it
-				results.put(serviceClass.getCategory(), new HashMap<String,ServiceClass>());
+				results.put(serviceClass.getCategory(), new ConcurrentHashMap<String,ServiceClass>());
 			}
 			// add service to category
 			results.get(serviceClass.getCategory()).put(serviceClass.getServiceKey(), serviceClass);
