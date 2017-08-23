@@ -26,8 +26,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.toasthub.core.general.handler.ServiceProcessor;
-import org.toasthub.core.general.service.ServiceCrawlerSvc;
 import org.toasthub.core.general.utils.TenantContext;
+import org.toasthub.core.serviceCrawler.ServiceCrawlerSvc;
 import org.toasthub.core.system.model.AppCacheClientDomains;
 
 @Component("ServiceCrawler")

@@ -14,29 +14,26 @@
  * limitations under the License.
  */
 
-package org.toasthub.core.general.service;
-
-import java.util.Map;
+package org.toasthub.core.language;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.toasthub.core.common.UtilSvc;
 import org.toasthub.core.general.handler.ServiceProcessor;
 import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
-import org.toasthub.core.general.model.ServiceClass;
-import org.toasthub.core.general.repository.ServiceCrawlerDao;
 
-@Service("ServiceCrawlerSvc")
-public class ServiceCrawlerSvcImpl implements ServiceProcessor, ServiceCrawlerSvc {
+@Service("LanguageSvc")
+public class LanguageSvcImpl implements ServiceProcessor, LanguageSvc {
 
 	@Autowired
-	@Qualifier("ServiceCrawlerDao")
-	ServiceCrawlerDao serviceCrawlerDao;
+	@Qualifier("LanguageDao")
+	LanguageDao languageDao;
 	
 	@Autowired
-	protected UtilSvc utilSvc;
+	UtilSvc utilSvc;
 	
 	@Override
 	public void process(RestRequest request, RestResponse response) {
@@ -45,36 +42,35 @@ public class ServiceCrawlerSvcImpl implements ServiceProcessor, ServiceCrawlerSv
 		Long count = 0l;
 		switch (action) {
 		case "LIST":
-			
+			itemCount(request, response);
+			count = (Long) response.getParam(GlobalConstant.ITEMCOUNT);
+			if (count != null && count > 0){
+				items(request, response);
+			}
 			break;
 		case "SHOW":
-			
+			this.item(request, response);
 			break;
 		default:
 			utilSvc.addStatus(RestResponse.INFO, RestResponse.ACTIONNOTEXIST, "Action not available", response);
 			break;
 		}
 	}
-	
-	// get services
-	public Map<String,Map<String,ServiceClass>> getServices() {
-		return serviceCrawlerDao.getServices();
-	}
 
 	@Override
 	public void itemCount(RestRequest request, RestResponse response) {
 		try {
-			serviceCrawlerDao.itemCount(request, response);
+			languageDao.itemCount(request, response);
 		} catch (Exception e) {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Count failed", response);
 			e.printStackTrace();
 		}
 	}
-
+	
 	@Override
 	public void item(RestRequest request, RestResponse response) {
 		try {
-			serviceCrawlerDao.item(request, response);
+			languageDao.item(request, response);
 		} catch (Exception e) {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Item failed", response);
 			e.printStackTrace();
@@ -84,26 +80,20 @@ public class ServiceCrawlerSvcImpl implements ServiceProcessor, ServiceCrawlerSv
 	@Override
 	public void items(RestRequest request, RestResponse response) {
 		try {
-			serviceCrawlerDao.items(request, response);
+			languageDao.items(request, response);
 		} catch (Exception e) {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "List failed", response);
 			e.printStackTrace();
 		}
 	}
 
-	
-	protected void initParams(RestRequest request) {
-		if (!request.containsParam(GlobalConstant.SEARCHCOLUMN)){
-			request.addParam(GlobalConstant.SEARCHCOLUMN, "serviceName");
-		}
-		if (!request.containsParam(GlobalConstant.ITEMNAME)){
-			request.addParam(GlobalConstant.ITEMNAME, "ServiceClass");
-		}
-		if (!request.containsParam(GlobalConstant.ORDERCOLUMN)) {
-			request.addParam(GlobalConstant.ORDERCOLUMN, "category,serviceName");
-		}
-		if (!request.containsParam(GlobalConstant.ORDERDIR)) {
-			request.addParam(GlobalConstant.ORDERDIR, "ASC");
+	@Override
+	public void getAllLanguages(RestRequest request, RestResponse response) {
+		try {
+			languageDao.getAllLanguages(request, response);
+		} catch (Exception e) {
+			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "List failed", response);
+			e.printStackTrace();
 		}
 	}
 

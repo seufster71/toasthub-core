@@ -14,27 +14,19 @@
  * limitations under the License.
  */
 
-package org.toasthub.core.general.repository;
+package org.toasthub.core.serviceCrawler;
 
-import javax.persistence.EntityManager;
+import java.util.Map;
 
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import org.toasthub.core.general.model.Category;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
+import org.toasthub.core.general.model.ServiceClass;
 
+public interface ServiceCrawlerDao {
 
-@Repository("CategoryDao")
-@Transactional("TransactionManagerData")
-public class CategoryDaoImpl extends BaseDaoImpl implements CategoryDao {
+	public Map<String,Map<String,ServiceClass>> getServices();
+	public void items(RestRequest request, RestResponse response) throws Exception;
+	public void itemCount(RestRequest request, RestResponse response) throws Exception;
+	public void item(RestRequest request, RestResponse response) throws Exception;
 
-	//@Authorize
-	public void save(RestRequest request, RestResponse response) throws Exception {
-		Category category = (Category) request.getParam("category");
-		EntityManager multi = entityManagerDataSvc.getInstance();
-
-		multi.merge(category);
-	}
-	
 }

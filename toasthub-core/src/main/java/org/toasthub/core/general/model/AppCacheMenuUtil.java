@@ -9,8 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import org.toasthub.core.general.service.MenuSvc;
 import org.toasthub.core.general.utils.TenantContext;
+import org.toasthub.core.menu.MenuSvc;
 import org.toasthub.core.preference.model.AppCachePageUtil;
 import org.toasthub.core.system.model.AppCacheClientDomains;
 

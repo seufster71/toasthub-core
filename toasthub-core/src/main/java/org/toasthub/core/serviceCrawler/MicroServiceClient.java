@@ -1,4 +1,4 @@
-package org.toasthub.core.general.service;
+package org.toasthub.core.serviceCrawler;
 
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;

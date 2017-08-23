@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-package org.toasthub.core.general.service;
+package org.toasthub.core.serviceCrawler;
+
+import java.util.Map;
 
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
+import org.toasthub.core.general.model.ServiceClass;
 
-public interface CategorySvc {
 
+public interface ServiceCrawlerSvc {
+
+	public Map<String,Map<String,ServiceClass>> getServices();
 	public void itemCount(RestRequest request, RestResponse response);
-	public void items(RestRequest request, RestResponse response);
 	public void item(RestRequest request, RestResponse response);
-	
+	public void items(RestRequest request, RestResponse response);
 }

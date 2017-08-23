@@ -25,13 +25,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.toasthub.core.common.UtilSvc;
 import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.Language;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
-import org.toasthub.core.general.service.LanguageSvc;
-import org.toasthub.core.general.service.UtilSvc;
 import org.toasthub.core.general.utils.TenantContext;
+import org.toasthub.core.language.LanguageSvc;
 import org.toasthub.core.preference.service.AppPageSvc;
 import org.toasthub.core.system.model.AppCacheClientDomains;
 

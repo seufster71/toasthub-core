@@ -14,19 +14,14 @@
  * limitations under the License.
  */
 
-package org.toasthub.core.general.service;
+package org.toasthub.core.category;
 
-import java.util.Map;
-
+import org.toasthub.core.common.BaseDao;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
-import org.toasthub.core.general.model.ServiceClass;
 
+public interface CategoryDao extends BaseDao {
 
-public interface ServiceCrawlerSvc {
-
-	public Map<String,Map<String,ServiceClass>> getServices();
-	public void itemCount(RestRequest request, RestResponse response);
-	public void item(RestRequest request, RestResponse response);
-	public void items(RestRequest request, RestResponse response);
+	public void save(RestRequest request, RestResponse response) throws Exception;
+	
 }

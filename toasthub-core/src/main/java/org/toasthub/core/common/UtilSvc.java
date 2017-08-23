@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.toasthub.core.general.service;
+package org.toasthub.core.common;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;

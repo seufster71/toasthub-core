@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.toasthub.core.general.repository;
+package org.toasthub.core.mail;
 
 import java.io.Serializable;
 import java.util.Properties;

@@ -1,4 +1,4 @@
-package org.toasthub.core.general.service;
+package org.toasthub.core.common;
 
 import javax.persistence.EntityManager;
 

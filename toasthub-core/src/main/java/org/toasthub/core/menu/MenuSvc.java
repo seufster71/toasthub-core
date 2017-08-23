@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.toasthub.core.general.service;
+package org.toasthub.core.menu;
 
 import java.util.List;
 import java.util.Map;

@@ -18,7 +18,7 @@ package org.toasthub.core.system.repository;
 
 import java.util.List;
 
-import org.toasthub.core.general.repository.BaseDao;
+import org.toasthub.core.common.BaseDao;
 import org.toasthub.core.system.model.ClientDomain;
 
 public interface ClientDomainDao extends BaseDao {

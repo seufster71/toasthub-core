@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package org.toasthub.core.general.repository;
+package org.toasthub.core.category;
 
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 
-public interface CategoryDao extends BaseDao {
+public interface CategorySvc {
 
-	public void save(RestRequest request, RestResponse response) throws Exception;
+	public void itemCount(RestRequest request, RestResponse response);
+	public void items(RestRequest request, RestResponse response);
+	public void item(RestRequest request, RestResponse response);
 	
 }

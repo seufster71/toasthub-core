@@ -14,87 +14,81 @@
  * limitations under the License.
  */
 
-package org.toasthub.core.general.service;
+package org.toasthub.core.category;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.toasthub.core.common.UtilSvc;
 import org.toasthub.core.general.handler.ServiceProcessor;
 import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
-import org.toasthub.core.general.repository.LanguageDao;
+import org.toasthub.core.preference.model.AppCachePage;
 
-@Service("LanguageSvc")
-public class LanguageSvcImpl implements ServiceProcessor, LanguageSvc {
+@Service("CategorySvcImpl")
+public class CategorySvcImpl implements ServiceProcessor, CategorySvc {
 
-	@Autowired
-	@Qualifier("LanguageDao")
-	LanguageDao languageDao;
+	@Autowired 
+	@Qualifier("CategoryDao")
+	CategoryDao categoryDao;
 	
-	@Autowired
+	@Autowired 
 	UtilSvc utilSvc;
 	
-	@Override
+	@Autowired
+	AppCachePage appCachePage;
+	
 	public void process(RestRequest request, RestResponse response) {
-		String action = (String) request.getParams().get(GlobalConstant.ACTION);
+		String action = (String) request.getParam(GlobalConstant.ACTION);
+		// get option from main
+		request.addParam("sysPageFormName", "MEMBER_CATEGORY");
+		request.addParam("sysPageLabelName", "MEMBER_CATEGORY");
+		request.addParam("sysPageTextName", "MEMBER_CATEGORY");
 		
 		Long count = 0l;
 		switch (action) {
 		case "LIST":
 			itemCount(request, response);
-			count = (Long) response.getParam(GlobalConstant.ITEMCOUNT);
+			count = (Long) response.getParam("count");
 			if (count != null && count > 0){
 				items(request, response);
 			}
 			break;
 		case "SHOW":
-			this.item(request, response);
+			item(request, response);
 			break;
 		default:
 			utilSvc.addStatus(RestResponse.INFO, RestResponse.ACTIONNOTEXIST, "Action not available", response);
 			break;
 		}
 	}
-
-	@Override
+	
 	public void itemCount(RestRequest request, RestResponse response) {
 		try {
-			languageDao.itemCount(request, response);
+			categoryDao.itemCount(request, response);
 		} catch (Exception e) {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Count failed", response);
 			e.printStackTrace();
 		}
 	}
 	
-	@Override
-	public void item(RestRequest request, RestResponse response) {
-		try {
-			languageDao.item(request, response);
-		} catch (Exception e) {
-			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Item failed", response);
-			e.printStackTrace();
-		}
-	}
-
-	@Override
 	public void items(RestRequest request, RestResponse response) {
 		try {
-			languageDao.items(request, response);
+			categoryDao.items(request, response);
 		} catch (Exception e) {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "List failed", response);
 			e.printStackTrace();
 		}
 	}
-
-	@Override
-	public void getAllLanguages(RestRequest request, RestResponse response) {
+	
+	public void item(RestRequest request, RestResponse response) {
 		try {
-			languageDao.getAllLanguages(request, response);
+			categoryDao.item(request, response);
 		} catch (Exception e) {
-			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "List failed", response);
+			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Item Failed", response);
 			e.printStackTrace();
 		}
 	}
-
+	
 }

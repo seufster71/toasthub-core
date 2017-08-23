@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-package org.toasthub.core.general.repository;
-
-import java.util.Map;
+package org.toasthub.core.language;
 
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
-import org.toasthub.core.general.model.ServiceClass;
 
-public interface ServiceCrawlerDao {
+public interface LanguageSvc {
 
-	public Map<String,Map<String,ServiceClass>> getServices();
-	public void items(RestRequest request, RestResponse response) throws Exception;
-	public void itemCount(RestRequest request, RestResponse response) throws Exception;
-	public void item(RestRequest request, RestResponse response) throws Exception;
-
+	public void itemCount(RestRequest request, RestResponse response);
+	public void item(RestRequest request, RestResponse response);
+	public void items(RestRequest request, RestResponse response);
+	public void getAllLanguages(RestRequest request, RestResponse response);
 }

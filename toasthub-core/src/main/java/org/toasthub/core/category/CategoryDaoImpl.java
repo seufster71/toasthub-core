@@ -14,15 +14,28 @@
  * limitations under the License.
  */
 
-package org.toasthub.core.general.service;
+package org.toasthub.core.category;
 
+import javax.persistence.EntityManager;
+
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+import org.toasthub.core.common.BaseDaoImpl;
+import org.toasthub.core.general.model.Category;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 
-public interface LanguageSvc {
 
-	public void itemCount(RestRequest request, RestResponse response);
-	public void item(RestRequest request, RestResponse response);
-	public void items(RestRequest request, RestResponse response);
-	public void getAllLanguages(RestRequest request, RestResponse response);
+@Repository("CategoryDao")
+@Transactional("TransactionManagerData")
+public class CategoryDaoImpl extends BaseDaoImpl implements CategoryDao {
+
+	//@Authorize
+	public void save(RestRequest request, RestResponse response) throws Exception {
+		Category category = (Category) request.getParam("category");
+		EntityManager multi = entityManagerDataSvc.getInstance();
+
+		multi.merge(category);
+	}
+	
 }

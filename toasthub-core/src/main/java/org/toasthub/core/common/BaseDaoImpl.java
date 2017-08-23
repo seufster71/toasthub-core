@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.toasthub.core.general.repository;
+package org.toasthub.core.common;
 
 import java.util.List;
 
@@ -25,8 +25,6 @@ import org.springframework.stereotype.Repository;
 import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
-import org.toasthub.core.general.service.EntityManagerDataSvc;
-import org.toasthub.core.general.service.UtilSvc;
 import org.toasthub.core.general.utils.Utils;
 
 

@@ -23,11 +23,11 @@ import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.toasthub.core.common.EntityManagerMainSvc;
+import org.toasthub.core.common.UtilSvc;
 import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
-import org.toasthub.core.general.service.EntityManagerMainSvc;
-import org.toasthub.core.general.service.UtilSvc;
 import org.toasthub.core.system.model.ClientDomain;
 
 @Repository("ClientDomainDao")

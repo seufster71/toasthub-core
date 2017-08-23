@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.toasthub.core.general.repository;
+package org.toasthub.core.serviceCrawler;
 
 import java.util.List;
 import java.util.Map;
@@ -25,12 +25,12 @@ import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.toasthub.core.common.EntityManagerDataSvc;
+import org.toasthub.core.common.UtilSvc;
 import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 import org.toasthub.core.general.model.ServiceClass;
-import org.toasthub.core.general.service.EntityManagerDataSvc;
-import org.toasthub.core.general.service.UtilSvc;
 
 
 @Repository("ServiceCrawlerDao")

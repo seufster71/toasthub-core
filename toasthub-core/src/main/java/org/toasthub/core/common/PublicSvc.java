@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.toasthub.core.general.service;
+package org.toasthub.core.common;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +29,8 @@ import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.MenuItem;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
+import org.toasthub.core.mail.MailSvc;
+import org.toasthub.core.menu.MenuSvc;
 import org.toasthub.core.preference.model.AppCachePageUtil;
 
 @Service("PublicSvc")
