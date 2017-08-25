@@ -55,7 +55,7 @@ public class AppCacheClientDomains implements Serializable {
 	public ClientDomain getClientDomain(String url){
 		
 		ClientDomain cdomain = null;
-		if (this.clientDomains.containsKey(url)){
+		if (url != null && this.clientDomains.containsKey(url)){
 			// domain exist in cache 
 			cdomain = this.clientDomains.get(url);
 		}
