@@ -17,7 +17,6 @@
 package org.toasthub.core.menu;
 
 import java.util.List;
-import java.util.Map;
 
 import org.toasthub.core.general.handler.ServiceProcessor;
 import org.toasthub.core.general.model.MenuItem;
@@ -32,6 +31,6 @@ public interface MenuSvc extends ServiceProcessor {
 	public void getMenuItemCount(RestRequest request, RestResponse response);
 	public void getMenuItems(RestRequest request, RestResponse response);
 	public List<MenuItem> getMenuItems(String menuName, String lang);
-	public Map<Integer,MenuItem> getMenu(String menuName, String apiVersion, String appVersion, String lang);
+	public List<MenuItem> getMenu(String menuName, String apiVersion, String appVersion, String lang);
 	
 }

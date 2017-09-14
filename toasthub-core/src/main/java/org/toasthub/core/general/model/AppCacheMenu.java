@@ -1,6 +1,7 @@
 package org.toasthub.core.general.model;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -14,7 +15,7 @@ public class AppCacheMenu implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	// menuName-tenant-apiVerison-appVersion-lang -> order -> menuItem
-	private Map<String,Map<Integer,MenuItem>> menus = new ConcurrentHashMap<String,Map<Integer,MenuItem>>();
+	private Map<String,List<MenuItem>> menus = new ConcurrentHashMap<String,List<MenuItem>>();
 	public static final String[] categories = {"PUBLIC","MEMBER","ADMIN"};
 	
 	
@@ -24,18 +25,18 @@ public class AppCacheMenu implements Serializable {
 	
 	public void clearCache(){
 		this.menus = null;
-		this.menus = new ConcurrentHashMap<String,Map<Integer,MenuItem>>();
+		this.menus = new ConcurrentHashMap<String,List<MenuItem>>();
 	}
 
-	public void setMenus(Map<String,Map<Integer,MenuItem>> menus){ 
+	public void setMenus(Map<String,List<MenuItem>> menus){ 
 		this.menus = menus;
 	}
 	
-	public Map<String,Map<Integer,MenuItem>> getMenus(){
+	public Map<String,List<MenuItem>> getMenus(){
 		return menus;
 	}
 
-	public void addMenu(String key, Map<Integer,MenuItem> menu) {
+	public void addMenu(String key, List<MenuItem> menu) {
 		if (this.menus != null){
 			this.menus.put(key, menu);
 		}

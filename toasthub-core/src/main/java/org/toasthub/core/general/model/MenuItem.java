@@ -18,6 +18,7 @@ package org.toasthub.core.general.model;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,13 +31,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.xml.bind.annotation.XmlTransient;
 
 import org.toasthub.core.general.api.View;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
-
 
 @Entity
 @Table(name = "menu_items")
@@ -52,7 +51,7 @@ public class MenuItem extends BaseEntity implements Serializable{
 	private String permissionCode;
 	private int order;
 	private Set<MenuItemValue> values;
-	private Map<Integer,MenuItem> children;
+	private List<MenuItem> children;
 	
 	// Constructor
 	public MenuItem() {
@@ -69,7 +68,6 @@ public class MenuItem extends BaseEntity implements Serializable{
 	}
 
 	@JsonIgnore
-	@XmlTransient
 	@ManyToOne(targetEntity = Menu.class)
 	@JoinColumn(name = "menu_id")
 	public Menu getMenu() {
@@ -80,7 +78,6 @@ public class MenuItem extends BaseEntity implements Serializable{
 	}
 
 	@JsonIgnore
-	@XmlTransient
 	@ManyToOne(targetEntity = MenuItem.class)
 	@JoinColumn(name = "parent_id")
 	public MenuItem getParent() {
@@ -91,7 +88,6 @@ public class MenuItem extends BaseEntity implements Serializable{
 	}
 
 	@JsonView({View.Admin.class})
-	@XmlTransient
 	@Column(name = "sort_order")
 	public int getOrder() {
 		return order;
@@ -111,10 +107,10 @@ public class MenuItem extends BaseEntity implements Serializable{
 
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
 	@Transient
-	public Map<Integer,MenuItem> getChildren() {
+	public List<MenuItem> getChildren() {
 		return children;
 	}
-	public void setChildren(Map<Integer,MenuItem> children) {
+	public void setChildren(List<MenuItem> children) {
 		this.children = children;
 	}
 	
@@ -127,7 +123,7 @@ public class MenuItem extends BaseEntity implements Serializable{
 		this.permissionCode = permissionCode;
 	}
 
-	@JsonView({View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
 	@Transient
 	public Long getMenuId() {
 		return menuId;

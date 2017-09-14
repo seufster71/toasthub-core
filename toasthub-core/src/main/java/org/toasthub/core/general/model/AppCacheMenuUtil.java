@@ -32,8 +32,8 @@ public class AppCacheMenuUtil {
 	AppCacheMenu appCacheMenu;
 	
 	// Menus
-	public Map<Integer,MenuItem> getMenu(String menuName, String apiVersion, String appVersion, String lang) {
-		Map<Integer,MenuItem> menu = null;
+	public List<MenuItem> getMenu(String menuName, String apiVersion, String appVersion, String lang) {
+		List<MenuItem> menu = null;
 		StringBuilder key = new StringBuilder();
 		key.append(menuName);
 		key.append("_");
@@ -79,7 +79,7 @@ public class AppCacheMenuUtil {
 				List<String> codes = appCachePageUtil.getAvailableLanguageCodes(tenant);
 				for(String lang : codes) {
 					logger.info("Code: "+m.getCode()+" lang "+lang);
-					Map<Integer,MenuItem> menu = menuSvc.getMenu(m.getCode(),m.getApiVersion(),m.getAppVersion(),lang);
+					List<MenuItem> menu = menuSvc.getMenu(m.getCode(),m.getApiVersion(),m.getAppVersion(),lang);
 						if (menu != null) {
 						StringBuilder key = new StringBuilder();
 						key.append(m.getCode());
@@ -101,8 +101,8 @@ public class AppCacheMenuUtil {
 	
 	public void reloadMenuCache() {
 		String tenant = appCacheClientDomains.getClientDomain(TenantContext.getURLDomain()).getAPPDomain();
-		for(Iterator<Map.Entry<String, Map<Integer,MenuItem>>> it = appCacheMenu.getMenus().entrySet().iterator(); it.hasNext(); ) {
-		      Map.Entry<String, Map<Integer,MenuItem>> entry = it.next();
+		for(Iterator<Map.Entry<String, List<MenuItem>>> it = appCacheMenu.getMenus().entrySet().iterator(); it.hasNext(); ) {
+		      Map.Entry<String, List<MenuItem>> entry = it.next();
 		      if(entry.getKey().contains(tenant)) {
 		    	  it.remove();
 		      }

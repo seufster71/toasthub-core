@@ -16,9 +16,9 @@
 
 package org.toasthub.core.menu;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,7 +163,7 @@ public class MenuSvcImpl implements ServiceProcessor, MenuSvc {
 		}
 	}
 
-	public Map<Integer,MenuItem> getMenu(String menuName, String apiVersion, String appVersion, String lang) {
+	public List<MenuItem> getMenu(String menuName, String apiVersion, String appVersion, String lang) {
 		Menu menu = null;
 		try {
 			menu = menuDao.getMenu(menuName,apiVersion, appVersion, lang);
@@ -173,36 +173,39 @@ public class MenuSvcImpl implements ServiceProcessor, MenuSvc {
 		return this.orgMenu(menu);
 	}
 
-	protected Map<Integer,MenuItem> orgMenu(Menu menu) {
+	protected List<MenuItem> orgMenu(Menu menu) {
 		if (menu != null) {
 			Set<MenuItem> items = menu.getMenuItems();
-			Map<Integer,MenuItem> topRow = new HashMap<Integer,MenuItem>();
+			List<MenuItem> topRow = new ArrayList<MenuItem>();
 			for(MenuItem m : items){
+				m.setMenuId(m.getId());
 				if (m.getParent() == null){
 					// parent
-					Map<Integer,MenuItem> children = this.findChildren(m, items);
+					List<MenuItem> children = this.findChildren(m, items);
 					m.setChildren(children);
-					topRow.put(m.getOrder(), m);
+					topRow.add(m);
 				}
-				
 			}
+			// order top row
+			topRow.sort(Comparator.comparing(MenuItem::getOrder));
 			return topRow;
 		} else {
 			return null;
 		}
 	}
 	
-	protected Map<Integer,MenuItem> findChildren(MenuItem parent,Set<MenuItem> items) {
-		Map<Integer,MenuItem> myItems = null;
+	protected List<MenuItem> findChildren(MenuItem parent,Set<MenuItem> items) {
+		List<MenuItem> myItems = null;
 		for(MenuItem m : items){
 			if (m.getParent() == parent){
 				if (myItems == null){
-					myItems = new HashMap<Integer,MenuItem>();
+					myItems = new ArrayList<MenuItem>();
 				}
-				myItems.put(m.getOrder(), m);
+				myItems.add(m);
 				m.setChildren(this.findChildren(m,items));
 			}
 		}
+		myItems.sort(Comparator.comparing(MenuItem::getOrder));
 		return myItems;
 	}
 
