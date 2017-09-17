@@ -33,7 +33,6 @@ import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 import org.toasthub.core.preference.model.AppCachePageUtil;
 
-
 @Service("MenuSvc")
 public class MenuSvcImpl implements ServiceProcessor, MenuSvc {
 
@@ -187,7 +186,9 @@ public class MenuSvcImpl implements ServiceProcessor, MenuSvc {
 				}
 			}
 			// order top row
-			topRow.sort(Comparator.comparing(MenuItem::getOrder));
+			if (topRow != null) {
+				topRow.sort(Comparator.comparing(MenuItem::getOrder));
+			}
 			return topRow;
 		} else {
 			return null;
@@ -205,7 +206,9 @@ public class MenuSvcImpl implements ServiceProcessor, MenuSvc {
 				m.setChildren(this.findChildren(m,items));
 			}
 		}
-		myItems.sort(Comparator.comparing(MenuItem::getOrder));
+		if (myItems != null) {
+			myItems.sort(Comparator.comparing(MenuItem::getOrder));
+		}
 		return myItems;
 	}
 

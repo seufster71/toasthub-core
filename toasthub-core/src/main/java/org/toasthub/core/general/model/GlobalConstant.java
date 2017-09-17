@@ -45,4 +45,6 @@ public class GlobalConstant {
 	public static final String SHOWALL = "showAll";
 	public static final String MICROSERVICENAME = "microServiceName";
 	public static final String MICROSERVICEPATH = "microServicePath";
+	
+	public static final String USERREF = "userRef";
 }
