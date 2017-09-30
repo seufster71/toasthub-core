@@ -88,6 +88,7 @@ public class PublicSvc implements ServiceProcessor {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void initMenu(RestRequest request, RestResponse response){
 		List<MenuItem> menu = null;
 		Map<String,List<MenuItem>> menuList = new HashMap<String,List<MenuItem>>();

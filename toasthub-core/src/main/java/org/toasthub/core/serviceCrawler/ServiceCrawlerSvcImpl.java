@@ -42,7 +42,7 @@ public class ServiceCrawlerSvcImpl implements ServiceProcessor, ServiceCrawlerSv
 	public void process(RestRequest request, RestResponse response) {
 		String action = (String) request.getParams().get(GlobalConstant.ACTION);
 		
-		Long count = 0l;
+		//Long count = 0l;
 		switch (action) {
 		case "LIST":
 			

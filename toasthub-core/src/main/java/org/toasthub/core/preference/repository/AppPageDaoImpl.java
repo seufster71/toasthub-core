@@ -55,6 +55,7 @@ public class AppPageDaoImpl implements AppPageDao {
 		return pagename;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void items(RestRequest request, RestResponse response) throws Exception {
 		String queryStr = "SELECT p FROM AppPageName AS p JOIN FETCH p.title AS t JOIN FETCH t.langTexts AS l WHERE p.category =:category AND p.active =:active";

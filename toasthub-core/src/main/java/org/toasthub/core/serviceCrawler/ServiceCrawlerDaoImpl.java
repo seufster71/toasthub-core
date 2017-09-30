@@ -42,6 +42,7 @@ public class ServiceCrawlerDaoImpl implements ServiceCrawlerDao {
 	@Autowired
 	protected UtilSvc utilSvc;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String,Map<String,ServiceClass>> getServices() {
 		String queryStr = "FROM ServiceClass AS sc where active = true";

@@ -40,6 +40,7 @@ public class MenuDaoImpl implements MenuDao {
 	@Autowired
 	protected UtilSvc utilSvc;
 
+	@SuppressWarnings("unchecked")
 	public List<MenuItem> getMenuItems(String menuName,String lang) throws Exception {
 		List<MenuItem> results = entityManagerDataSvc.getInstance().createQuery("from MenuItem where menu.code = :menuName")
 				.setParameter("menuName", menuName)
@@ -87,10 +88,11 @@ public class MenuDaoImpl implements MenuDao {
 		} else {
 			query.setParameter("menuId", new Long((Integer)request.getParam(Menu.ID)));
 		}
-		List<MenuItem> results = query.getResultList(); 
+		List<?> results = query.getResultList(); 
 		response.addParam(GlobalConstant.ITEMS, results);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void getMenus(RestRequest request, RestResponse response) throws Exception {
 		String HQLQuery = "SELECT m FROM Menu AS m JOIN FETCH m.title AS t JOIN FETCH t.langTexts AS l WHERE m.category =:category ";
 		if ( !(request.containsParam(GlobalConstant.SHOWALL) && (Boolean)request.getParam(GlobalConstant.SHOWALL)) ){
@@ -160,7 +162,7 @@ public class MenuDaoImpl implements MenuDao {
 		} else {
 			query.setParameter("parentId",null);
 		}
-		List<MenuItem> items = query.getResultList();
+		List<?> items = query.getResultList();
 		response.addParam(GlobalConstant.ITEMS, items);
 	}
 

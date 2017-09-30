@@ -122,6 +122,7 @@ public class UtilSvc {
 	
 	} // setupDefaults
 	
+	@SuppressWarnings("unchecked")
 	public void addStatus(String status, String code, String message, RestResponse response) {
 		
 		StatusMessage statusMessage = new StatusMessage(status,code, message);
@@ -155,7 +156,7 @@ public class UtilSvc {
 		//Map<String,Object> params = request.getParams();
 		Map<String,Object> inputList = (Map<String, Object>) request.getParam("inputFields");
 		List<String> appForms = (List<String>) request.getParam("appForms");
-		Map<String,Map<String,ArrayList>> appFields = (Map<String, Map<String, ArrayList>>) request.getParam("appPageFormFields");
+		Map<String,Map<String,List<AppPageFormFieldValue>>> appFields = (Map<String, Map<String, List<AppPageFormFieldValue>>>) request.getParam("appPageFormFields");
 		// loop through each form that was requested
 		for (String formKey : appForms) {
 			List<AppPageFormFieldValue> formFields = (List<AppPageFormFieldValue>) appFields.get(formKey);
@@ -230,7 +231,7 @@ public class UtilSvc {
 		Boolean isValid = true;
 		Map<String,Object> inputList = (Map<String, Object>) request.getParam("inputFields");
 		List<String> appForms = (List<String>) request.getParam("appForms");
-		Map<String,Map<String,ArrayList>> appFields = (Map<String, Map<String, ArrayList>>) request.getParam("appPageFormFields");
+		Map<String,Map<String,List<AppPageFormFieldValue>>> appFields = (Map<String, Map<String, List<AppPageFormFieldValue>>>) request.getParam("appPageFormFields");
 	
 		
 		// loop through each form that was requested

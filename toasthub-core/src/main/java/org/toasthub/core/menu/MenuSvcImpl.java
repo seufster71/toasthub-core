@@ -137,6 +137,7 @@ public class MenuSvcImpl implements ServiceProcessor, MenuSvc {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void getMenuItems(RestRequest request, RestResponse response) {
 		try {
 			menuDao.getMenuItems(request, response);

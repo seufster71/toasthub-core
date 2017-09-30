@@ -63,6 +63,7 @@ public class AppCacheMenuUtil {
 		return menu;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void loadMenuCache(String tenant) {
 		// get available menus for this tenant
 		String[] categories = AppCacheMenu.categories;

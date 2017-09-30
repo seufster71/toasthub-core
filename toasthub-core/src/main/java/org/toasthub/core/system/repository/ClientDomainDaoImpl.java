@@ -134,6 +134,7 @@ public class ClientDomainDaoImpl implements ClientDomainDao {
 		return cdomain;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<ClientDomain> loadCache() throws Exception {
 		List<ClientDomain> clientDomains = entityManagerMainSvc.getEntityMgrMain().createQuery("FROM ClientDomain").getResultList();
 		return clientDomains;

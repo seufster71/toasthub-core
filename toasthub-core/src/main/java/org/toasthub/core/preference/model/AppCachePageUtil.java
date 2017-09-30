@@ -87,6 +87,7 @@ public class AppCachePageUtil {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void getPageInfo(RestRequest request, RestResponse response) {
 		if (request.containsParam(APPFORMS) && !request.getParam(APPFORMS).equals("") && request.getParam(APPFORMS) instanceof List){
 			for (String item : (List<String>) request.getParam(APPFORMS)) {
@@ -145,6 +146,7 @@ public class AppCachePageUtil {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void appPageFormFieldLoadFromMem(RestRequest request, RestResponse response, String key) {
 		// Pull from Memory
 		Map<String,List<AppPageFormFieldValue>> f = null;
@@ -168,6 +170,7 @@ public class AppCachePageUtil {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void appPageFormFieldLoadFromDB(RestRequest request, RestResponse response, String key) {
 		// Pull from DB
 		List<AppPageFormFieldValue> formFields = appPageSvc.getFormFields((String)request.getParam(APPPAGEFORMNAME), (String)request.getParam(GlobalConstant.LANG));
@@ -234,6 +237,7 @@ public class AppCachePageUtil {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void appPageLabelLoadFromMem(RestRequest request, RestResponse response, String key) {
 		// Pull from Memory
 		Map<String,List<AppPageLabelValue>> l = null;
@@ -257,6 +261,7 @@ public class AppCachePageUtil {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void appPageLabelLoadFromDB(RestRequest request, RestResponse response, String key) {
 		// Pull from DB
 		List<AppPageLabelValue> labels = appPageSvc.getLabels((String)request.getParam(APPPAGELABELNAME), (String)request.getParam(GlobalConstant.LANG));
@@ -321,6 +326,7 @@ public class AppCachePageUtil {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void appPageOptionLoadFromMem(RestRequest request, RestResponse response, String key) {
 		// Pull from Memory
 		Map<String,Map<String,AppPageOptionValue>> o = null;
@@ -344,6 +350,7 @@ public class AppCachePageUtil {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void appPageOptionLoadFromDB(RestRequest request, RestResponse response, String key) {
 		// Pull from DB
 		Map<String,AppPageOptionValue> appOptions = appPageSvc.getOptionsMap((String)request.getParam(APPPAGEOPTIONNAME), (String)request.getParam(GlobalConstant.LANG));
@@ -408,6 +415,7 @@ public class AppCachePageUtil {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void appPageTextLoadFromMem(RestRequest request, RestResponse response, String key) {
 		// Pull from memory cache
 		Map<String,Map<String,AppPageTextValue>> t = null;
@@ -430,6 +438,7 @@ public class AppCachePageUtil {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void appPageTextLoadFromDB(RestRequest request, RestResponse response, String key) {
 		// Get from DB and put in cache
 		Map<String,AppPageTextValue> appTexts = appPageSvc.getTextsMap((String)request.getParam(APPPAGETEXTNAME), (String)request.getParam(GlobalConstant.LANG));
@@ -471,6 +480,7 @@ public class AppCachePageUtil {
 	}
 
 	//////////////////////// Language 
+	@SuppressWarnings("unchecked")
 	public void getLanguages(RestRequest request, RestResponse response) {
 		String tenant = TenantContext.getURLDomain();
 		String key = appCacheClientDomains.getClientDomain(tenant).getAPPDomain();
@@ -555,7 +565,7 @@ public class AppCachePageUtil {
 		appCachePage.clearLanguageCache();
 	}
 	
-	
+	@SuppressWarnings("unchecked")
 	public static AppPageOptionValue getAppOption(RestRequest request, String pageName, String valueName) {
 		AppPageOptionValue optionValue = null;
 		if (request.containsParam("appPageOptions")) {
@@ -570,6 +580,7 @@ public class AppCachePageUtil {
 		return optionValue;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static AppPageTextValue getAppText(RestRequest request, String pageName, String valueName) {
 		AppPageTextValue textValue = null;
 		if (request.containsParam("appPageTexts")) {
@@ -585,6 +596,7 @@ public class AppCachePageUtil {
 	}
 	
 	// Add 
+	@SuppressWarnings("unchecked")
 	public static void addAppForm(RestRequest request, String... pageName) {
 		if (!request.containsParam("appForms")) {
 			List<String> appForms = new ArrayList<String>();
@@ -595,6 +607,7 @@ public class AppCachePageUtil {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static void addAppText(RestRequest request, String... pageName) {
 		if (!request.containsParam("appTexts")) {
 			List<String> appTexts = new ArrayList<String>();
@@ -605,6 +618,7 @@ public class AppCachePageUtil {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static void addAppOption(RestRequest request, String... pageName) {
 		if (!request.containsParam("appOptions")) {
 			List<String> appOptions = new ArrayList<String>();
