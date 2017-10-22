@@ -47,31 +47,44 @@ public class PublicWS {
 	@JsonView(View.Public.class)
 	@RequestMapping(value = "callService", method = RequestMethod.POST)
 	public RestResponse callService(@RequestBody RestRequest request) {
-
 		RestResponse response = new RestResponse();
-		// set defaults
-		utilSvc.setupDefaults(request);
-		// validate request
-
-		
-		// call service locator
-		ServiceClass serviceClass = serviceCrawler.getServiceClass("PUBLIC",(String) request.getParam(GlobalConstant.SERVICE),
-				(String) request.getParam(GlobalConstant.SVCAPIVERSION), (String) request.getParam(GlobalConstant.SVCAPPVERSION));
-		// process 
-		if (serviceClass != null) {
-			if ("LOCAL".equals(serviceClass.getLocation()) && serviceClass.getServiceProcessor() != null) {
-				// use local service
-				serviceClass.getServiceProcessor().process(request, response);
+		try {
+			//Time stamp for metrics
+			utilSvc.metricsAPIStart(request);
+			
+			// set defaults
+			utilSvc.setupDefaults(request);
+			
+			// validate request
+	
+			
+			// call service locator
+			ServiceClass serviceClass = serviceCrawler.getServiceClass("PUBLIC",(String) request.getParam(GlobalConstant.SERVICE),
+					(String) request.getParam(GlobalConstant.SVCAPIVERSION), (String) request.getParam(GlobalConstant.SVCAPPVERSION));
+			// process 
+			if (serviceClass != null) {
+				if ("LOCAL".equals(serviceClass.getLocation()) && serviceClass.getServiceProcessor() != null) {
+					// use local service
+					serviceClass.getServiceProcessor().process(request, response);
+				} else {
+					// use remote service
+					request.addParam(GlobalConstant.MICROSERVICENAME, "service-public");
+					request.addParam(GlobalConstant.MICROSERVICEPATH, "api/public");
+					microServiceClient.process(request, response);
+				}
 			} else {
-				// use remote service
-				request.addParam(GlobalConstant.MICROSERVICENAME, "service-public");
-				request.addParam(GlobalConstant.MICROSERVICEPATH, "api/public");
-				microServiceClient.process(request, response);
+				utilSvc.addStatus(RestResponse.ERROR, RestResponse.EXECUTIONFAILED, "Service is not available", response);
 			}
-		} else {
-			utilSvc.addStatus(RestResponse.ERROR, RestResponse.EXECUTIONFAILED, "Service is not available", response);
+			
+			utilSvc.metricsAPIEnd(request);
+			// if debug add it to response
+			
+			// send to metric system
+			
+			
+		} catch (Exception e) {
+			utilSvc.addStatus(RestResponse.ERROR, RestResponse.EXECUTIONFAILED, "Service Failed", response);
 		}
-		
 		return response;
 	}
 }

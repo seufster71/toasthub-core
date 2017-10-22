@@ -27,6 +27,8 @@ import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -472,5 +474,27 @@ public class UtilSvc {
 	        password += letters.substring(index, index+1);
 	    }
 	    return password;
+	}
+	
+	public void metricsAPIStart(RestRequest request) throws Exception{
+		if (request.containsParam("metrics")){
+			Map<String,Long> metrics = (Map<String, Long>) request.getParam("metrics");
+			metrics.put("APIStart", System.currentTimeMillis());
+		} else {
+			Map<String,Long> metrics = new HashMap<String,Long>();
+			metrics.put("APIStart", System.currentTimeMillis());
+			request.addParam("metrics", metrics);
+		}
+	}
+	
+	public void metricsAPIEnd(RestRequest request) throws Exception{
+		if (request.containsParam("metrics")){
+			Map<String,Long> metrics = (Map<String, Long>) request.getParam("metrics");
+			metrics.put("APIEnd", System.currentTimeMillis());
+		} else {
+			Map<String,Long> metrics = new HashMap<String,Long>();
+			metrics.put("APIEnd", System.currentTimeMillis());
+			request.addParam("metrics", metrics);
+		}
 	}
 }
