@@ -62,12 +62,20 @@ public class PublicSvc implements ServiceProcessor {
 	// Processor
 	public void process(RestRequest request, RestResponse response) {
 		String action = (String) request.getParams().get(GlobalConstant.ACTION);
-		
 		this.setupDefaults(request);
-		appCachePageUtil.getPageInfo(request,response);
+
 		switch (action) {
 		case "INIT": 
+			// get options
+			request.addParam(AppCachePageUtil.APPPAGEPARAMLOC, AppCachePageUtil.RESPONSE);
+			appCachePageUtil.getPageInfo(request,response);
+			
 			this.init(request, response);
+			// get menus
+			if (request.containsParam(GlobalConstant.MENUNAMES)){
+				this.initMenu(request, response);
+			}
+			
 			break;
 		case "INIT_MENU":
 			this.initMenu(request, response);
@@ -84,7 +92,7 @@ public class PublicSvc implements ServiceProcessor {
 		response.addParam(GlobalConstant.APPNAME,entityManagerMainSvc.getAppName());
 		response.addParam(GlobalConstant.HTMLPREFIX, entityManagerMainSvc.getHTMLPrefix());
 		// default language code
-		response.addParam("userLang", appCachePageUtil.getDefaultLang());
+		response.addParam(GlobalConstant.LANG, appCachePageUtil.getDefaultLang());
 		
 	}
 	
@@ -115,13 +123,13 @@ public class PublicSvc implements ServiceProcessor {
 		if (!request.containsParam(GlobalConstant.MENUAPPVERSION)){
 			request.addParam(GlobalConstant.MENUAPPVERSION, "1.0");
 		}
-		
+		/*
 		if (!request.containsParam(GlobalConstant.MENUNAMES)){
 			ArrayList<String> myList = new ArrayList<String>();
 			myList.add("PUBLIC_MENU_LEFT");
 			myList.add("PUBLIC_MENU_RIGHT");
 			request.addParam(GlobalConstant.MENUNAMES, myList);
-		}
+		}*/
 	}
 	
 }

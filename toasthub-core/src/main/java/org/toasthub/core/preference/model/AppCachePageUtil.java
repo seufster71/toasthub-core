@@ -53,6 +53,8 @@ public class AppCachePageUtil {
 	public static final String APPOPTIONS = "appOptions";
 	public static final String APPPAGEOPTIONNAME = "appPageOptionName";
 	public static final String APPPAGEOPTIONS = "appPageOptions";
+	public static final String APPGLOBAL = "appGlobal";
+	public static final String LANGUAGES = "LANGUAGES";
 	
 	@Autowired
 	@Qualifier("AppPageSvc")
@@ -113,8 +115,12 @@ public class AppCachePageUtil {
 				getAppPageOptions(request,response);
 			}
 		}
-		if (request.containsParam("appLanguages") && !request.getParam("appLanguages").equals("") && (Boolean) request.getParam("appLanguages")){
-			getLanguages(request,response);
+		if (request.containsParam(APPGLOBAL) && !request.getParam(APPGLOBAL).equals("") && request.getParam(APPGLOBAL) instanceof List){
+			for (String item : (List<String>) request.getParam(APPGLOBAL)) {
+				if ("LANGUAGES".equals(item)) {
+					getLanguages(request,response);
+				}
+			}
 		}
 		
 	}
@@ -486,14 +492,14 @@ public class AppCachePageUtil {
 		String key = appCacheClientDomains.getClientDomain(tenant).getAPPDomain();
 		if (appCachePage.getLanguages() != null && appCachePage.getLanguages().containsKey(key)) {
 			// Pull from memory cache
-			response.addParam("languages", appCachePage.getLanguages().get(key));
+			response.addParam(LANGUAGES, appCachePage.getLanguages().get(key));
 		} else {
 			synchronized (this) {
 				// this is done to catch all concurrent users during a cache reload to prevent then from all trying to reloading the cache
 				// only the first shall do the reload.
 				if (appCachePage.getLanguages() != null && appCachePage.getLanguages().containsKey(key)) {
 					// Pull from memory cache
-					response.addParam("languages", appCachePage.getLanguages().get(key));
+					response.addParam(LANGUAGES, appCachePage.getLanguages().get(key));
 				} else {
 					// Get from DB and put in cache
 					RestRequest LangRequest = new RestRequest();
@@ -502,7 +508,7 @@ public class AppCachePageUtil {
 					languageSvc.getAllLanguages(LangRequest,LangResponse);
 					if (LangResponse.containsParam(GlobalConstant.ITEMS)){
 						this.setLanguages((List<Language>) LangResponse.getParam(GlobalConstant.ITEMS));
-						response.addParam("languages", appCachePage.getLanguages().get(key));
+						response.addParam(LANGUAGES, appCachePage.getLanguages().get(key));
 					} else {
 						utilSvc.addStatus(RestResponse.INFO, RestResponse.PAGEOPTIONS, "Languages issue", response);
 					}
