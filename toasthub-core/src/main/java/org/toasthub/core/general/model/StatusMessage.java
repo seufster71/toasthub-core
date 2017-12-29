@@ -22,22 +22,13 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 public class StatusMessage {
 
-	private String status;
 	private String code;
 	private String message;
 	
-	public StatusMessage(String status, String code, String message){
-		this.setStatus(status);
+	public StatusMessage(String code, String message){
+
 		this.setCode(code);
 		this.setMessage(message);
-	}
-
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
 	}
 
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class})

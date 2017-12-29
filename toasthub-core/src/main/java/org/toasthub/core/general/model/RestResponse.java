@@ -25,10 +25,12 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 public class RestResponse {
 
-	public static final String ERROR = "ERROR";
-	public static final String SUCCESS = "SUCCESS";
-	public static final String INFO = "INFO";
-	public static final String WARN = "WARN";
+	public static final String STATUS = "status";
+	public static final String ERROR = "error";
+	public static final String SUCCESS = "success";
+	public static final String INFO = "info";
+	public static final String WARN = "warn";
+	
 	public static final String REGISTER = "REGISTER";
 	
 	public static final String AUTHFAIL = "AUTHFAIL";
