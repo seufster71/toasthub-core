@@ -34,6 +34,7 @@ public class ClientDomain extends ToastEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String URLDomain;
 	private String APPDomain;
+	private String CustDomain;
 	private String APPName;
 	private String HTMLPrefix;
 	private String publicLayout;
@@ -69,6 +70,15 @@ public class ClientDomain extends ToastEntity implements Serializable {
 		this.APPDomain = APPDomain;
 	}
 
+	@JsonView({View.Admin.class})
+	@Column(name = "cust_domain")
+	public String getCustDomain() {
+		return CustDomain;
+	}
+	public void setCustDomain(String CustDomain) {
+		this.CustDomain = CustDomain;
+	}
+	
 	@JsonView({View.Admin.class})
 	@Column(name = "app_name")
 	public String getAPPName() {

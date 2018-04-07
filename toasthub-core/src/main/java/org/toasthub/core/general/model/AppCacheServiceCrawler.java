@@ -54,7 +54,7 @@ public class AppCacheServiceCrawler implements Serializable {
 	
 	// This is used by frontend web service and should only pull what is in memory.
 	public ServiceClass getServiceClass(String category, String key, String apiVersion, String appVersion){
-		String tenant = appCacheClientDomains.getClientDomain(TenantContext.getURLDomain()).getAPPDomain();
+		String tenant = appCacheClientDomains.getClientDomain(TenantContext.getURLDomain()).getCustDomain();
 		ServiceClass serviceClass = null;
 		//String categoryKey = category + "-" + appDomain;
 		String apiKey = key  + "-" + apiVersion + "-" + appVersion;
@@ -73,7 +73,7 @@ public class AppCacheServiceCrawler implements Serializable {
 	
 	// This is used by save or delete is issued and the cache needs to be reloaded
 	public void reloadServiceCache() {
-		String tenant = appCacheClientDomains.getClientDomain(TenantContext.getURLDomain()).getAPPDomain();
+		String tenant = appCacheClientDomains.getClientDomain(TenantContext.getURLDomain()).getCustDomain();
 		loadServiceCache(tenant);
 	};
 	

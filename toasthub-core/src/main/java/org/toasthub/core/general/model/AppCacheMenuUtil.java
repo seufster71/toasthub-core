@@ -37,7 +37,7 @@ public class AppCacheMenuUtil {
 		StringBuilder key = new StringBuilder();
 		key.append(menuName);
 		key.append("_");
-		key.append(appCacheClientDomains.getClientDomain(TenantContext.getURLDomain()).getAPPDomain());
+		key.append(appCacheClientDomains.getClientDomain(TenantContext.getURLDomain()).getCustDomain());
 		key.append("_");
 		key.append(apiVersion);
 		key.append("_");
@@ -101,7 +101,7 @@ public class AppCacheMenuUtil {
 	}
 	
 	public void reloadMenuCache() {
-		String tenant = appCacheClientDomains.getClientDomain(TenantContext.getURLDomain()).getAPPDomain();
+		String tenant = appCacheClientDomains.getClientDomain(TenantContext.getURLDomain()).getCustDomain();
 		for(Iterator<Map.Entry<String, List<MenuItem>>> it = appCacheMenu.getMenus().entrySet().iterator(); it.hasNext(); ) {
 		      Map.Entry<String, List<MenuItem>> entry = it.next();
 		      if(entry.getKey().contains(tenant)) {

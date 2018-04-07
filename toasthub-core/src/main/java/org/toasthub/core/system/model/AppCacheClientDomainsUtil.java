@@ -54,7 +54,7 @@ public class AppCacheClientDomainsUtil {
 		Map<String,ClientDomain> cacheItems = appCacheClientDomains.getClientDomains();
 		
 		for (Map.Entry<String, ClientDomain> pair : cacheItems.entrySet()) {
-		    String domain = ((ClientDomain) pair.getValue()).getAPPDomain();
+		    String domain = ((ClientDomain) pair.getValue()).getCustDomain();
 		    if (!items.contains(domain)) {
 		    	items.add(domain);
 		    }

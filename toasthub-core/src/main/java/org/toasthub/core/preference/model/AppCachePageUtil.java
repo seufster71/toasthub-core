@@ -129,7 +129,7 @@ public class AppCachePageUtil {
 	public void getAppPageFormFields(RestRequest request, RestResponse response) {
 		String tenant = TenantContext.getURLDomain();
 		StringBuilder key = new StringBuilder();
-		key.append(appCacheClientDomains.getClientDomain(tenant).getAPPDomain());
+		key.append(appCacheClientDomains.getClientDomain(tenant).getCustDomain());
 		key.append("_");
 		key.append(request.getParam(APPPAGEFORMNAME));
 		key.append("_");
@@ -221,7 +221,7 @@ public class AppCachePageUtil {
 	public void getAppPageLabels(RestRequest request, RestResponse response) {
 		String tenant = TenantContext.getURLDomain();
 		StringBuilder key = new StringBuilder();
-		key.append(appCacheClientDomains.getClientDomain(tenant).getAPPDomain());
+		key.append(appCacheClientDomains.getClientDomain(tenant).getCustDomain());
 		key.append("_");
 		key.append(request.getParam(APPPAGELABELNAME));
 		key.append("_");
@@ -312,7 +312,7 @@ public class AppCachePageUtil {
 	public void getAppPageOptions(RestRequest request, RestResponse response) {
 		String tenant = TenantContext.getURLDomain();
 		StringBuilder key = new StringBuilder();
-		key.append(appCacheClientDomains.getClientDomain(tenant).getAPPDomain());
+		key.append(appCacheClientDomains.getClientDomain(tenant).getCustDomain());
 		key.append("_");
 		key.append(request.getParam(APPPAGEOPTIONNAME));
 		key.append("_");
@@ -399,7 +399,7 @@ public class AppCachePageUtil {
 	public void getAppPageTexts(RestRequest request, RestResponse response) {
 		String tenant = TenantContext.getURLDomain();
 		StringBuilder key = new StringBuilder();
-		key.append(appCacheClientDomains.getClientDomain(tenant).getAPPDomain());
+		key.append(appCacheClientDomains.getClientDomain(tenant).getCustDomain());
 		key.append("_");
 		key.append(request.getParam(APPPAGETEXTNAME));
 		key.append("_");
@@ -489,7 +489,7 @@ public class AppCachePageUtil {
 	@SuppressWarnings("unchecked")
 	public void getLanguages(RestRequest request, RestResponse response) {
 		String tenant = TenantContext.getURLDomain();
-		String key = appCacheClientDomains.getClientDomain(tenant).getAPPDomain();
+		String key = appCacheClientDomains.getClientDomain(tenant).getCustDomain();
 		if (appCachePage.getLanguages() != null && appCachePage.getLanguages().containsKey(key)) {
 			// Pull from memory cache
 			response.addParam(LANGUAGES, appCachePage.getLanguages().get(key));
@@ -519,7 +519,7 @@ public class AppCachePageUtil {
 
 	public void setLanguages(List<Language> languages) {
 		String tenant = TenantContext.getURLDomain();
-		String key = appCacheClientDomains.getClientDomain(tenant).getAPPDomain();
+		String key = appCacheClientDomains.getClientDomain(tenant).getCustDomain();
 		if (appCachePage.getLanguages() == null) {
 			appCachePage.setLanguages(new ConcurrentHashMap<String,List<Language>>());
 		}
@@ -529,7 +529,7 @@ public class AppCachePageUtil {
 	public String getDefaultLang(){
 		String lang = "en";
 		String tenant = TenantContext.getURLDomain();
-		String key = appCacheClientDomains.getClientDomain(tenant).getAPPDomain();
+		String key = appCacheClientDomains.getClientDomain(tenant).getCustDomain();
 		List<Language> languages = appCachePage.getLanguages().get(key);
 		if (languages != null && !languages.isEmpty()) {
 			for (Language language : languages) {

@@ -7,6 +7,7 @@ public interface EntityManagerMainSvc {
 	public EntityManager getEntityMgrMain();
 	public String getAppName();
 	public String getAppDomain();
+	public String getCustDomain();
 	public String getHTMLPrefix();
 	public String getPublicLayout();
 	public String getAdminLayout();
