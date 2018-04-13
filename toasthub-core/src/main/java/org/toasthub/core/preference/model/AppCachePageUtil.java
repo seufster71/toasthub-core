@@ -604,16 +604,24 @@ public class AppCachePageUtil {
 	@SuppressWarnings("unchecked")
 	public String getGlobalText(String pageName, String valueName, String lang) {
 		String result = "";
-		String tenant = TenantContext.getURLDomain();
-		StringBuilder key = new StringBuilder();
-		key.append(appCacheClientDomains.getClientDomain(tenant).getCustDomain());
-		key.append("_");
-		key.append(pageName);
-		key.append("_");
-		key.append(lang);
-		if (appCachePage.getAppPageTexts() != null && appCachePage.getAppPageTexts().containsKey(key.toString())){
-			AppPageTextValue appPageTextValue = appCachePage.getAppPageTexts().get(key.toString()).get(valueName);
-			result = appPageTextValue.getValue();
+		try {
+			String tenant = TenantContext.getURLDomain();
+			StringBuilder key = new StringBuilder();
+			key.append(appCacheClientDomains.getClientDomain(tenant).getCustDomain());
+			key.append("_");
+			key.append(pageName);
+			key.append("_");
+			key.append(lang);
+			if (appCachePage.getAppPageTexts() != null && appCachePage.getAppPageTexts().containsKey(key.toString())){
+				Map<String,AppPageTextValue> appPageTextValues = appCachePage.getAppPageTexts().get(key.toString());
+				//AppPageTextValue appPageTextValue = appCachePage.getAppPageTexts().get(key.toString()).get(valueName);
+				result = appPageTextValues.get(valueName).getValue();
+			}
+		} catch (Exception e) {
+			// eat error 
+			StringBuilder r = new StringBuilder();
+			r.append("Global text option for ").append(pageName).append(" ").append(valueName).append(" missing contact admin");
+			result = r.toString();
 		}
 		return result;
 	}
