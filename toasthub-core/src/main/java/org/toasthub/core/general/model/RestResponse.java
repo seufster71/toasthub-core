@@ -44,6 +44,7 @@ public class RestResponse {
 	public static final String EMPTY = "EMPTY";
 	public static final String ACTIONFAILED = "ACTIONFAILED";
 	public static final String REGISTRATIONFAILED = "REGISTRATIONFAILED";
+	public static final String ACCESSDENIED = "ACCESSDENIED";
 	public static final String MENUS = "MENUS";
 
 	

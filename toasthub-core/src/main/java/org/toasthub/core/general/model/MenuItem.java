@@ -114,7 +114,7 @@ public class MenuItem extends BaseEntity implements Serializable{
 		this.children = children;
 	}
 	
-	@JsonView({View.Admin.class})
+	@JsonView({View.Member.class,View.Admin.class})
 	@Column(name = "permission_code")
 	public String getPermissionCode() {
 		return this.permissionCode;

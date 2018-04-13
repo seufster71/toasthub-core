@@ -42,6 +42,8 @@ public class ServiceClass extends BaseEntity implements Serializable{
 	private String className;
 	private String category;
 	private String location;
+	private String permissionCode;
+	private String permissionRight;
 	// need to add stuff to identify if this is a micro service
 	
 	// Constructor
@@ -115,6 +117,24 @@ public class ServiceClass extends BaseEntity implements Serializable{
 	}
 	public void setLocation(String location) {
 		this.location = location;
+	}
+
+	@JsonView({View.Admin.class})
+	@Column(name = "perm_code")
+	public String getPermissionCode() {
+		return permissionCode;
+	}
+	public void setPermissionCode(String permissionCode) {
+		this.permissionCode = permissionCode;
+	}
+
+	@JsonView({View.Admin.class})
+	@Column(name = "perm_right")
+	public String getPermissionRight() {
+		return permissionRight;
+	}
+	public void setPermissionRight(String permissionRight) {
+		this.permissionRight = permissionRight;
 	}
 	
 }

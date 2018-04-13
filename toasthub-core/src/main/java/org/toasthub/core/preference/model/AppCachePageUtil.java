@@ -601,6 +601,23 @@ public class AppCachePageUtil {
 		return textValue;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public String getGlobalText(String pageName, String valueName, String lang) {
+		String result = "";
+		String tenant = TenantContext.getURLDomain();
+		StringBuilder key = new StringBuilder();
+		key.append(appCacheClientDomains.getClientDomain(tenant).getCustDomain());
+		key.append("_");
+		key.append(pageName);
+		key.append("_");
+		key.append(lang);
+		if (appCachePage.getAppPageTexts() != null && appCachePage.getAppPageTexts().containsKey(key.toString())){
+			AppPageTextValue appPageTextValue = appCachePage.getAppPageTexts().get(key.toString()).get(valueName);
+			result = appPageTextValue.getValue();
+		}
+		return result;
+	}
+	
 	// Add 
 	@SuppressWarnings("unchecked")
 	public static void addAppForm(RestRequest request, String... pageName) {
@@ -634,5 +651,6 @@ public class AppCachePageUtil {
 			((List<String>) request.getParam("appOptions")).add(item);
 		}
 	}
+	
 	
 }
