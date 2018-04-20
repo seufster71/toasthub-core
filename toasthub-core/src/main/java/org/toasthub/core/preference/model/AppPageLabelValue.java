@@ -30,10 +30,13 @@ import org.toasthub.core.general.api.View;
 import org.toasthub.core.general.model.BaseEntity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 @Table(name = "page_label_value")
+@JsonInclude(Include.NON_NULL)
 public class AppPageLabelValue extends BaseEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;

@@ -38,10 +38,13 @@ import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.Text;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
 @Table(name = "page_text_name")
+@JsonInclude(Include.NON_NULL)
 public class AppPageTextName extends BaseEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;
