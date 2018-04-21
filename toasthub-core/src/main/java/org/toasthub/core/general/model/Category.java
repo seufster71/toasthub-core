@@ -40,7 +40,7 @@ public class Category extends BaseEntity implements Serializable {
 	public static final String ID = "categoryId";
 	
 	private String group;
-	private Text name;
+	private Text title;
 	private String code;
 	private Category parent;
 	private int order;
@@ -50,13 +50,13 @@ public class Category extends BaseEntity implements Serializable {
 		super();
 	}
 	
-	public Category(String group, Text name, String code){
+	public Category(String group, Text title, String code){
 		this.setActive(true);
 		this.setArchive(false);
 		this.setLocked(false);
 		this.setCreated(new Date());
 		setGroup(group);
-		setName(name);
+		setTitle(title);
 		setCode(code);
 	}
 
@@ -72,12 +72,12 @@ public class Category extends BaseEntity implements Serializable {
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
 	@ManyToOne(targetEntity = Text.class)
-	@JoinColumn(name = "name_id", nullable = false)
-	public Text getName() {
-		return name;
+	@JoinColumn(name = "title_id", nullable = false)
+	public Text getTitle() {
+		return title;
 	}
-	public void setName(Text name) {
-		this.name = name;
+	public void setTitle(Text title) {
+		this.title = title;
 	}
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
