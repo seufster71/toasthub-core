@@ -26,13 +26,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.toasthub.core.general.api.View;
-import org.toasthub.core.general.model.Text;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 @Table(name = "category")
-public class Category extends BaseEntity implements Serializable {
+public class Category extends ToastEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	public static final String CATEGORY = "category";
@@ -40,7 +39,6 @@ public class Category extends BaseEntity implements Serializable {
 	public static final String ID = "categoryId";
 	
 	private String group;
-	private Text title;
 	private String code;
 	private Category parent;
 	private int order;
@@ -50,13 +48,12 @@ public class Category extends BaseEntity implements Serializable {
 		super();
 	}
 	
-	public Category(String group, Text title, String code){
+	public Category(String group, String code){
 		this.setActive(true);
 		this.setArchive(false);
 		this.setLocked(false);
 		this.setCreated(new Date());
 		setGroup(group);
-		setTitle(title);
 		setCode(code);
 	}
 
@@ -68,16 +65,6 @@ public class Category extends BaseEntity implements Serializable {
 	}
 	public void setGroup(String group) {
 		this.group = group;
-	}
-	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
-	@ManyToOne(targetEntity = Text.class)
-	@JoinColumn(name = "title_id", nullable = false)
-	public Text getTitle() {
-		return title;
-	}
-	public void setTitle(Text title) {
-		this.title = title;
 	}
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
@@ -100,7 +87,7 @@ public class Category extends BaseEntity implements Serializable {
 	}
 	
 	@JsonView({View.Member.class,View.Admin.class})
-	@Column(name = "category_order")
+	@Column(name = "sort_order")
 	public int getOrder() {
 		return order;
 	}
