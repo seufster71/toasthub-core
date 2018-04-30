@@ -31,7 +31,7 @@ public class StatusMessage {
 		this.setMessage(message);
 	}
 
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	public String getMessage() {
 		return message;
 	}
@@ -39,7 +39,7 @@ public class StatusMessage {
 		this.message = message;
 	}
 
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	public String getCode() {
 		return code;
 	}

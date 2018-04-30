@@ -4,4 +4,5 @@ public class View {
 	public interface Public {}
 	public interface Member {}
 	public interface Admin {}
+	public interface System {}
 }

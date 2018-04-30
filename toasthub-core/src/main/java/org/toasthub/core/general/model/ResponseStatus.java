@@ -14,7 +14,7 @@ public class ResponseStatus {
 	
 	public ResponseStatus() {}
 
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	public List<StatusMessage> getInfo() {
 		return info;
 	}
@@ -22,7 +22,7 @@ public class ResponseStatus {
 		this.info = info;
 	}
 
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	public List<StatusMessage> getWarn() {
 		return warn;
 	}
@@ -30,7 +30,7 @@ public class ResponseStatus {
 		this.warn = warn;
 	}
 
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	public List<StatusMessage> getError() {
 		return error;
 	}

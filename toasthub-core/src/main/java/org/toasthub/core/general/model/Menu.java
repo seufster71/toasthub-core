@@ -57,7 +57,7 @@ public class Menu extends BaseEntity implements Serializable{
 		super();
 	}
 	// Setters/Getters
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "code")
 	public String getCode() {
 		return code;
@@ -66,7 +66,7 @@ public class Menu extends BaseEntity implements Serializable{
 		this.code = code;
 	}
 
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "category")
 	public String getCategory() {
 		return category;
@@ -103,7 +103,7 @@ public class Menu extends BaseEntity implements Serializable{
 		this.appVersion = appVersion;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@OneToMany(mappedBy = "menu", cascade = CascadeType.ALL)
 	public Set<MenuItem> getMenuItems() {
 		return menuItems;

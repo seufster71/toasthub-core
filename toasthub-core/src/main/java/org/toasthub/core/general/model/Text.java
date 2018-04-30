@@ -55,7 +55,7 @@ public class Text extends TextBaseEntity implements Serializable {
 		this.defaultText = defaultText;
 	}
 
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@OneToMany(mappedBy = "textMeta", cascade = CascadeType.ALL)
 	public Set<LangText> getLangTexts() {
 		return langTexts;

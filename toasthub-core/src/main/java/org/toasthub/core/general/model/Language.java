@@ -68,7 +68,7 @@ public class Language extends BaseEntity implements Serializable{
 	}
 	
 	// Methods
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "code")
 	public String getCode() {
 		return code;

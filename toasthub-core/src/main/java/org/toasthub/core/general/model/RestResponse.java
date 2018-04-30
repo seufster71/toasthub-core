@@ -50,7 +50,7 @@ public class RestResponse {
 	
 	private Map<String,Object> params;
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	public Map<String,Object> getParams() {
 		if (params == null){
 			params = new HashMap<String,Object>();

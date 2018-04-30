@@ -58,7 +58,7 @@ public class MenuItem extends BaseEntity implements Serializable{
 		super();
 	}
 	// Setter/Getter
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "code")
 	public String getCode() {
 		return code;
@@ -96,7 +96,7 @@ public class MenuItem extends BaseEntity implements Serializable{
 		this.order = order;
 	}
 
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@OneToMany(mappedBy = "menuItem", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	public Set<MenuItemValue> getValues() {
 		return values;
@@ -105,7 +105,7 @@ public class MenuItem extends BaseEntity implements Serializable{
 		this.values = values;
 	}
 
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Transient
 	public List<MenuItem> getChildren() {
 		return children;
@@ -114,7 +114,7 @@ public class MenuItem extends BaseEntity implements Serializable{
 		this.children = children;
 	}
 	
-	@JsonView({View.Member.class,View.Admin.class})
+	@JsonView({View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "permission_code")
 	public String getPermissionCode() {
 		return this.permissionCode;
@@ -123,7 +123,7 @@ public class MenuItem extends BaseEntity implements Serializable{
 		this.permissionCode = permissionCode;
 	}
 
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Transient
 	public Long getMenuId() {
 		return menuId;

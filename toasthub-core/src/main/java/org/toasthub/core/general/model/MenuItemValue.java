@@ -58,7 +58,7 @@ public class MenuItemValue extends BaseEntity implements Serializable{
 		this.menuItem = menuItem;
 	}
 
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "menu_value")
 	public String getValue() {
 		return value;
@@ -67,7 +67,7 @@ public class MenuItemValue extends BaseEntity implements Serializable{
 		this.value = value;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "href")
 	public String getHref() {
 		return href;
@@ -76,7 +76,7 @@ public class MenuItemValue extends BaseEntity implements Serializable{
 		this.href = href;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "image")
 	public String getImage() {
 		return image;
@@ -85,7 +85,7 @@ public class MenuItemValue extends BaseEntity implements Serializable{
 		this.image = image;
 	}
 
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "lang")
 	public String getLang() {
 		return lang;
@@ -94,7 +94,7 @@ public class MenuItemValue extends BaseEntity implements Serializable{
 		this.lang = lang;
 	}
 
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "rendered")
 	public boolean isRendered() {
 		return rendered;

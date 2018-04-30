@@ -99,7 +99,7 @@ public class BaseEntity implements Serializable{
 	}
 	*/
 	// Setter/Getter
-	@JsonView({View.Admin.class,View.Member.class})
+	@JsonView({View.Admin.class,View.Member.class,View.System.class})
 	@Id	
 	@GeneratedValue(strategy=GenerationType.IDENTITY) 
 	@Column(name = "id")
@@ -120,7 +120,7 @@ public class BaseEntity implements Serializable{
 		this.modified = modified;
 	}
 	
-	@JsonView({View.Member.class,View.Admin.class})
+	@JsonView({View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "created", updatable = false)
 	public Date getCreated() {
 		return created;
@@ -139,7 +139,7 @@ public class BaseEntity implements Serializable{
 		this.version = version;
 	}
 
-	@JsonView({View.Member.class,View.Admin.class})
+	@JsonView({View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "is_active")
 	public Boolean isActive() {
 		return active;
@@ -148,7 +148,7 @@ public class BaseEntity implements Serializable{
 		this.active = active;
 	}
 	
-	@JsonView({View.Member.class,View.Admin.class})
+	@JsonView({View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "is_archive")
 	public Boolean isArchive() {
 		return archive;
