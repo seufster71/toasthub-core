@@ -38,8 +38,8 @@ import org.toasthub.core.general.utils.TenantContext;
 public class MailDao implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	private static final String adminName = "cborgdev@gmail.com";
-	private static final String password = "E8rlg99y#3";
+	private static final String adminName = "";
+	private static final String password = "";
 	private static final Properties props = new Properties();
 	
 	public MailDao(){
