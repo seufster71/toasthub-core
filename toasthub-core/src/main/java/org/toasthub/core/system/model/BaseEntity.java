@@ -140,7 +140,7 @@ public class BaseEntity implements Serializable{
 	}
 	*/
 	// Setter/Getter
-	@JsonView({View.Admin.class,View.Member.class})
+	@JsonView({View.System.class})
 	@Id	
 	@GeneratedValue(strategy=GenerationType.IDENTITY) 
 	@Column(name = "id")
@@ -151,7 +151,7 @@ public class BaseEntity implements Serializable{
 		this.id = id;
 	}
 	
-	@JsonView({View.Admin.class})
+	@JsonView({View.System.class})
 	@Column(name = "modified",updatable = false, insertable = false)
 	//@org.hibernate.annotations.Generated(org.hibernate.annotations.GenerationTime.ALWAYS)
 	public Date getModified() {
@@ -161,7 +161,7 @@ public class BaseEntity implements Serializable{
 		this.modified = modified;
 	}
 	
-	@JsonView({View.Member.class,View.Admin.class})
+	@JsonView({View.System.class})
 	@Column(name = "created", updatable = false)
 	public Date getCreated() {
 		return created;
@@ -180,7 +180,7 @@ public class BaseEntity implements Serializable{
 		this.version = version;
 	}
 
-	@JsonView({View.Member.class,View.Admin.class})
+	@JsonView({View.System.class})
 	@Column(name = "is_active")
 	public boolean isActive() {
 		return active;
@@ -189,7 +189,7 @@ public class BaseEntity implements Serializable{
 		this.active = active;
 	}
 	
-	@JsonView({View.Member.class,View.Admin.class})
+	@JsonView({View.System.class})
 	@Column(name = "is_archive")
 	public boolean isArchive() {
 		return archive;
@@ -198,7 +198,7 @@ public class BaseEntity implements Serializable{
 		this.archive = archive;
 	}
 	
-	@JsonView({View.Admin.class})
+	@JsonView({View.System.class})
 	@Column(name = "is_locked")
 	public boolean isLocked() {
 		return locked;
@@ -207,7 +207,7 @@ public class BaseEntity implements Serializable{
 		this.locked = locked;
 	}
 	
-	@JsonView({View.Admin.class})
+	@JsonView({View.System.class})
 	@Column(name = "lockowner_id")
 	public Long getLockOwnerRefId() {
 		return lockOwnerRefId;
@@ -216,7 +216,7 @@ public class BaseEntity implements Serializable{
 		this.lockOwnerRefId = lockOwnerRefId;
 	}
 	
-	@JsonView({View.Admin.class})
+	@JsonView({View.System.class})
 	@Column(name = "lock_time")
 	public Date getLockTime() {
 		return lockTime;

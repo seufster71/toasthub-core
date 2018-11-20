@@ -50,7 +50,7 @@ public class ServiceClass extends BaseEntity implements Serializable{
 	public ServiceClass(){	
 	}
 
-	@JsonView({View.Admin.class})
+	@JsonView({View.System.class})
 	@Column(name = "service_name")
 	public String getServiceName() {
 		return serviceName;
@@ -59,7 +59,7 @@ public class ServiceClass extends BaseEntity implements Serializable{
 		this.serviceName = serviceName;
 	}
 
-	@JsonView({View.Admin.class})
+	@JsonView({View.System.class})
 	@Column(name = "api_version")
 	public String getApiVersion() {
 		return apiVersion;
@@ -68,7 +68,7 @@ public class ServiceClass extends BaseEntity implements Serializable{
 		this.apiVersion = apiVersion;
 	}
 
-	@JsonView({View.Admin.class})
+	@JsonView({View.System.class})
 	@Column(name = "app_version")
 	public String getAppVersion() {
 		return appVersion;
@@ -92,7 +92,7 @@ public class ServiceClass extends BaseEntity implements Serializable{
 		this.serviceProcessor = x;
 	}
 
-	@JsonView({View.Admin.class})
+	@JsonView({View.System.class})
 	@Column(name = "class_name")
 	public String getClassName() {
 		return className;
@@ -101,7 +101,7 @@ public class ServiceClass extends BaseEntity implements Serializable{
 		this.className = className;
 	}
 
-	@JsonView({View.Admin.class})
+	@JsonView({View.System.class})
 	@Column(name = "category")
 	public String getCategory() {
 		return category;
@@ -110,7 +110,7 @@ public class ServiceClass extends BaseEntity implements Serializable{
 		this.category = category;
 	}
 
-	@JsonView({View.Admin.class})
+	@JsonView({View.System.class})
 	@Column(name = "location")
 	public String getLocation() {
 		return location;
@@ -119,7 +119,7 @@ public class ServiceClass extends BaseEntity implements Serializable{
 		this.location = location;
 	}
 
-	@JsonView({View.Admin.class})
+	@JsonView({View.System.class})
 	@Column(name = "perm_code")
 	public String getPermissionCode() {
 		return permissionCode;
@@ -128,7 +128,7 @@ public class ServiceClass extends BaseEntity implements Serializable{
 		this.permissionCode = permissionCode;
 	}
 
-	@JsonView({View.Admin.class})
+	@JsonView({View.System.class})
 	@Column(name = "perm_right")
 	public String getPermissionRight() {
 		return permissionRight;

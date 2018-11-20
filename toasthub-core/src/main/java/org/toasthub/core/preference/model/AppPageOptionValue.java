@@ -81,7 +81,7 @@ public class AppPageOptionValue extends BaseEntity implements Serializable {
 		this.pageOptionName = pageOptionName;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "option_value")
 	public String getValue() {
 		return value;
@@ -90,7 +90,7 @@ public class AppPageOptionValue extends BaseEntity implements Serializable {
 		this.value = value;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "lang")
 	public String getLang() {
 		return lang;
@@ -99,7 +99,7 @@ public class AppPageOptionValue extends BaseEntity implements Serializable {
 		this.lang = lang;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "rendered")
 	public Boolean getRendered() {
 		return rendered;
@@ -108,7 +108,7 @@ public class AppPageOptionValue extends BaseEntity implements Serializable {
 		this.rendered = rendered;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "validation")
 	public String getValidation() {
 		return validation;
@@ -117,7 +117,7 @@ public class AppPageOptionValue extends BaseEntity implements Serializable {
 		this.validation = validation;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Transient
 	public String getName() {
 		return name;
@@ -126,7 +126,7 @@ public class AppPageOptionValue extends BaseEntity implements Serializable {
 		this.name = name;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Transient
 	public String getValueType() {
 		return valueType;
@@ -135,7 +135,7 @@ public class AppPageOptionValue extends BaseEntity implements Serializable {
 		this.valueType = valueType;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Transient
 	public String getDefaultValue() {
 		return defaultValue;
@@ -144,7 +144,7 @@ public class AppPageOptionValue extends BaseEntity implements Serializable {
 		this.defaultValue = defaultValue;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Transient
 	public Boolean isUseDefault() {
 		return useDefault;

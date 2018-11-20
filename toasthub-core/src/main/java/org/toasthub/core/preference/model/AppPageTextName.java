@@ -78,7 +78,7 @@ public class AppPageTextName extends BaseEntity implements Serializable{
 		this.pageName = pageName;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@NotNull
 	@Column(name = "name")
 	public String getName() {
@@ -88,7 +88,7 @@ public class AppPageTextName extends BaseEntity implements Serializable{
 		this.name = name;
 	}
 	
-	@JsonView({View.Admin.class})
+	@JsonView({View.Admin.class,View.System.class})
 	@ManyToOne(targetEntity = Text.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "text_id")
 	public Text getTitle() {
@@ -98,7 +98,7 @@ public class AppPageTextName extends BaseEntity implements Serializable{
 		this.title = title;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "optional_params")
 	public String getOptionalParams() {
 		return optionalParams;
@@ -107,7 +107,7 @@ public class AppPageTextName extends BaseEntity implements Serializable{
 		this.optionalParams = optionalParams;
 	}
 	
-	@JsonView({View.Admin.class})
+	@JsonView({View.Admin.class,View.System.class})
 	@OneToMany(mappedBy = "pageTextName", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	public Set<AppPageTextValue> getValues() {
 		return values;

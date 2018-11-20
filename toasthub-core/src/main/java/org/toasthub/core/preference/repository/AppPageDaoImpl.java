@@ -17,6 +17,7 @@
 package org.toasthub.core.preference.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Query;
 
@@ -58,26 +59,78 @@ public class AppPageDaoImpl implements AppPageDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void items(RestRequest request, RestResponse response) throws Exception {
-		String queryStr = "SELECT p FROM AppPageName AS p JOIN FETCH p.title AS t JOIN FETCH t.langTexts AS l WHERE p.category =:category AND p.active =:active";
+		String queryStr = "SELECT p FROM AppPageName AS p JOIN FETCH p.title AS t JOIN FETCH t.langTexts AS l WHERE p.active =:active";
+		// limit by catetory
+		if (request.containsParam("category")){
+			queryStr += " AND p.category =:category";
+		}
+		// Search criteria
+		if (request.containsParam(GlobalConstant.SEARCHCRITERIA) && !request.getParam(GlobalConstant.SEARCHCRITERIA).equals("")){
+			Map<String,Object> searchCriteria = (Map<String, Object>) request.getParam(GlobalConstant.SEARCHCRITERIA);
 		
-		if (request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
-			queryStr += " AND l.lang =:lang AND l.text LIKE :searchValue"; 
+			if (searchCriteria.containsKey(GlobalConstant.SEARCHVALUE) && !searchCriteria.get(GlobalConstant.SEARCHVALUE).equals("")){
+				queryStr += " AND l.lang =:lang AND l.text LIKE :searchValue"; 
+			} else {
+				queryStr += " AND l.lang =:lang";
+			}
+		} else {
+			queryStr += " AND l.lang =:lang"; 
+		}
+		// order criteria
+		if (request.containsParam(GlobalConstant.ORDERCRITERIA) && !"".equals(request.getParam(GlobalConstant.ORDERCRITERIA)) ){
+			queryStr += " ORDER BY";
+			List<Map<String,String>> orderCriteria = (List<Map<String,String>>) request.getParam(GlobalConstant.ORDERCRITERIA);
+			int count = 0;
+			for (Map<String,String> item : orderCriteria) {
+				if (item.containsKey(GlobalConstant.ORDERCOLUMN) && !"".equals(item.get(GlobalConstant.ORDERCOLUMN)) ) {
+					if ("ADMIN_PREFERENCE_TABLE_CATEGORY".equals(item.get(GlobalConstant.ORDERCOLUMN))) {
+						if (count > 0) {
+							queryStr += ",";
+						}
+						queryStr += " p.category";
+					} else if ("ADMIN_PREFERENCE_TABLE_CODE".equals(item.get(GlobalConstant.ORDERCOLUMN))) {
+						if (count > 0) {
+							queryStr += ",";
+						}
+						queryStr += " p.name";
+					}
+				}
+				if (item.containsKey(GlobalConstant.ORDERDIR) && !"".equals(item.get(GlobalConstant.ORDERDIR)) ) {
+					if ("ASC".equals(item.get(GlobalConstant.ORDERDIR))) {
+						queryStr += " ASC";
+					} else {
+						queryStr += " DESC";
+					}
+				}
+				count++;
+			}
+		} else {
+			queryStr += " ORDER BY p.category ASC, p.name ASC";
 		}
 		
-		queryStr += " ORDER BY p.name ASC";
-		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr).setParameter("category", (String) request.getParam("category"));
+		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
 	
+		if (request.containsParam("category")){
+			query.setParameter("category", (String) request.getParam("category"));
+		}
 		if (request.containsParam(GlobalConstant.ACTIVE)) {
 			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
 		} else {
 			query.setParameter("active", true);
 		}
-		
-		if (request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
-			query.setParameter("searchValue", "%"+((String)request.getParam(GlobalConstant.SEARCHVALUE)).toLowerCase()+"%");
+		// search criteria
+		if (request.containsParam(GlobalConstant.SEARCHCRITERIA) && !request.getParam(GlobalConstant.SEARCHCRITERIA).equals("")){
+			Map<String,Object> searchCriteria = (Map<String, Object>) request.getParam(GlobalConstant.SEARCHCRITERIA);
+			if (searchCriteria.containsKey(GlobalConstant.SEARCHVALUE) && !searchCriteria.get(GlobalConstant.SEARCHVALUE).equals("")){
+				query.setParameter("searchValue", "%"+((String)searchCriteria.get(GlobalConstant.SEARCHVALUE)).toLowerCase()+"%");
+				query.setParameter("lang",request.getParam(GlobalConstant.LANG));
+			} else {
+				query.setParameter("lang",request.getParam(GlobalConstant.LANG));
+			}
+		} else {
 			query.setParameter("lang",request.getParam(GlobalConstant.LANG));
 		}
-		
+		// paging
 		if (request.containsParam(GlobalConstant.PAGELIMIT) && (Integer) request.getParam(GlobalConstant.PAGELIMIT) != 0){
 			query.setFirstResult((Integer) request.getParam(GlobalConstant.PAGESTART));
 			query.setMaxResults((Integer) request.getParam(GlobalConstant.PAGELIMIT));
@@ -92,23 +145,43 @@ public class AppPageDaoImpl implements AppPageDao {
 	@Override
 	public void itemCount(RestRequest request, RestResponse response) throws Exception {
 		Query query = null;
-		String queryStr = "SELECT COUNT(*) FROM AppPageName AS p JOIN p.title AS t JOIN t.langTexts AS l WHERE p.active = true AND category =:category AND p.active =:active";
-		if (request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
-			queryStr += " AND l.lang =:lang AND l.text LIKE :searchValue"; 
-		}
-		query = entityManagerDataSvc.getInstance().createQuery(queryStr).setParameter("category", (String) request.getParam("category"));
+		String queryStr = "SELECT COUNT(*) FROM AppPageName AS p JOIN p.title AS t JOIN t.langTexts AS l WHERE p.active =:active";
+		if (request.containsParam("category")){
+			queryStr += " AND p.category =:category";
+		}		
+		// search criteria
+		if (request.containsParam(GlobalConstant.SEARCHCRITERIA) && !request.getParam(GlobalConstant.SEARCHCRITERIA).equals("")){
+			Map<String,Object> searchCriteria = (Map<String, Object>) request.getParam(GlobalConstant.SEARCHCRITERIA);
 		
+			if (searchCriteria.containsKey(GlobalConstant.SEARCHVALUE) && !searchCriteria.get(GlobalConstant.SEARCHVALUE).equals("")){
+				queryStr += " AND l.lang =:lang AND l.text LIKE :searchValue"; 
+			} else {
+				queryStr += " AND l.lang =:lang";
+			}
+		} else {
+			queryStr += " AND l.lang =:lang"; 
+		}
+		query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+		if (request.containsParam("category")){
+			query.setParameter("category", (String) request.getParam("category"));
+		}
 		if (request.containsParam(GlobalConstant.ACTIVE)) {
 			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
 		} else {
 			query.setParameter("active", true);
 		}
-		
-		if (request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
-			query.setParameter("searchValue", "%"+((String)request.getParam(GlobalConstant.SEARCHVALUE)).toLowerCase()+"%");
+		// search criteria
+		if (request.containsParam(GlobalConstant.SEARCHCRITERIA) && !request.getParam(GlobalConstant.SEARCHCRITERIA).equals("")){
+			Map<String,Object> searchCriteria = (Map<String, Object>) request.getParam(GlobalConstant.SEARCHCRITERIA);
+			if (searchCriteria.containsKey(GlobalConstant.SEARCHVALUE) && !searchCriteria.get(GlobalConstant.SEARCHVALUE).equals("")){
+				query.setParameter("searchValue", "%"+((String)searchCriteria.get(GlobalConstant.SEARCHVALUE)).toLowerCase()+"%");
+				query.setParameter("lang",request.getParam(GlobalConstant.LANG));
+			} else {
+				query.setParameter("lang",request.getParam(GlobalConstant.LANG));
+			}
+		} else {
 			query.setParameter("lang",request.getParam(GlobalConstant.LANG));
 		}
-		
 		response.addParam(GlobalConstant.ITEMCOUNT, (Long) query.getSingleResult());
 	
 	}

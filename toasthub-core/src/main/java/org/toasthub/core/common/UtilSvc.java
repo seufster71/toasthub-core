@@ -37,18 +37,24 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.imageio.ImageIO;
 
 import org.imgscalr.Scalr;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.ResponseStatus;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 import org.toasthub.core.general.model.StatusMessage;
+import org.toasthub.core.preference.model.AppCachePageUtil;
 import org.toasthub.core.preference.model.AppPageFormFieldValue;
+import org.toasthub.core.preference.model.AppPageOptionValue;
 
 import com.google.gson.Gson;
 
 @Service("UtilSvc")
 public class UtilSvc {
+	
+	@Autowired 
+	AppCachePageUtil appCachePageUtil;
 /*
 	public String writeResponsePublic(RestResponse response){
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -110,8 +116,34 @@ public class UtilSvc {
 			request.addParam(GlobalConstant.PAGESTART, 0);
 		}
 		
+		AppPageOptionValue globalPageLimit = appCachePageUtil.getAppOption("GLOBAL_PAGE", "GLOBAL_PAGE_PAGELIMIT",(String)request.getParam(GlobalConstant.LANG));
+		AppPageOptionValue globalPageLimitMax = appCachePageUtil.getAppOption("GLOBAL_PAGE", "GLOBAL_PAGE_PAGELIMIT_MAX",(String)request.getParam(GlobalConstant.LANG));
 		if (request.getParam(GlobalConstant.PAGELIMIT) == null){
-			request.addParam(GlobalConstant.PAGELIMIT, 20);
+			if (globalPageLimit != null) {
+				if (!"".equals(globalPageLimit.getValue())) {
+					request.addParam(GlobalConstant.PAGELIMIT, Integer.parseInt(globalPageLimit.getValue()));
+				} else {
+					request.addParam(GlobalConstant.PAGELIMIT, Integer.parseInt(globalPageLimit.getDefaultValue()));
+				}
+			} else {
+				request.addParam(GlobalConstant.PAGELIMIT, 20);
+			}
+		} else {
+			Integer max = 200;
+			if (globalPageLimitMax != null) {
+				if (!"".equals(globalPageLimitMax.getValue())) {
+					max = Integer.parseInt(globalPageLimitMax.getValue());
+				} else {
+					max = Integer.parseInt(globalPageLimitMax.getDefaultValue());
+				}
+			}
+			if ((Integer) request.getParam(GlobalConstant.PAGELIMIT) > max ) {
+				if (!"".equals(globalPageLimit.getValue())) {
+					request.addParam(GlobalConstant.PAGELIMIT, Integer.parseInt(globalPageLimit.getValue()));
+				} else {
+					request.addParam(GlobalConstant.PAGELIMIT, Integer.parseInt(globalPageLimit.getDefaultValue()));
+				}
+			}
 		}
 		
 		if (!request.containsParam(GlobalConstant.SVCAPIVERSION)){

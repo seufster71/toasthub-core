@@ -80,7 +80,7 @@ public class AppPageLabelValue extends BaseEntity implements Serializable{
 		this.pageLabelName = pageLabelName;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "label_value")
 	public String getValue() {
 		return value;
@@ -89,7 +89,7 @@ public class AppPageLabelValue extends BaseEntity implements Serializable{
 		this.value = value;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "lang")
 	public String getLang() {
 		return lang;
@@ -98,7 +98,7 @@ public class AppPageLabelValue extends BaseEntity implements Serializable{
 		this.lang = lang;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "rendered")
 	public Boolean getRendered() {
 		return rendered;
@@ -107,7 +107,7 @@ public class AppPageLabelValue extends BaseEntity implements Serializable{
 		this.rendered = rendered;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "sort_order")
 	public Long getOrder() {
 		return order;
@@ -116,7 +116,7 @@ public class AppPageLabelValue extends BaseEntity implements Serializable{
 		this.order = order;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Transient
 	public String getName() {
 		return name;
@@ -125,7 +125,7 @@ public class AppPageLabelValue extends BaseEntity implements Serializable{
 		this.name = name;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Transient
 	public String getClassName() {
 		return className;
@@ -134,7 +134,7 @@ public class AppPageLabelValue extends BaseEntity implements Serializable{
 		this.className = className;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Transient
 	public String getTabIndex() {
 		return tabIndex;
@@ -143,7 +143,7 @@ public class AppPageLabelValue extends BaseEntity implements Serializable{
 		this.tabIndex = tabIndex;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Transient
 	public String getOptionalParams() {
 		return optionalParams;

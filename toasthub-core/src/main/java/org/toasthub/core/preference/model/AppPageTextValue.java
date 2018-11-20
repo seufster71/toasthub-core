@@ -72,7 +72,7 @@ public class AppPageTextValue extends BaseEntity implements Serializable{
 		this.pageTextName = pageTextName;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "text_value")
 	public String getValue() {
 		return value;
@@ -81,7 +81,7 @@ public class AppPageTextValue extends BaseEntity implements Serializable{
 		this.value = value;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "lang")
 	public String getLang() {
 		return lang;
@@ -90,7 +90,7 @@ public class AppPageTextValue extends BaseEntity implements Serializable{
 		this.lang = lang;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "rendered")
 	public Boolean getRendered() {
 		return rendered;
@@ -99,7 +99,7 @@ public class AppPageTextValue extends BaseEntity implements Serializable{
 		this.rendered = rendered;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Transient
 	public String getName() {
 		return name;

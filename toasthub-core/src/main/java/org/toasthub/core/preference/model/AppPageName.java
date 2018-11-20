@@ -58,7 +58,7 @@ public class AppPageName extends BaseEntity implements Serializable{
 		super();
 	}
 	// Methods
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@NotNull
 	@Column(name = "name")
 	public String getName() {
@@ -68,7 +68,7 @@ public class AppPageName extends BaseEntity implements Serializable{
 		this.name = name;
 	}
 	
-	@JsonView({View.Admin.class})
+	@JsonView({View.Admin.class,View.System.class})
 	@ManyToOne(targetEntity = Text.class, cascade = CascadeType.ALL)
 	@JoinColumn(name = "text_id")
 	public Text getTitle() {
@@ -78,7 +78,7 @@ public class AppPageName extends BaseEntity implements Serializable{
 		this.title = title;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "category")
 	public String getCategory() {
 		return category;

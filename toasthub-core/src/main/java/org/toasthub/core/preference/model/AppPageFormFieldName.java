@@ -103,7 +103,7 @@ public class AppPageFormFieldName extends BaseEntity implements Serializable{
 		this.pageName = pageName;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "name")
 	public String getName() {
 		return name;
@@ -112,7 +112,7 @@ public class AppPageFormFieldName extends BaseEntity implements Serializable{
 		this.name = name;
 	}
 	
-	@JsonView({View.Admin.class})
+	@JsonView({View.Admin.class,View.System.class})
 	@ManyToOne(targetEntity = Text.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "text_id")
 	public Text getTitle() {
@@ -122,7 +122,7 @@ public class AppPageFormFieldName extends BaseEntity implements Serializable{
 		this.title = title;
 	}
 	
-	@JsonView({View.Admin.class})
+	@JsonView({View.Admin.class,View.System.class})
 	@OneToMany(mappedBy = "pageFormFieldName", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	public Set<AppPageFormFieldValue> getValues() {
 		return values;
@@ -131,7 +131,7 @@ public class AppPageFormFieldName extends BaseEntity implements Serializable{
 		this.values = values;
 	}
 
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "field_type")
 	public String getFieldType() {
 		return fieldType;
@@ -140,7 +140,7 @@ public class AppPageFormFieldName extends BaseEntity implements Serializable{
 		this.fieldType = fieldType;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "html_type")
 	public String getHtmlType() {
 		return htmlType;
@@ -149,7 +149,7 @@ public class AppPageFormFieldName extends BaseEntity implements Serializable{
 		this.htmlType = htmlType;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "row_count")
 	public Integer getRows() {
 		return rows;
@@ -158,7 +158,7 @@ public class AppPageFormFieldName extends BaseEntity implements Serializable{
 		this.rows = rows;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "column_count")
 	public Integer getCols() {
 		return cols;
@@ -167,7 +167,7 @@ public class AppPageFormFieldName extends BaseEntity implements Serializable{
 		this.cols = cols;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "class_name")
 	public String getClassName() {
 		return className;
@@ -176,7 +176,7 @@ public class AppPageFormFieldName extends BaseEntity implements Serializable{
 		this.className = className;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "group_name")
 	public String getGroup() {
 		return group;
@@ -185,7 +185,7 @@ public class AppPageFormFieldName extends BaseEntity implements Serializable{
 		this.group = group;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "sub_group_name")
 	public String getSubGroup() {
 		return subGroup;
@@ -194,7 +194,7 @@ public class AppPageFormFieldName extends BaseEntity implements Serializable{
 		this.subGroup = subGroup;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "tab_index")
 	public String getTabIndex() {
 		return tabIndex;
@@ -203,7 +203,7 @@ public class AppPageFormFieldName extends BaseEntity implements Serializable{
 		this.tabIndex = tabIndex;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "optional_params")
 	public String getOptionalParams() {
 		return optionalParams;
@@ -212,7 +212,7 @@ public class AppPageFormFieldName extends BaseEntity implements Serializable{
 		this.optionalParams = optionalParams;
 	}
 	
-	@JsonView({View.Admin.class})
+	@JsonView({View.Admin.class,View.System.class})
 	@Column(name = "class_model")
 	public String getClassModel() {
 		return classModel;

@@ -52,7 +52,7 @@ public class ClientDomain extends ToastEntity implements Serializable {
 
 	// Setter/Getters
 	
-	@JsonView({View.Admin.class})
+	@JsonView({View.System.class})
 	@Column(name = "url_domain")
 	public String getURLDomain() {
 		return URLDomain;
@@ -61,7 +61,7 @@ public class ClientDomain extends ToastEntity implements Serializable {
 		this.URLDomain = URLDomain;
 	}
 
-	@JsonView({View.Admin.class})
+	@JsonView({View.System.class})
 	@Column(name = "app_domain")
 	public String getAPPDomain() {
 		return APPDomain;
@@ -70,7 +70,7 @@ public class ClientDomain extends ToastEntity implements Serializable {
 		this.APPDomain = APPDomain;
 	}
 
-	@JsonView({View.Admin.class})
+	@JsonView({View.System.class})
 	@Column(name = "cust_domain")
 	public String getCustDomain() {
 		return CustDomain;
@@ -79,7 +79,7 @@ public class ClientDomain extends ToastEntity implements Serializable {
 		this.CustDomain = CustDomain;
 	}
 	
-	@JsonView({View.Admin.class})
+	@JsonView({View.System.class})
 	@Column(name = "app_name")
 	public String getAPPName() {
 		return APPName;
@@ -88,7 +88,7 @@ public class ClientDomain extends ToastEntity implements Serializable {
 		APPName = aPPName;
 	}
 	
-	@JsonView({View.Admin.class})
+	@JsonView({View.System.class})
 	@Column(name = "html_prefix")
 	public String getHTMLPrefix() {
 		return HTMLPrefix;
@@ -97,7 +97,7 @@ public class ClientDomain extends ToastEntity implements Serializable {
 		HTMLPrefix = hTMLPrefix;
 	}
 	
-	@JsonView({View.Admin.class})
+	@JsonView({View.System.class})
 	@Column(name = "public_layout")
 	public String getPublicLayout() {
 		return publicLayout;
@@ -106,7 +106,7 @@ public class ClientDomain extends ToastEntity implements Serializable {
 		this.publicLayout = publicLayout;
 	}
 	
-	@JsonView({View.Admin.class})
+	@JsonView({View.System.class})
 	@Column(name = "admin_layout")
 	public String getAdminLayout() {
 		return adminLayout;
@@ -115,7 +115,7 @@ public class ClientDomain extends ToastEntity implements Serializable {
 		this.adminLayout = adminLayout;
 	}
 	
-	@JsonView({View.Admin.class})
+	@JsonView({View.System.class})
 	@Column(name = "member_layout")
 	public String getMemberLayout() {
 		return memberLayout;
@@ -124,7 +124,7 @@ public class ClientDomain extends ToastEntity implements Serializable {
 		this.memberLayout = memberLayout;
 	}
 	
-	@JsonView({View.Admin.class})
+	@JsonView({View.System.class})
 	@Column(name = "sysadmin_layout")
 	public String getSysAdminLayout() {
 		return sysAdminLayout;

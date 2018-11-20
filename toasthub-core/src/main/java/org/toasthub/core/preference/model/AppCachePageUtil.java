@@ -626,6 +626,28 @@ public class AppCachePageUtil {
 		return result;
 	}
 	
+	public AppPageOptionValue getAppOption(String pageName, String valueName, String lang) {
+		AppPageOptionValue result = null;
+		try {
+			String tenant = TenantContext.getURLDomain();
+			StringBuilder key = new StringBuilder();
+			key.append(appCacheClientDomains.getClientDomain(tenant).getCustDomain());
+			key.append("_");
+			key.append(pageName);
+			key.append("_");
+			key.append(lang);
+			if (appCachePage.getAppPageOptions() != null && appCachePage.getAppPageOptions().containsKey(key.toString())){
+				Map<String,AppPageOptionValue> appPageOptionValues = appCachePage.getAppPageOptions().get(key.toString());
+				
+				result = appPageOptionValues.get(valueName);
+			}
+		} catch (Exception e) {
+			// eat error
+			result = null;
+		}
+		return result;
+	}
+	
 	// Add 
 	@SuppressWarnings("unchecked")
 	public static void addAppForm(RestRequest request, String... pageName) {

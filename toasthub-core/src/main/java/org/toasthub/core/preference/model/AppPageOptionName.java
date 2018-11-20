@@ -72,7 +72,7 @@ public class AppPageOptionName extends BaseEntity implements Serializable{
 		this.pageName = pageName;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "name")
 	public String getName() {
 		return name;
@@ -81,7 +81,7 @@ public class AppPageOptionName extends BaseEntity implements Serializable{
 		this.name = name;
 	}
 	
-	@JsonView({View.Admin.class})
+	@JsonView({View.Admin.class,View.System.class})
 	@ManyToOne(targetEntity = Text.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "text_id")
 	public Text getTitle() {
@@ -91,7 +91,7 @@ public class AppPageOptionName extends BaseEntity implements Serializable{
 		this.title = title;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "value_type")
 	public String getValueType() {
 		return valueType;
@@ -100,7 +100,7 @@ public class AppPageOptionName extends BaseEntity implements Serializable{
 		this.valueType = valueType;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "default_value")
 	public String getDefaultValue() {
 		return defaultValue;
@@ -109,7 +109,7 @@ public class AppPageOptionName extends BaseEntity implements Serializable{
 		this.defaultValue = defaultValue;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "use_default")
 	public Boolean getUseDefault() {
 		return useDefault;
@@ -118,7 +118,7 @@ public class AppPageOptionName extends BaseEntity implements Serializable{
 		this.useDefault = useDefault;
 	}
 
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "optional_params")
 	public String getOptionalParams() {
 		return optionalParams;
@@ -127,7 +127,7 @@ public class AppPageOptionName extends BaseEntity implements Serializable{
 		this.optionalParams = optionalParams;
 	}
 	
-	@JsonView({View.Admin.class})
+	@JsonView({View.Admin.class,View.System.class})
 	@OneToMany(mappedBy = "pageOptionName", cascade = CascadeType.ALL)
 	public Set<AppPageOptionValue> getValues() {
 		return values;

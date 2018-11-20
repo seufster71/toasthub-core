@@ -87,7 +87,7 @@ public class AppPageLabelName extends BaseEntity implements Serializable {
 		this.pageName = pageName;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@NotNull
 	@Column(name = "name")
 	public String getName() {
@@ -107,7 +107,7 @@ public class AppPageLabelName extends BaseEntity implements Serializable {
 		this.title = title;
 	}
 
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "class_name")
 	public String getClassName() {
 		return className;
@@ -116,7 +116,7 @@ public class AppPageLabelName extends BaseEntity implements Serializable {
 		this.className = className;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "tab_index")
 	public String getTabIndex() {
 		return tabIndex;
@@ -125,7 +125,7 @@ public class AppPageLabelName extends BaseEntity implements Serializable {
 		this.tabIndex = tabIndex;
 	}
 	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "optional_params")
 	public String getOptionalParams() {
 		return optionalParams;
@@ -134,7 +134,7 @@ public class AppPageLabelName extends BaseEntity implements Serializable {
 		this.optionalParams = optionalParams;
 	}
 
-	@JsonView({View.Admin.class})
+	@JsonView({View.Admin.class,View.System.class})
 	@OneToMany(mappedBy = "pageLabelName", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	public Set<AppPageLabelValue> getValues() {
 		return values;

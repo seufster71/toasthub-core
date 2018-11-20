@@ -10,6 +10,7 @@ public class GlobalConstant {
 	public static final String ITEMTYPE = "itemType";
 	public static final String COLUMNS = "columns";
 	public static final String DATATYPES = "dataTypes";
+	public static final String ORDERCRITERIA = "orderCriteria";
 	public static final String ORDERCOLUMN = "orderColumn";
 	public static final String ORDERDIR = "orderDir";
 	public static final String PAGESTART = "pageStart";
@@ -18,6 +19,7 @@ public class GlobalConstant {
 	public static final String PARENTID = "parentId";
 	public static final String ID = "id";
 	
+	public static final String SEARCHCRITERIA = "searchCriteria";
 	public static final String SEARCHVALUE = "searchValue";
 	public static final String SEARCHCOLUMN = "searchColumn";
 	public static final String COLUMNWHERE = "columnWhere";
