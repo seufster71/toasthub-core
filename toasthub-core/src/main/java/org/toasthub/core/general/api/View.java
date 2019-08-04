@@ -5,4 +5,5 @@ public class View {
 	public interface Member {}
 	public interface Admin {}
 	public interface System {}
+	public interface PublicMember extends Public, Member {}
 }

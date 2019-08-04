@@ -112,7 +112,6 @@ public class BaseEntity implements Serializable{
 	
 	@JsonView({View.Admin.class})
 	@Column(name = "modified",updatable = false, insertable = false)
-	//@org.hibernate.annotations.Generated(org.hibernate.annotations.GenerationTime.ALWAYS)
 	public Date getModified() {
 		return modified;
 	}
@@ -121,7 +120,7 @@ public class BaseEntity implements Serializable{
 	}
 	
 	@JsonView({View.Member.class,View.Admin.class,View.System.class})
-	@Column(name = "created", updatable = false)
+	@Column(name = "created", updatable = false, insertable = false)
 	public Date getCreated() {
 		return created;
 	}

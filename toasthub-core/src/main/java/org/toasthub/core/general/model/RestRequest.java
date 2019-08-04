@@ -21,9 +21,35 @@ import java.util.Map;
 
 public class RestRequest {
 
-	private Map<String,Object> params;
+	protected String action;
+	protected String service;
+	protected String lang;
+
+	
+	protected Map<String,Object> params;
 	
 	// Methods
+	public String getAction() {
+		return action;
+	}
+	public void setAction(String action) {
+		this.action = action;
+	}
+	
+	public String getService() {
+		return service;
+	}
+	public void setService(String service) {
+		this.service = service;
+	}
+	
+	public String getLang() {
+		return lang;
+	}
+	public void setLang(String lang) {
+		this.lang = lang;
+	}
+	
 	public Map<String,Object> getParams() {
 		return params;
 	}

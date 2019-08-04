@@ -157,15 +157,16 @@ public class UtilSvc {
 	} // setupDefaults
 	
 	@SuppressWarnings("unchecked")
-	public void addStatus(String status, String code, String message, RestResponse response) {
+	public void addStatus(String level, String status, String message, RestResponse response) {
 		
-		StatusMessage statusMessage = new StatusMessage(code, message);
+		response.setStatus(status);
+		StatusMessage statusMessage = new StatusMessage(status, message);
 		// check for status object
 		if (response.getParam(RestResponse.STATUS) == null){
 			response.addParam(RestResponse.STATUS, new ResponseStatus());
 		}
 		ResponseStatus responseStatus = (ResponseStatus) response.getParam(RestResponse.STATUS);
-		switch (status) {
+		switch (level) {
 		case RestResponse.INFO :
 			if (responseStatus.getInfo() != null) {
 				responseStatus.getInfo().add(statusMessage);

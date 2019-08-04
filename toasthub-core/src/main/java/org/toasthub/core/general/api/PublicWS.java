@@ -25,6 +25,7 @@ import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 import org.toasthub.core.general.model.ServiceClass;
+import org.toasthub.core.general.utils.TenantContext;
 import org.toasthub.core.serviceCrawler.MicroServiceClient;
 import org.toasthub.core.common.UtilSvc;
 import org.toasthub.core.general.model.AppCacheServiceCrawler;
@@ -47,6 +48,8 @@ public class PublicWS {
 	@JsonView(View.Public.class)
 	@RequestMapping(value = "callService", method = RequestMethod.POST)
 	public RestResponse callService(@RequestBody RestRequest request) {
+		request.addParam("TENANT_URLDOMAIN", TenantContext.getURLDomain());
+		request.addParam("TENANT_ID", TenantContext.getTenantId());
 		RestResponse response = new RestResponse();
 		try {
 			//Time stamp for metrics

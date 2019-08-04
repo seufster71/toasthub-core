@@ -17,6 +17,7 @@
 package org.toasthub.core.general.model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.toasthub.core.general.api.View;
@@ -26,10 +27,10 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class RestResponse {
 
 	public static final String STATUS = "status";
-	public static final String ERROR = "error";
-	public static final String SUCCESS = "success";
-	public static final String INFO = "info";
-	public static final String WARN = "warn";
+	public static final String ERROR = "ERROR";
+	public static final String SUCCESS = "SUCCESS";
+	public static final String INFO = "INFO";
+	public static final String WARN = "WARN";
 	
 	public static final String REGISTER = "REGISTER";
 	
@@ -47,9 +48,47 @@ public class RestResponse {
 	public static final String ACCESSDENIED = "ACCESSDENIED";
 	public static final String MENUS = "MENUS";
 
+	protected String status;
+	protected List<String> infos;
+	protected List<String> warns;
+	protected List<String> errors;
+
+	protected Map<String,Object> params;
 	
-	private Map<String,Object> params;
+	// Methods
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
+	public List<String> getInfos() {
+		return infos;
+	}
+	public void setInfos(List<String> infos) {
+		this.infos = infos;
+	}
 	
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
+	public List<String> getWarns() {
+		return warns;
+	}
+	public void setWarns(List<String> warns) {
+		this.warns = warns;
+	}
+	
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
+	public List<String> getErrors() {
+		return errors;
+	}
+	public void setErrors(List<String> errors) {
+		this.errors = errors;
+	}
+	
+
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	public Map<String,Object> getParams() {
 		if (params == null){
@@ -78,4 +117,5 @@ public class RestResponse {
 		}
 		return false;
 	}
+
 }
