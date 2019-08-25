@@ -13,8 +13,8 @@ public class GlobalConstant {
 	public static final String ORDERCRITERIA = "orderCriteria";
 	public static final String ORDERCOLUMN = "orderColumn";
 	public static final String ORDERDIR = "orderDir";
-	public static final String PAGESTART = "pageStart";
-	public static final String PAGELIMIT = "pageLimit";
+	public static final String LISTSTART = "listStart";
+	public static final String LISTLIMIT = "listLimit";
 	public static final String DIRECTORY = "directory";
 	public static final String PARENTID = "parentId";
 	public static final String ID = "id";

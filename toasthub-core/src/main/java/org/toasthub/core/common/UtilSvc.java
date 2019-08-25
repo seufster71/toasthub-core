@@ -112,21 +112,21 @@ public class UtilSvc {
 			request.addParam(GlobalConstant.LANG,"en");
 		}
 		
-		if (request.getParam(GlobalConstant.PAGESTART) == null){
-			request.addParam(GlobalConstant.PAGESTART, 0);
+		if (request.getParam(GlobalConstant.LISTSTART) == null){
+			request.addParam(GlobalConstant.LISTSTART, 0);
 		}
 		
 		AppPageOptionValue globalPageLimit = appCachePageUtil.getAppOption("GLOBAL_PAGE", "GLOBAL_PAGE_PAGELIMIT",(String)request.getParam(GlobalConstant.LANG));
 		AppPageOptionValue globalPageLimitMax = appCachePageUtil.getAppOption("GLOBAL_PAGE", "GLOBAL_PAGE_PAGELIMIT_MAX",(String)request.getParam(GlobalConstant.LANG));
-		if (request.getParam(GlobalConstant.PAGELIMIT) == null){
+		if (request.getParam(GlobalConstant.LISTLIMIT) == null){
 			if (globalPageLimit != null) {
 				if (!"".equals(globalPageLimit.getValue())) {
-					request.addParam(GlobalConstant.PAGELIMIT, Integer.parseInt(globalPageLimit.getValue()));
+					request.addParam(GlobalConstant.LISTLIMIT, Integer.parseInt(globalPageLimit.getValue()));
 				} else {
-					request.addParam(GlobalConstant.PAGELIMIT, Integer.parseInt(globalPageLimit.getDefaultValue()));
+					request.addParam(GlobalConstant.LISTLIMIT, Integer.parseInt(globalPageLimit.getDefaultValue()));
 				}
 			} else {
-				request.addParam(GlobalConstant.PAGELIMIT, 20);
+				request.addParam(GlobalConstant.LISTLIMIT, 20);
 			}
 		} else {
 			Integer max = 200;
@@ -137,11 +137,11 @@ public class UtilSvc {
 					max = Integer.parseInt(globalPageLimitMax.getDefaultValue());
 				}
 			}
-			if ((Integer) request.getParam(GlobalConstant.PAGELIMIT) > max ) {
+			if ((Integer) request.getParam(GlobalConstant.LISTLIMIT) > max ) {
 				if (!"".equals(globalPageLimit.getValue())) {
-					request.addParam(GlobalConstant.PAGELIMIT, Integer.parseInt(globalPageLimit.getValue()));
+					request.addParam(GlobalConstant.LISTLIMIT, Integer.parseInt(globalPageLimit.getValue()));
 				} else {
-					request.addParam(GlobalConstant.PAGELIMIT, Integer.parseInt(globalPageLimit.getDefaultValue()));
+					request.addParam(GlobalConstant.LISTLIMIT, Integer.parseInt(globalPageLimit.getDefaultValue()));
 				}
 			}
 		}

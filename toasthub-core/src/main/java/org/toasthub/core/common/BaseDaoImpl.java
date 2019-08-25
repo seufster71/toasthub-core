@@ -80,9 +80,9 @@ public class BaseDaoImpl implements BaseDao {
 		} else {
 			query.setParameter("active", true);
 		}
-		if (request.containsParam(GlobalConstant.PAGELIMIT) && (Integer) request.getParam(GlobalConstant.PAGELIMIT) != 0){
-			query.setFirstResult((Integer) request.getParam(GlobalConstant.PAGESTART));
-			query.setMaxResults((Integer) request.getParam(GlobalConstant.PAGELIMIT));
+		if (request.containsParam(GlobalConstant.LISTLIMIT) && (Integer) request.getParam(GlobalConstant.LISTLIMIT) != 0){
+			query.setFirstResult((Integer) request.getParam(GlobalConstant.LISTSTART));
+			query.setMaxResults((Integer) request.getParam(GlobalConstant.LISTLIMIT));
 		}
 		response.addParam(GlobalConstant.ITEMS, (List<?>) query.getResultList());
 	}

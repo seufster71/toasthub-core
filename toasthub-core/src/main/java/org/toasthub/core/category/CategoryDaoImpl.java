@@ -62,9 +62,9 @@ public class CategoryDaoImpl extends BaseDaoImpl implements CategoryDao {
 			query.setParameter("searchValue", "%"+((String)request.getParam(GlobalConstant.SEARCHVALUE)).toLowerCase()+"%");
 			query.setParameter("lang",request.getParam(GlobalConstant.LANG));
 		}
-		if (request.containsParam(GlobalConstant.PAGELIMIT) && (Integer) request.getParam(GlobalConstant.PAGELIMIT) != 0){
-			query.setFirstResult((Integer) request.getParam(GlobalConstant.PAGESTART));
-			query.setMaxResults((Integer) request.getParam(GlobalConstant.PAGELIMIT));
+		if (request.containsParam(GlobalConstant.LISTLIMIT) && (Integer) request.getParam(GlobalConstant.LISTLIMIT) != 0){
+			query.setFirstResult((Integer) request.getParam(GlobalConstant.LISTSTART));
+			query.setMaxResults((Integer) request.getParam(GlobalConstant.LISTLIMIT));
 		}
 		@SuppressWarnings("unchecked")
 		List<Category> categories = query.getResultList();

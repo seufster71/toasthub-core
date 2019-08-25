@@ -96,9 +96,9 @@ public class ServiceCrawlerDaoImpl implements ServiceCrawlerDao {
 		if (request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
 			query.setParameter("searchValue", "%"+((String)request.getParam(GlobalConstant.SEARCHVALUE)).toLowerCase()+"%");
 		}
-		if (request.containsParam(GlobalConstant.PAGELIMIT) && (Integer) request.getParam(GlobalConstant.PAGELIMIT) != 0){
-			query.setFirstResult((Integer) request.getParam(GlobalConstant.PAGESTART));
-			query.setMaxResults((Integer) request.getParam(GlobalConstant.PAGELIMIT));
+		if (request.containsParam(GlobalConstant.LISTLIMIT) && (Integer) request.getParam(GlobalConstant.LISTLIMIT) != 0){
+			query.setFirstResult((Integer) request.getParam(GlobalConstant.LISTSTART));
+			query.setMaxResults((Integer) request.getParam(GlobalConstant.LISTLIMIT));
 		}
 		@SuppressWarnings("unchecked")
 		List<ServiceClass> services = query.getResultList();
