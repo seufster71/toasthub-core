@@ -123,11 +123,11 @@ public class AppPageSvcImpl implements AppPageSvc {
 	@Override
 	public void itemCount(RestRequest request, RestResponse response) {
 		try {
-			//if (request.containsParam("category")) {
+			if (request.containsParam("category")) {
 				appPageDao.itemCount(request, response);
-			//} else {
-			//	utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Missing category param", response);
-			//}
+			} else {
+				utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Missing category param", response);
+			}
 		} catch (Exception e) {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Count failed", response);
 			e.printStackTrace();
@@ -138,11 +138,11 @@ public class AppPageSvcImpl implements AppPageSvc {
 	@Override
 	public void items(RestRequest request, RestResponse response) {
 		try {
-			//if (request.containsParam("category")) {
+			if (request.containsParam("category")) {
 				appPageDao.items(request, response);
-			//} else {
-			//	utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Missing category param", response);
-			//}
+			} else {
+				utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Missing category param", response);
+			}
 		} catch (Exception e) {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "List failed", response);
 			e.printStackTrace();
