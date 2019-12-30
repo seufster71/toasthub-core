@@ -49,9 +49,9 @@ public class RestResponse {
 	public static final String MENUS = "MENUS";
 
 	protected String status;
-	protected List<String> infos;
-	protected List<String> warns;
-	protected List<String> errors;
+	protected List<StatusMessage> infos;
+	protected List<StatusMessage> warns;
+	protected List<StatusMessage> errors;
 
 	protected Map<String,Object> params;
 	
@@ -65,26 +65,26 @@ public class RestResponse {
 	}
 
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
-	public List<String> getInfos() {
+	public List<StatusMessage> getInfos() {
 		return infos;
 	}
-	public void setInfos(List<String> infos) {
+	public void setInfos(List<StatusMessage> infos) {
 		this.infos = infos;
 	}
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
-	public List<String> getWarns() {
+	public List<StatusMessage> getWarns() {
 		return warns;
 	}
-	public void setWarns(List<String> warns) {
+	public void setWarns(List<StatusMessage> warns) {
 		this.warns = warns;
 	}
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
-	public List<String> getErrors() {
+	public List<StatusMessage> getErrors() {
 		return errors;
 	}
-	public void setErrors(List<String> errors) {
+	public void setErrors(List<StatusMessage> errors) {
 		this.errors = errors;
 	}
 	

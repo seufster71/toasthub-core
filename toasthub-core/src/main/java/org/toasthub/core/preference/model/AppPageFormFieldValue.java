@@ -263,7 +263,7 @@ public class AppPageFormFieldValue extends BaseEntity implements Serializable{
 		this.optionalParams = optionalParams;
 	}
 
-	@JsonIgnore
+	@JsonView({View.Admin.class,View.System.class})
 	@Transient
 	public String getClassModel() {
 		return classModel;

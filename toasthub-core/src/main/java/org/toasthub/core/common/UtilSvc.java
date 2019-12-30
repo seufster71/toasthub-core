@@ -40,7 +40,6 @@ import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.toasthub.core.general.model.GlobalConstant;
-import org.toasthub.core.general.model.ResponseStatus;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 import org.toasthub.core.general.model.StatusMessage;
@@ -162,41 +161,41 @@ public class UtilSvc {
 		response.setStatus(status);
 		StatusMessage statusMessage = new StatusMessage(status, message);
 		// check for status object
-		if (response.getParam(RestResponse.STATUS) == null){
-			response.addParam(RestResponse.STATUS, new ResponseStatus());
-		}
-		ResponseStatus responseStatus = (ResponseStatus) response.getParam(RestResponse.STATUS);
+		//if (response.getParam(RestResponse.STATUS) == null){
+		//	response.addParam(RestResponse.STATUS, new ResponseStatus());
+		//}
+		//ResponseStatus responseStatus = (ResponseStatus) response.getParam(RestResponse.STATUS);
 		switch (level) {
 		case RestResponse.INFO :
-			if (responseStatus.getInfo() != null) {
-				responseStatus.getInfo().add(statusMessage);
+			if (response.getInfos() != null) {
+				response.getInfos().add(statusMessage);
 			} else {
-				responseStatus.setInfo(new ArrayList<StatusMessage>());
-				responseStatus.getInfo().add(statusMessage);
+				response.setInfos(new ArrayList<StatusMessage>());
+				response.getInfos().add(statusMessage);
 			}
 			break;
 		case RestResponse.WARN :
-			if (responseStatus.getWarn() != null) {
-				responseStatus.getWarn().add(statusMessage);
+			if (response.getWarns() != null) {
+				response.getWarns().add(statusMessage);
 			} else {
-				responseStatus.setWarn(new ArrayList<StatusMessage>());
-				responseStatus.getWarn().add(statusMessage);
+				response.setWarns(new ArrayList<StatusMessage>());
+				response.getWarns().add(statusMessage);
 			}
 			break;
 		case RestResponse.ERROR :
-			if (responseStatus.getError() != null) {
-				responseStatus.getError().add(statusMessage);
+			if (response.getErrors() != null) {
+				response.getErrors().add(statusMessage);
 			} else {
-				responseStatus.setError(new ArrayList<StatusMessage>());
-				responseStatus.getError().add(statusMessage);
+				response.setErrors(new ArrayList<StatusMessage>());
+				response.getErrors().add(statusMessage);
 			}
 			break;
 		default :
-			if (responseStatus.getWarn() != null) {
-				responseStatus.getWarn().add(statusMessage);
+			if (response.getWarns() != null) {
+				response.getWarns().add(statusMessage);
 			} else {
-				responseStatus.setWarn(new ArrayList<StatusMessage>());
-				responseStatus.getWarn().add(statusMessage);
+				response.setWarns(new ArrayList<StatusMessage>());
+				response.getWarns().add(statusMessage);
 			}
 			break;
 		}
