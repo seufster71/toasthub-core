@@ -24,5 +24,6 @@ public interface LanguageSvc {
 	public void itemCount(RestRequest request, RestResponse response);
 	public void item(RestRequest request, RestResponse response);
 	public void items(RestRequest request, RestResponse response);
+	public void itemColumns(RestRequest request, RestResponse response);
 	public void getAllLanguages(RestRequest request, RestResponse response);
 }

@@ -38,6 +38,9 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class Language extends BaseEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;
+	public static String[] columns = {"title","code","defaultLang","dir"};
+	public static String[] dataTypes = {"text","string","boolean","string"};
+	
 	private String code;
 	private Text title;
 	private Boolean defaultLang;

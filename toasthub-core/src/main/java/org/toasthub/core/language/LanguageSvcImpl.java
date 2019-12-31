@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.toasthub.core.common.UtilSvc;
 import org.toasthub.core.general.handler.ServiceProcessor;
 import org.toasthub.core.general.model.GlobalConstant;
+import org.toasthub.core.general.model.Language;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 
@@ -97,4 +98,12 @@ public class LanguageSvcImpl implements ServiceProcessor, LanguageSvc {
 		}
 	}
 
+	@Override
+	public void itemColumns(RestRequest request, RestResponse response){
+		String itemName = (String) request.getParam(GlobalConstant.ITEMNAME);
+		if (itemName != null && itemName.equals("Language")) {
+			request.addParam("columns",Language.columns);
+		}
+		response.addParam("columns", request.getParam("columns"));
+	}
 }

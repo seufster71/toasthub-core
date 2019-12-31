@@ -366,14 +366,14 @@ public class UtilSvc {
 									}
 									break;
 								case "BLN":
-									value = (String) inputList.get(field.getName());
-									if (value != null){
-										Boolean b = Boolean.parseBoolean(value);
+									Boolean boolValue = (Boolean) inputList.get(field.getName());
+									if (boolValue != null){
+										//Boolean b = Boolean.parseBoolean(value);
 										String fieldName = (String) paramObj.get("field");
 										if (fieldName != null){
 											Field f = instanceClass.getDeclaredField(fieldName);
 											f.setAccessible(true);
-											f.set(item, b);
+											f.set(item, boolValue);
 										}
 									}
 									break;
