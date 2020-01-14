@@ -40,6 +40,7 @@ import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.toasthub.core.general.model.GlobalConstant;
+import org.toasthub.core.general.model.Language;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 import org.toasthub.core.general.model.StatusMessage;
@@ -248,7 +249,24 @@ public class UtilSvc {
 								}
 								break;
 							case "MTXT":
-								
+								// Check if required
+								if (field.getRequired()) {
+									// check default
+									String defaultValue = (String) inputList.get(field.getName().concat("-DEFAULT"));
+									if ( field.getRequired() && (defaultValue == null || (defaultValue != null && defaultValue.isEmpty())) ){
+										isValid = false;
+									}
+									// check text
+									List<Language> languages = (List<Language>) request.getParam("LANGUAGES");
+									for (Language language : languages) {
+										if (language.isDefaultLang()) {
+											String txtValue = (String) inputList.get(field.getName().concat("-TEXT-").concat(language.getCode()));
+											if (txtValue == null || (txtValue != null && txtValue.isEmpty())) {
+												isValid = false;
+											}
+										}
+									}
+								}
 								
 								break;
 							case "BLN":
@@ -401,18 +419,29 @@ public class UtilSvc {
 									}
 									break;
 								case "MTXT":
-									Map<String,String> valuesMap = (Map<String,String>) inputList.get(field.getName());
-									if (valuesMap != null){
-										String methodName = (String) paramObj.get("method");
+									// Marshall Default
+									String defaultValue = (String) inputList.get(field.getName().concat("-DEFAULT"));
+									if (defaultValue != null){
+										String methodName = (String) ((Map<String,String>) paramObj.get("defaultClazz")).get("method");
 										if (methodName != null){
-											String fieldName = (String) paramObj.get("field");
-											if (fieldName != null){
-												valuesMap.put(GlobalConstant.FIELD, fieldName);
+											Method m = instanceClass.getMethod(methodName,stringParams);
+											m.invoke(item, defaultValue);
+										}
+									}
+									// Marshall Text
+									List<Language> languages = (List<Language>) request.getParam("LANGUAGES");
+									for (Language language : languages) {
+										String textValue = (String) inputList.get(field.getName().concat("-TEXT-").concat(language.getCode()));
+										if (textValue != null){
+											String methodName = (String) ((Map<String,String>) paramObj.get("textClazz")).get("method");
+											if (methodName != null){
+												Map<String,String> valMap = new HashMap<String,String>();
+												valMap.put(language.getCode(), textValue);
+												Class[] paramMap = new Class[1];
+												paramMap[0] = Map.class;
+												Method m = instanceClass.getMethod(methodName,paramMap);
+												m.invoke(item, valMap);
 											}
-											Class[] paramMap = new Class[1];
-											paramMap[0] = Map.class;
-											Method m = instanceClass.getMethod(methodName,paramMap);
-											m.invoke(item, valuesMap);
 										}
 									}
 									break;
