@@ -398,11 +398,25 @@ public class UtilSvc {
 								case "SLT":
 									value = (String) inputList.get(field.getName());
 									if (value != null){
-										String fieldName = (String) paramObj.get("field");
-										if (fieldName != null){
-											Field f = instanceClass.getDeclaredField(fieldName);
-											f.setAccessible(true);
-											f.set(item, value);
+										if (paramObj.containsKey("method")) {
+											String methodName = (String) paramObj.get("method");
+											if (methodName != null) {
+												if ("Long".equalsIgnoreCase((String) paramObj.get("method"))) {
+													Long id = Long.parseLong(value);
+													Method m = instanceClass.getDeclaredMethod(methodName,longParams);
+													m.invoke(item, id);
+												} else {
+													Method m = instanceClass.getDeclaredMethod(methodName,stringParams);
+													m.invoke(item, value);
+												}
+											}
+										} else {
+											String fieldName = (String) paramObj.get("field");
+											if (fieldName != null){
+												Field f = instanceClass.getDeclaredField(fieldName);
+												f.setAccessible(true);
+												f.set(item, value);
+											}
 										}
 									}
 									break;
