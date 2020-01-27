@@ -396,12 +396,16 @@ public class UtilSvc {
 									}
 									break;
 								case "SLT":
-									value = (String) inputList.get(field.getName());
+									if (inputList.get(field.getName()) instanceof Integer) {
+										value = String.valueOf(inputList.get(field.getName()));
+									} else {
+										value = (String) inputList.get(field.getName());
+									}
 									if (value != null){
 										if (paramObj.containsKey("method")) {
 											String methodName = (String) paramObj.get("method");
 											if (methodName != null) {
-												if ("Long".equalsIgnoreCase((String) paramObj.get("method"))) {
+												if ("Long".equalsIgnoreCase((String) paramObj.get("type"))) {
 													Long id = Long.parseLong(value);
 													Method m = instanceClass.getDeclaredMethod(methodName,longParams);
 													m.invoke(item, id);
