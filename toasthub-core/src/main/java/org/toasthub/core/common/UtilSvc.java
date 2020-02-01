@@ -26,7 +26,12 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -499,6 +504,20 @@ public class UtilSvc {
 									}
 									
 									break;	
+								case "DATE":
+									String dateString = (String) inputList.get(field.getName());
+									Instant instant = Instant.parse(dateString);
+									LocalDateTime ldt = LocalDateTime.ofInstant(instant, ZoneId.of(ZoneOffset.UTC.getId()));
+									Date dateValue = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
+									if (dateValue != null){
+										String fieldName = (String) paramObj.get("field");
+										if (fieldName != null){
+											Field f = instanceClass.getDeclaredField(fieldName);
+											f.setAccessible(true);
+											f.set(item, dateValue);
+										}
+									}
+									break;
 								}
 								
 							} catch (NoSuchFieldException e) {
