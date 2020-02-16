@@ -17,7 +17,7 @@
 package org.toasthub.core.general.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -37,9 +37,9 @@ public class BaseEntity implements Serializable{
 	private Boolean archive;
 	private Boolean locked;
 	private Long lockOwnerRefId;
-	private Date lockTime;
-	private Date modified;
-	private Date created;
+	private Instant lockTime;
+	private Instant modified;
+	private Instant created;
 	private Long version;
 	
 	// Constructor
@@ -112,19 +112,19 @@ public class BaseEntity implements Serializable{
 	
 	@JsonView({View.Admin.class})
 	@Column(name = "modified",updatable = false, insertable = false)
-	public Date getModified() {
+	public Instant getModified() {
 		return modified;
 	}
-	public void setModified(Date modified) {
+	public void setModified(Instant modified) {
 		this.modified = modified;
 	}
 	
 	@JsonView({View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "created", updatable = false, insertable = false)
-	public Date getCreated() {
+	public Instant getCreated() {
 		return created;
 	}
-	public void setCreated(Date created) {
+	public void setCreated(Instant created) {
 		this.created = created;
 	}
 	
@@ -176,10 +176,10 @@ public class BaseEntity implements Serializable{
 	
 	@JsonView({View.Admin.class})
 	@Column(name = "lock_time")
-	public Date getLockTime() {
+	public Instant getLockTime() {
 		return lockTime;
 	}
-	public void setLockTime(Date lockTime) {
+	public void setLockTime(Instant lockTime) {
 		this.lockTime = lockTime;
 	}
 

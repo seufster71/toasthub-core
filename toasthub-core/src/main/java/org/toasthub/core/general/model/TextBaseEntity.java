@@ -17,7 +17,7 @@
 package org.toasthub.core.general.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -38,13 +38,13 @@ public class TextBaseEntity implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private Long id;
-	private Date modified;
-	private Date created;
+	private Instant modified;
+	private Instant created;
 	private Long version;
 	
 	// Constructor
 	public TextBaseEntity() {
-		this.setCreated(new Date());
+		this.setCreated(Instant.now());
 	}
 	// Setter/Getter
 	@Id	
@@ -61,19 +61,19 @@ public class TextBaseEntity implements Serializable{
 	@JsonView({View.Admin.class})
 	@Column(name = "modified",updatable = false, insertable = false)
 	//@org.hibernate.annotations.Generated(org.hibernate.annotations.GenerationTime.ALWAYS)
-	public Date getModified() {
+	public Instant getModified() {
 		return modified;
 	}
-	public void setModified(Date modified) {
+	public void setModified(Instant modified) {
 		this.modified = modified;
 	}
 	
 	@JsonView({View.Admin.class})
 	@Column(name = "created", updatable = false, insertable = false)
-	public Date getCreated() {
+	public Instant getCreated() {
 		return created;
 	}
-	public void setCreated(Date created) {
+	public void setCreated(Instant created) {
 		this.created = created;
 	}
 	

@@ -17,7 +17,7 @@
 package org.toasthub.core.general.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -57,7 +57,7 @@ public class EmailInvite extends BaseEntity implements SendMailIntf,Serializable
 		this.setActive(true);
 		this.setArchive(false);
 		this.setLocked(false);
-		this.setCreated(new Date());
+		this.setCreated(Instant.now());
 		this.setSenderRefId(senderRefId);
 		this.setReceiverEmail(receiverEmail);
 		this.setMessage(message);
@@ -69,7 +69,7 @@ public class EmailInvite extends BaseEntity implements SendMailIntf,Serializable
 		this.setActive(true);
 		this.setArchive(false);
 		this.setLocked(false);
-		this.setCreated(new Date());
+		this.setCreated(Instant.now());
 		//userInputHelper(request, response, formName);
 	}
 		

@@ -17,7 +17,7 @@
 package org.toasthub.core.system.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -47,7 +47,7 @@ public class ClientDomain extends ToastEntity implements Serializable {
 		this.setActive(true);
 		this.setArchive(false);
 		this.setLocked(false);
-		this.setCreated(new Date());
+		this.setCreated(Instant.now());
 	}
 
 	// Setter/Getters

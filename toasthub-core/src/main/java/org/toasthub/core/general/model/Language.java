@@ -17,7 +17,7 @@
 package org.toasthub.core.general.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
 import java.util.Map;
 
 import javax.persistence.CascadeType;
@@ -55,7 +55,7 @@ public class Language extends BaseEntity implements Serializable{
 		this.setActive(true);
 		this.setArchive(false);
 		this.setLocked(false);
-		this.setCreated(new Date());
+		this.setCreated(Instant.now());
 		
 		this.setCode(code);
 		this.setTitle(title);
