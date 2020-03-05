@@ -512,6 +512,18 @@ public class UtilSvc {
 										}
 									}
 									break;
+								case "INT":
+									String myInt = (String) inputList.get(field.getName());
+									Integer	i = Integer.parseInt(myInt);
+									if (i != null){
+										String fieldName = (String) paramObj.get("field");
+										if (fieldName != null){
+											Field f = instanceClass.getDeclaredField(fieldName);
+											f.setAccessible(true);
+											f.set(item, i);
+										}
+									}
+									break;
 								}
 								
 							} catch (NoSuchFieldException e) {
