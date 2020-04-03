@@ -30,7 +30,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
 
 import org.toasthub.core.general.api.View;
 import org.toasthub.core.general.model.BaseEntity;
@@ -43,43 +42,37 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
-@Table(name = "page_text_name")
+@Table(name = "pref_option_name")
 @JsonInclude(Include.NON_NULL)
-public class AppPageTextName extends BaseEntity implements Serializable{
+public class PrefOptionName extends BaseEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	private AppPageName pageName;
+	private PrefName prefName;
 	private String name;
 	private Text title;
+	private String valueType;
+	private String defaultValue;
+	private Boolean useDefault;
 	private String optionalParams;
-	private Set<AppPageTextValue> values;
+	private Set<PrefOptionValue> values;
 	
-	// Constructor
-	public AppPageTextName() {
+	// Constructor 
+	public PrefOptionName() {
 		super();
 	}
 	
-	public AppPageTextName (AppPageName pageName, String name, Text title) {
-		super();
-		this.setPageName(pageName);
-		this.setName(name);
-		this.setTitle(title);
-	}
-	
-	// Setters/Getters
+	// Setters/Getter
 	@JsonIgnore
-	@NotNull
-	@ManyToOne(targetEntity = AppPageName.class, fetch = FetchType.LAZY)
-	@JoinColumn(name = "page_name_id")
-	public AppPageName getPageName() {
-		return pageName;
+	@ManyToOne(targetEntity = PrefName.class, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pref_name_id")
+	public PrefName getPrefName() {
+		return prefName;
 	}
-	public void setPageName(AppPageName pageName) {
-		this.pageName = pageName;
+	public void setPrefName(PrefName prefName) {
+		this.prefName = prefName;
 	}
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
-	@NotNull
 	@Column(name = "name")
 	public String getName() {
 		return name;
@@ -99,6 +92,33 @@ public class AppPageTextName extends BaseEntity implements Serializable{
 	}
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
+	@Column(name = "value_type")
+	public String getValueType() {
+		return valueType;
+	}
+	public void setValueType(String valueType) {
+		this.valueType = valueType;
+	}
+	
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
+	@Column(name = "default_value")
+	public String getDefaultValue() {
+		return defaultValue;
+	}
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
+	}
+	
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
+	@Column(name = "use_default")
+	public Boolean getUseDefault() {
+		return useDefault;
+	}
+	public void setUseDefault(Boolean useDefault) {
+		this.useDefault = useDefault;
+	}
+
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "optional_params")
 	public String getOptionalParams() {
 		return optionalParams;
@@ -108,11 +128,11 @@ public class AppPageTextName extends BaseEntity implements Serializable{
 	}
 	
 	@JsonView({View.Admin.class,View.System.class})
-	@OneToMany(mappedBy = "pageTextName", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	public Set<AppPageTextValue> getValues() {
+	@OneToMany(mappedBy = "prefOptionName", cascade = CascadeType.ALL)
+	public Set<PrefOptionValue> getValues() {
 		return values;
 	}
-	public void setValues(Set<AppPageTextValue> values) {
+	public void setValues(Set<PrefOptionValue> values) {
 		this.values = values;
 	}
 	
@@ -143,13 +163,13 @@ public class AppPageTextName extends BaseEntity implements Serializable{
 		String field = langMap.get(GlobalConstant.FIELD);
 		langMap.remove(GlobalConstant.FIELD);
 		if (this.values == null) {
-			values = new HashSet<AppPageTextValue>();
+			values = new HashSet<PrefOptionValue>();
 		}
 		// loop through langMap
 		for (String key : langMap.keySet()) {
 			// loop through existing values to find match
 			boolean added = false;
-			for (AppPageTextValue v : values){
+			for (PrefOptionValue v : values){
 				if (v.getLang().equals(key)){
 					switch (field) {
 					case "value":
@@ -165,9 +185,10 @@ public class AppPageTextName extends BaseEntity implements Serializable{
 			}
 			if (!added) {
 				// lang does not exist create a new one
-				AppPageTextValue val = new AppPageTextValue();
+				PrefOptionValue val = new PrefOptionValue();
 				val.setLang(key);
-				val.setPageTextName(this);
+				val.setPrefOptionName(this);
+				val.setValidation("");
 				val.setActive(true);
 				val.setArchive(false);
 				val.setLocked(false);

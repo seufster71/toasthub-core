@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.toasthub.core.general.utils.TenantContext;
 import org.toasthub.core.menu.MenuSvc;
-import org.toasthub.core.preference.model.AppCachePageUtil;
+import org.toasthub.core.preference.model.PrefCacheUtil;
 import org.toasthub.core.system.model.AppCacheClientDomains;
 
 @Component("AppCacheMenuUtil")
@@ -26,7 +26,7 @@ public class AppCacheMenuUtil {
 	AppCacheClientDomains appCacheClientDomains;
 	
 	@Autowired
-	AppCachePageUtil appCachePageUtil;
+	PrefCacheUtil prefCacheUtil;
 	
 	@Autowired
 	AppCacheMenu appCacheMenu;
@@ -77,7 +77,7 @@ public class AppCacheMenuUtil {
 			List<Menu> myMenus = (List<Menu>) response.getParam(GlobalConstant.ITEMS);
 			for(Menu m : myMenus) {
 				// by languages
-				List<String> codes = appCachePageUtil.getAvailableLanguageCodes(tenant);
+				List<String> codes = prefCacheUtil.getAvailableLanguageCodes(tenant);
 				for(String lang : codes) {
 					logger.info("Code: "+m.getCode()+" lang "+lang);
 					List<MenuItem> menu = menuSvc.getMenu(m.getCode(),m.getApiVersion(),m.getAppVersion(),lang);

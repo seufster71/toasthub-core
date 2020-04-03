@@ -19,7 +19,7 @@ package org.toasthub.core.preference.service;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 
-public interface AppFormFieldSvc {
+public interface PrefFormFieldSvc {
 
 	public void itemCount(RestRequest request, RestResponse response);
 	public void items(RestRequest request, RestResponse response);

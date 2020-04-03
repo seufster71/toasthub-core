@@ -16,16 +16,17 @@
 
 package org.toasthub.core.preference.repository;
 
+import java.util.List;
+
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
-import org.toasthub.core.preference.model.AppPageName;
+import org.toasthub.core.preference.model.PrefFormFieldValue;
 
-public interface AppPageDao {
+public interface PrefFormFieldDao {
 
-	public AppPageName getPageName(Long id);
-	public AppPageName getPageName(String name);
-	
+	public List<PrefFormFieldValue> getFormFields(String pageName, String lang);
 	public void items(RestRequest request, RestResponse response) throws Exception;
 	public void itemCount(RestRequest request, RestResponse response) throws Exception;
 	public void item(RestRequest request, RestResponse response) throws Exception;
+	
 }

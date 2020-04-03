@@ -21,23 +21,23 @@ import java.util.Map;
 
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
-import org.toasthub.core.preference.model.AppPageFormFieldValue;
-import org.toasthub.core.preference.model.AppPageLabelValue;
-import org.toasthub.core.preference.model.AppPageName;
-import org.toasthub.core.preference.model.AppPageOptionValue;
-import org.toasthub.core.preference.model.AppPageTextValue;
+import org.toasthub.core.preference.model.PrefFormFieldValue;
+import org.toasthub.core.preference.model.PrefLabelValue;
+import org.toasthub.core.preference.model.PrefName;
+import org.toasthub.core.preference.model.PrefOptionValue;
+import org.toasthub.core.preference.model.PrefTextValue;
 
-public interface AppPageSvc {
+public interface PrefSvc {
 
-	public AppPageName getPageName(Long id);
-	public AppPageName getPageName(String name);
-	public List<AppPageFormFieldValue> getFormFields(String pageName, String lang);
-	public Map<String, AppPageFormFieldValue> getFormFieldsMap(String pageName,String lang);
-	public List<AppPageLabelValue> getLabels(String pageName, String lang);
-	public List<AppPageOptionValue> getOptions(String pageName, String lang);
-	public Map<String, AppPageOptionValue> getOptionsMap(String pageName, String lang);
-	public List<AppPageTextValue> getTexts(String pageName, String lang);
-	public Map<String, AppPageTextValue> getTextsMap(String pageName, String lang);
+	public PrefName getPrefName(Long id);
+	public PrefName getPrefName(String name);
+	public List<PrefFormFieldValue> getFormFields(String prefName, String lang);
+	public Map<String, PrefFormFieldValue> getFormFieldsMap(String prefName,String lang);
+	public List<PrefLabelValue> getLabels(String prefName, String lang);
+	public List<PrefOptionValue> getOptions(String prefName, String lang);
+	public Map<String, PrefOptionValue> getOptionsMap(String prefName, String lang);
+	public List<PrefTextValue> getTexts(String prefName, String lang);
+	public Map<String, PrefTextValue> getTextsMap(String prefName, String lang);
 	
 	public void itemCount(RestRequest request, RestResponse response);
 	public void items(RestRequest request, RestResponse response);

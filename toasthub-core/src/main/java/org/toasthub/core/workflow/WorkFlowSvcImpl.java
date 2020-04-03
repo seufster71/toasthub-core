@@ -24,7 +24,7 @@ import org.toasthub.core.general.handler.ServiceProcessor;
 import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
-import org.toasthub.core.preference.model.AppCachePageUtil;
+import org.toasthub.core.preference.model.PrefCacheUtil;
 
 @Service("WorkFlowSvc")
 public class WorkFlowSvcImpl implements ServiceProcessor, WorkFlowSvc {
@@ -35,7 +35,7 @@ public class WorkFlowSvcImpl implements ServiceProcessor, WorkFlowSvc {
 	@Autowired
 	UtilSvc utilSvc;
 	@Autowired
-	protected AppCachePageUtil appCachePageUtil;
+	protected PrefCacheUtil prefCacheUtil;
 	
 	@Override
 	public void process(RestRequest request, RestResponse response) {
@@ -44,7 +44,7 @@ public class WorkFlowSvcImpl implements ServiceProcessor, WorkFlowSvc {
 		Long count = 0l;
 		switch (action) {
 		case "INIT":
-			appCachePageUtil.getPageInfo(request,response);
+			prefCacheUtil.getPrefInfo(request,response);
 			
 			this.initParams(request);
 			
@@ -55,7 +55,7 @@ public class WorkFlowSvcImpl implements ServiceProcessor, WorkFlowSvc {
 			}
 			break;
 		case "LIST":
-			appCachePageUtil.getPageInfo(request,response);
+			prefCacheUtil.getPrefInfo(request,response);
 			
 			this.initParams(request);
 			

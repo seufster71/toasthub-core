@@ -20,11 +20,11 @@ import java.util.List;
 
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
-import org.toasthub.core.preference.model.AppPageLabelValue;
+import org.toasthub.core.preference.model.PrefTextValue;
 
-public interface AppLabelDao {
+public interface PrefTextDao {
 
-	public List<AppPageLabelValue> getLabels(String pageName, String lang);
+	public List<PrefTextValue> getTexts(String pageName, String lang);
 	public void items(RestRequest request, RestResponse response) throws Exception;
 	public void itemCount(RestRequest request, RestResponse response) throws Exception;
 	public void item(RestRequest request, RestResponse response) throws Exception;

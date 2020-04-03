@@ -36,12 +36,12 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
-@Table(name = "page_form_field_value")
+@Table(name = "pref_form_field_value")
 @JsonInclude(Include.NON_NULL)
-public class AppPageFormFieldValue extends BaseEntity implements Serializable{
+public class PrefFormFieldValue extends BaseEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	private AppPageFormFieldName pageFormFieldName;
+	private PrefFormFieldName prefFormFieldName;
 	private String value;
 	private String label;
 	private String lang;
@@ -50,7 +50,7 @@ public class AppPageFormFieldValue extends BaseEntity implements Serializable{
 	private Long order;
 	private String validation;
 	private String image;
-	private AppPageFormFieldValue subElement;
+	private PrefFormFieldValue subElement;
 	// make output simple for preference object
 	private String name;
 	private String fieldType;
@@ -63,12 +63,12 @@ public class AppPageFormFieldValue extends BaseEntity implements Serializable{
 	private String classModel;
 	
 	// Constructor
-	public AppPageFormFieldValue() {
+	public PrefFormFieldValue() {
 		super();
 	}
 	
 	// Contructor for fields 
-	public AppPageFormFieldValue(Long id,String value, String label, String lang, Boolean rendered, 
+	public PrefFormFieldValue(Long id,String value, String label, String lang, Boolean rendered, 
 			Boolean required, Long order, String validation, String image, String name, String fieldType,
 			String htmlType, String className, String group, String subGroup, String tabIndex, 
 			String optionalParams, String classModel) {
@@ -91,21 +91,19 @@ public class AppPageFormFieldValue extends BaseEntity implements Serializable{
 		this.setTabIndex(tabIndex);
 		this.setOptionalParams(optionalParams);
 		this.setClassModel(classModel);
-		//this.setPageFormFieldName(new AppPageFormFieldName(name, fieldType, htmlType, className, group, 
-		//		subGroup, tabIndex, optionalParams, jclassName, jfieldName));
 	}
 	
 	
 	
 	// Setters/Getters
 	@JsonIgnore
-	@ManyToOne(targetEntity = AppPageFormFieldName.class, fetch = FetchType.LAZY)
-	@JoinColumn(name = "page_form_field_name_id")
-	public AppPageFormFieldName getPageFormFieldName() {
-		return pageFormFieldName;
+	@ManyToOne(targetEntity = PrefFormFieldName.class, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pref_form_field_name_id")
+	public PrefFormFieldName getPrefFormFieldName() {
+		return prefFormFieldName;
 	}
-	public void setPageFormFieldName(AppPageFormFieldName pageFormFieldName) {
-		this.pageFormFieldName = pageFormFieldName;
+	public void setPrefFormFieldName(PrefFormFieldName prefFormFieldName) {
+		this.prefFormFieldName = prefFormFieldName;
 	}
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
@@ -172,12 +170,12 @@ public class AppPageFormFieldValue extends BaseEntity implements Serializable{
 	}
 
 	@JsonIgnore
-	@ManyToOne(targetEntity = AppPageFormFieldValue.class, cascade = CascadeType.ALL)
+	@ManyToOne(targetEntity = PrefFormFieldValue.class, cascade = CascadeType.ALL)
 	@JoinColumn(name = "sub_element_id")
-	public AppPageFormFieldValue getSubElement() {
+	public PrefFormFieldValue getSubElement() {
 		return subElement;
 	}
-	public void setSubElement(AppPageFormFieldValue subElement) {
+	public void setSubElement(PrefFormFieldValue subElement) {
 		this.subElement = subElement;
 	}
 

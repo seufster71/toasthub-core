@@ -24,21 +24,21 @@ import org.toasthub.core.general.handler.ServiceProcessor;
 import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
-import org.toasthub.core.preference.model.AppCachePage;
-import org.toasthub.core.preference.repository.AppFormFieldDao;
+import org.toasthub.core.preference.model.PrefCache;
+import org.toasthub.core.preference.repository.PrefOptionDao;
 
-@Service("AppFormFieldSvc")
-public class AppFormFieldSvcImpl implements ServiceProcessor, AppFormFieldSvc {
+@Service("PrefOptionSvc")
+public class PrefOptionSvcImpl implements ServiceProcessor, PrefOptionSvc {
 
 	@Autowired
-	@Qualifier("AppFormFieldDao")
-	AppFormFieldDao appFormFieldDao;
+	@Qualifier("PrefOptionDao")
+	PrefOptionDao prefOptionDao;
 	
 	@Autowired
 	UtilSvc utilSvc;
 	
 	@Autowired
-	AppCachePage appCachePage;
+	PrefCache prefCache;
 	
 	public void process(RestRequest request, RestResponse response) {
 		String action = (String) request.getParam(GlobalConstant.ACTION);
@@ -63,7 +63,7 @@ public class AppFormFieldSvcImpl implements ServiceProcessor, AppFormFieldSvc {
 	
 	public void itemCount(RestRequest request, RestResponse response) {
 		try {
-			appFormFieldDao.itemCount(request, response);
+			prefOptionDao.itemCount(request, response);
 		} catch (Exception e) {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Count failed", response);
 			e.printStackTrace();
@@ -72,7 +72,7 @@ public class AppFormFieldSvcImpl implements ServiceProcessor, AppFormFieldSvc {
 	
 	public void items(RestRequest request, RestResponse response) {
 		try {
-			appFormFieldDao.items(request, response);
+			prefOptionDao.items(request, response);
 		} catch (Exception e) {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "List failed", response);
 			e.printStackTrace();
@@ -81,7 +81,7 @@ public class AppFormFieldSvcImpl implements ServiceProcessor, AppFormFieldSvc {
 	
 	public void item(RestRequest request, RestResponse response) {
 		try {
-			appFormFieldDao.item(request, response);
+			prefOptionDao.item(request, response);
 		} catch (Exception e) {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Item Failed", response);
 			e.printStackTrace();

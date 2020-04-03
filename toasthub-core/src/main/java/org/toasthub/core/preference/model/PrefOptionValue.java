@@ -31,57 +31,58 @@ import org.toasthub.core.general.model.BaseEntity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
-@Table(name = "page_label_value")
+@Table(name = "pref_option_value")
 @JsonInclude(Include.NON_NULL)
-public class AppPageLabelValue extends BaseEntity implements Serializable{
+public class PrefOptionValue extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	private AppPageLabelName pageLabelName;
+	private PrefOptionName prefOptionName;
 	private String value;
 	private String lang;
 	private Boolean rendered;
-	private Long order;
-	// make output simple on preference object
+	private String validation;
+	// make output simple for preference object
 	private String name;
-	private String className;
-	private String tabIndex;
-	private String optionalParams;
-		
-	// Constructor
-	public AppPageLabelValue() {
+	private String valueType;
+	private String defaultValue;
+	private Boolean useDefault;
+	
+	// Constructors
+	public PrefOptionValue() {
 		super();
 	}
 	
-	public AppPageLabelValue(Long id, String value, String lang, Boolean rendered, Long order, String name, String className, String tabIndex, String optionalParams){
+	public PrefOptionValue(Long id, String value, String lang, Boolean rendered, String validation, String name,
+			String valueType, String defaultValue, Boolean useDefault) {
 		this.setId(id);
 		this.setValue(value);
 		this.setLang(lang);
 		this.setRendered(rendered);
-		this.setOrder(order);
+		this.setValidation(validation);
+		//
 		this.setName(name);
-		this.setClassName(className);
-		this.setTabIndex(tabIndex);
-		this.setOptionalParams(optionalParams);
+		this.setValueType(valueType);
+		this.setDefaultValue(defaultValue);
+		this.setUseDefault(useDefault);
 	}
 	
-	// Setters/Getters
+	// Setters/Getter
 	@JsonIgnore
-	@ManyToOne(targetEntity = AppPageLabelName.class, fetch = FetchType.LAZY)
-	@JoinColumn(name = "page_label_name_id")
-	public AppPageLabelName getPageLabelName() {
-		return pageLabelName;
+	@ManyToOne(targetEntity = PrefOptionName.class, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pref_option_name_id")
+	public PrefOptionName getPrefOptionName() {
+		return prefOptionName;
 	}
-	public void setPageLabelName(AppPageLabelName pageLabelName) {
-		this.pageLabelName = pageLabelName;
+	public void setPrefOptionName(PrefOptionName prefOptionName) {
+		this.prefOptionName = prefOptionName;
 	}
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
-	@Column(name = "label_value")
+	@Column(name = "option_value")
 	public String getValue() {
 		return value;
 	}
@@ -108,12 +109,12 @@ public class AppPageLabelValue extends BaseEntity implements Serializable{
 	}
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
-	@Column(name = "sort_order")
-	public Long getOrder() {
-		return order;
+	@Column(name = "validation")
+	public String getValidation() {
+		return validation;
 	}
-	public void setOrder(Long order) {
-		this.order = order;
+	public void setValidation(String validation) {
+		this.validation = validation;
 	}
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
@@ -127,29 +128,28 @@ public class AppPageLabelValue extends BaseEntity implements Serializable{
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Transient
-	public String getClassName() {
-		return className;
+	public String getValueType() {
+		return valueType;
 	}
-	public void setClassName(String className) {
-		this.className = className;
-	}
-	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
-	@Transient
-	public String getTabIndex() {
-		return tabIndex;
-	}
-	public void setTabIndex(String tabIndex) {
-		this.tabIndex = tabIndex;
+	public void setValueType(String valueType) {
+		this.valueType = valueType;
 	}
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Transient
-	public String getOptionalParams() {
-		return optionalParams;
+	public String getDefaultValue() {
+		return defaultValue;
 	}
-	public void setOptionalParams(String optionalParams) {
-		this.optionalParams = optionalParams;
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
 	}
-
+	
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
+	@Transient
+	public Boolean isUseDefault() {
+		return useDefault;
+	}
+	public void setUseDefault(Boolean useDefault) {
+		this.useDefault = useDefault;
+	}
 }

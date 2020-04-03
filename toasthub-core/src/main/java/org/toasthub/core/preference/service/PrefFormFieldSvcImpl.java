@@ -24,21 +24,21 @@ import org.toasthub.core.general.handler.ServiceProcessor;
 import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
-import org.toasthub.core.preference.model.AppCachePage;
-import org.toasthub.core.preference.repository.AppLabelDao;
+import org.toasthub.core.preference.model.PrefCache;
+import org.toasthub.core.preference.repository.PrefFormFieldDao;
 
-@Service("AppLabelSvc")
-public class AppLabelSvcImpl implements ServiceProcessor, AppLabelSvc {
+@Service("PrefFormFieldSvc")
+public class PrefFormFieldSvcImpl implements ServiceProcessor, PrefFormFieldSvc {
 
 	@Autowired
-	@Qualifier("AppLabelDao")
-	AppLabelDao appLabelDao;
+	@Qualifier("PrefFormFieldDao")
+	PrefFormFieldDao prefFormFieldDao;
 	
 	@Autowired
 	UtilSvc utilSvc;
 	
 	@Autowired
-	AppCachePage appCachePage;
+	PrefCache prefCache;
 	
 	public void process(RestRequest request, RestResponse response) {
 		String action = (String) request.getParam(GlobalConstant.ACTION);
@@ -63,7 +63,7 @@ public class AppLabelSvcImpl implements ServiceProcessor, AppLabelSvc {
 	
 	public void itemCount(RestRequest request, RestResponse response) {
 		try {
-			appLabelDao.itemCount(request, response);
+			prefFormFieldDao.itemCount(request, response);
 		} catch (Exception e) {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Count failed", response);
 			e.printStackTrace();
@@ -72,7 +72,7 @@ public class AppLabelSvcImpl implements ServiceProcessor, AppLabelSvc {
 	
 	public void items(RestRequest request, RestResponse response) {
 		try {
-			appLabelDao.items(request, response);
+			prefFormFieldDao.items(request, response);
 		} catch (Exception e) {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "List failed", response);
 			e.printStackTrace();
@@ -81,7 +81,7 @@ public class AppLabelSvcImpl implements ServiceProcessor, AppLabelSvc {
 	
 	public void item(RestRequest request, RestResponse response) {
 		try {
-			appLabelDao.item(request, response);
+			prefFormFieldDao.item(request, response);
 		} catch (Exception e) {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Item Failed", response);
 			e.printStackTrace();

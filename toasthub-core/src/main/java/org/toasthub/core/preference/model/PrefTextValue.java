@@ -35,12 +35,12 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
-@Table(name = "page_text_value")
+@Table(name = "pref_text_value")
 @JsonInclude(Include.NON_NULL)
-public class AppPageTextValue extends BaseEntity implements Serializable{
+public class PrefTextValue extends BaseEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	private AppPageTextName pageTextName;
+	private PrefTextName prefTextName;
 	private String value;
 	private String lang;
 	private Boolean rendered;
@@ -48,11 +48,11 @@ public class AppPageTextValue extends BaseEntity implements Serializable{
 	private String name;
 	
 	// Constructor
-	public AppPageTextValue() {
+	public PrefTextValue() {
 		super();
 	}
 	
-	public AppPageTextValue(Long id, String value, String lang, Boolean rendered, String name){
+	public PrefTextValue(Long id, String value, String lang, Boolean rendered, String name){
 		this.setId(id);
 		this.setValue(value);
 		this.setLang(lang);
@@ -63,13 +63,13 @@ public class AppPageTextValue extends BaseEntity implements Serializable{
 	
 	// Setters/Getters
 	@JsonIgnore
-	@ManyToOne(targetEntity = AppPageTextName.class, fetch = FetchType.LAZY)
-	@JoinColumn(name = "page_text_name_id")
-	public AppPageTextName getPageTextName() {
-		return pageTextName;
+	@ManyToOne(targetEntity = PrefTextName.class, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pref_text_name_id")
+	public PrefTextName getPrefTextName() {
+		return prefTextName;
 	}
-	public void setPageTextName(AppPageTextName pageTextName) {
-		this.pageTextName = pageTextName;
+	public void setPrefTextName(PrefTextName prefTextName) {
+		this.prefTextName = prefTextName;
 	}
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})

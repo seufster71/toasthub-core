@@ -28,23 +28,23 @@ import org.toasthub.core.common.UtilSvc;
 import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
-import org.toasthub.core.preference.model.AppPageTextName;
-import org.toasthub.core.preference.model.AppPageTextValue;
+import org.toasthub.core.preference.model.PrefTextName;
+import org.toasthub.core.preference.model.PrefTextValue;
 
-@Repository("AppTextDao")
+@Repository("PrefTextDao")
 @Transactional("TransactionManagerData")
-public class AppTextDaoImpl implements AppTextDao {
+public class PrefTextDaoImpl implements PrefTextDao {
 
 	@Autowired 
 	protected EntityManagerDataSvc entityManagerDataSvc;
 	@Autowired
 	protected UtilSvc utilSvc;
 
-	public List<AppPageTextValue> getTexts(String pageName, String lang) {
+	public List<PrefTextValue> getTexts(String prefName, String lang) {
 		@SuppressWarnings("unchecked")
-		List<AppPageTextValue> texts = entityManagerDataSvc.getInstance()
-			.createQuery("SELECT NEW AppPageTextValue(t.id, t.value, t.lang, t.rendered, t.pageTextName.name) FROM AppPageTextValue t WHERE t.lang =:lang AND t.pageTextName.pageName.name =:pageName AND t.pageTextName.archive = false")
-			.setParameter("pageName", pageName)
+		List<PrefTextValue> texts = entityManagerDataSvc.getInstance()
+			.createQuery("SELECT NEW PrefTextValue(t.id, t.value, t.lang, t.rendered, t.prefTextName.name) FROM PrefTextValue t WHERE t.lang =:lang AND t.prefTextName.prefName.name =:prefName AND t.prefTextName.archive = false")
+			.setParameter("prefName", prefName)
 			.setParameter("lang", lang)
 			.getResultList();
 		return texts;
@@ -52,34 +52,52 @@ public class AppTextDaoImpl implements AppTextDao {
 
 	@Override
 	public void items(RestRequest request, RestResponse response) throws Exception {
-		@SuppressWarnings("unchecked")
-		List<AppPageTextName> texts = entityManagerDataSvc.getInstance()
-				.createQuery("SELECT DISTINCT pageText FROM AppPageTextName AS pageText JOIN FETCH pageText.title AS t JOIN FETCH t.langTexts AS l JOIN FETCH pageText.values WHERE pageText.pageName.id =:pageNameId")
-				.setParameter("pageNameId", new Long((Integer)request.getParam(GlobalConstant.PARENTID)))
-				.getResultList();
-			response.addParam("appPageText", texts);
 		
+		String queryStr = "SELECT DISTINCT prefText FROM PrefTextName AS prefText JOIN FETCH prefText.title AS t JOIN FETCH t.langTexts AS lt JOIN FETCH prefText.values WHERE lt.lang =:lang AND prefText.prefName.id =:prefNameId";
+		
+		if (request.containsParam(GlobalConstant.ACTIVE)) {
+			queryStr += "AND p.active =:active ";
+		}
+		
+		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+		
+		query.setParameter("lang",request.getParam(GlobalConstant.LANG));
+		
+		if (request.containsParam(GlobalConstant.ACTIVE)) {
+			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
+		} 
+		
+		query.setParameter("prefNameId", new Long((Integer)request.getParam(GlobalConstant.PARENTID)));
+		
+		@SuppressWarnings("unchecked")
+		List<PrefTextName> texts = query.getResultList();
+		
+		response.addParam(GlobalConstant.ITEMS, texts);
 	}
 
 	@Override
 	public void itemCount(RestRequest request, RestResponse response) throws Exception {
-		Query query = null;
-		String HQLQuery = "SELECT COUNT(*) FROM AppPageTextName AS pageText WHERE pageText.pageName.id =:pageNameId";
-		query = entityManagerDataSvc.getInstance().createQuery(HQLQuery).setParameter("pageNameId", new Long((Integer)request.getParam(GlobalConstant.PARENTID)));
-		response.addParam(GlobalConstant.ITEMCOUNT, (Long) query.getSingleResult());
+		String HQLQuery = "SELECT COUNT(DISTINCT prefText) FROM PrefTextName AS prefText WHERE prefText.prefName.id =:prefNameId";
+		Query query = entityManagerDataSvc.getInstance().createQuery(HQLQuery).setParameter("prefNameId", new Long((Integer)request.getParam(GlobalConstant.PARENTID)));
 		
+		Long count = (Long) query.getSingleResult();
+		if (count == null){
+			count = 0l;
+		}
+		
+		response.addParam(GlobalConstant.ITEMCOUNT, count);
 	}
 
 	@Override
 	public void item(RestRequest request, RestResponse response) throws Exception {
 		if (request.containsParam(GlobalConstant.ITEMID) && !"".equals(request.getParam(GlobalConstant.ITEMID))) {
-			String queryStr = "SELECT pt FROM AppPageTextName AS pt JOIN FETCH pt.title AS t JOIN FETCH t.langTexts as l JOIN FETCH pt.values WHERE pt.id =:id";
+			String queryStr = "SELECT pt FROM PrefTextName AS pt JOIN FETCH pt.title AS t JOIN FETCH t.langTexts as l JOIN FETCH pt.values WHERE pt.id =:id";
 			Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
 			
 			query.setParameter("id", new Long((Integer) request.getParam(GlobalConstant.ITEMID)));
-			AppPageTextName appPageTextName = (AppPageTextName) query.getSingleResult();
+			PrefTextName prefTextName = (PrefTextName) query.getSingleResult();
 		
-			response.addParam(GlobalConstant.ITEM, appPageTextName);
+			response.addParam(GlobalConstant.ITEM, prefTextName);
 		} else {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Missing ID", response);
 		}

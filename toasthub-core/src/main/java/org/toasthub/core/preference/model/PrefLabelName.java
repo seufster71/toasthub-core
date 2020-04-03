@@ -30,6 +30,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import org.toasthub.core.general.api.View;
 import org.toasthub.core.general.model.BaseEntity;
@@ -42,37 +43,53 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
-@Table(name = "page_option_name")
+@Table(name = "pref_label_name")
 @JsonInclude(Include.NON_NULL)
-public class AppPageOptionName extends BaseEntity implements Serializable{
+public class PrefLabelName extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private AppPageName pageName;
+	private PrefName prefName;
 	private String name;
 	private Text title;
-	private String valueType;
-	private String defaultValue;
-	private Boolean useDefault;
+	private String className;
+	private String group;
+	private String tabIndex;
 	private String optionalParams;
-	private Set<AppPageOptionValue> values;
+	private Set<PrefLabelValue> values;
 	
-	// Constructor 
-	public AppPageOptionName() {
+	// Constructor
+	public PrefLabelName() {
 		super();
 	}
 	
-	// Setters/Getter
-	@JsonIgnore
-	@ManyToOne(targetEntity = AppPageName.class, fetch = FetchType.LAZY)
-	@JoinColumn(name = "page_name_id")
-	public AppPageName getPageName() {
-		return pageName;
+	public PrefLabelName (PrefName prefName, String name, Text Title) {
+		super();
+		this.setPrefName(prefName);
+		this.setName(name);
+		this.setTitle(title);
 	}
-	public void setPageName(AppPageName pageName) {
-		this.pageName = pageName;
+	
+	public PrefLabelName (String name, String className, String tabIndex, String optionalParams) {
+		this.setName(name);
+		this.setClassName(className);
+		this.setTabIndex(tabIndex);
+		this.setOptionalParams(optionalParams);
+	}
+	
+	// Setters/Getters
+	@JsonIgnore
+	@NotNull
+	@ManyToOne(targetEntity = PrefName.class, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pref_name_id", nullable = false)
+	public PrefName getPrefName() {
+		return prefName;
+	}
+	public void setPrefName(PrefName prefName) {
+		this.prefName = prefName;
 	}
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
+	@NotNull
 	@Column(name = "name")
 	public String getName() {
 		return name;
@@ -81,7 +98,7 @@ public class AppPageOptionName extends BaseEntity implements Serializable{
 		this.name = name;
 	}
 	
-	@JsonView({View.Admin.class,View.System.class})
+	@JsonView({View.Admin.class})
 	@ManyToOne(targetEntity = Text.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "text_id")
 	public Text getTitle() {
@@ -90,34 +107,34 @@ public class AppPageOptionName extends BaseEntity implements Serializable{
 	public void setTitle(Text title) {
 		this.title = title;
 	}
-	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
-	@Column(name = "value_type")
-	public String getValueType() {
-		return valueType;
-	}
-	public void setValueType(String valueType) {
-		this.valueType = valueType;
-	}
-	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
-	@Column(name = "default_value")
-	public String getDefaultValue() {
-		return defaultValue;
-	}
-	public void setDefaultValue(String defaultValue) {
-		this.defaultValue = defaultValue;
-	}
-	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
-	@Column(name = "use_default")
-	public Boolean getUseDefault() {
-		return useDefault;
-	}
-	public void setUseDefault(Boolean useDefault) {
-		this.useDefault = useDefault;
-	}
 
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
+	@Column(name = "class_name")
+	public String getClassName() {
+		return className;
+	}
+	public void setClassName(String className) {
+		this.className = className;
+	}
+	
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
+	@Column(name = "group_name")
+	public String getGroup() {
+		return group;
+	}
+	public void setGroup(String group) {
+		this.group = group;
+	}
+	
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
+	@Column(name = "tab_index")
+	public String getTabIndex() {
+		return tabIndex;
+	}
+	public void setTabIndex(String tabIndex) {
+		this.tabIndex = tabIndex;
+	}
+	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "optional_params")
 	public String getOptionalParams() {
@@ -126,13 +143,13 @@ public class AppPageOptionName extends BaseEntity implements Serializable{
 	public void setOptionalParams(String optionalParams) {
 		this.optionalParams = optionalParams;
 	}
-	
+
 	@JsonView({View.Admin.class,View.System.class})
-	@OneToMany(mappedBy = "pageOptionName", cascade = CascadeType.ALL)
-	public Set<AppPageOptionValue> getValues() {
+	@OneToMany(mappedBy = "prefLabelName", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	public Set<PrefLabelValue> getValues() {
 		return values;
 	}
-	public void setValues(Set<AppPageOptionValue> values) {
+	public void setValues(Set<PrefLabelValue> values) {
 		this.values = values;
 	}
 	
@@ -163,13 +180,13 @@ public class AppPageOptionName extends BaseEntity implements Serializable{
 		String field = langMap.get(GlobalConstant.FIELD);
 		langMap.remove(GlobalConstant.FIELD);
 		if (this.values == null) {
-			values = new HashSet<AppPageOptionValue>();
+			values = new HashSet<PrefLabelValue>();
 		}
 		// loop through langMap
 		for (String key : langMap.keySet()) {
 			// loop through existing values to find match
 			boolean added = false;
-			for (AppPageOptionValue v : values){
+			for (PrefLabelValue v : values){
 				if (v.getLang().equals(key)){
 					switch (field) {
 					case "value":
@@ -185,10 +202,10 @@ public class AppPageOptionName extends BaseEntity implements Serializable{
 			}
 			if (!added) {
 				// lang does not exist create a new one
-				AppPageOptionValue val = new AppPageOptionValue();
+				PrefLabelValue val = new PrefLabelValue();
 				val.setLang(key);
-				val.setPageOptionName(this);
-				val.setValidation("");
+				val.setOrder(0l);
+				val.setPrefLabelName(this);
 				val.setActive(true);
 				val.setArchive(false);
 				val.setLocked(false);
@@ -204,4 +221,5 @@ public class AppPageOptionName extends BaseEntity implements Serializable{
 			}
 		}
 	}
+
 }

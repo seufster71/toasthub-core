@@ -43,48 +43,39 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
-@Table(name = "page_label_name")
+@Table(name = "pref_text_name")
 @JsonInclude(Include.NON_NULL)
-public class AppPageLabelName extends BaseEntity implements Serializable {
+public class PrefTextName extends BaseEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	private AppPageName pageName;
+	private PrefName prefName;
 	private String name;
 	private Text title;
-	private String className;
-	private String tabIndex;
 	private String optionalParams;
-	private Set<AppPageLabelValue> values;
+	private Set<PrefTextValue> values;
 	
 	// Constructor
-	public AppPageLabelName() {
+	public PrefTextName() {
 		super();
 	}
 	
-	public AppPageLabelName (AppPageName pageName, String name, Text Title) {
+	public PrefTextName (PrefName prefName, String name, Text title) {
 		super();
-		this.setPageName(pageName);
+		this.setPrefName(prefName);
 		this.setName(name);
 		this.setTitle(title);
-	}
-	
-	public AppPageLabelName (String name, String className, String tabIndex, String optionalParams) {
-		this.setName(name);
-		this.setClassName(className);
-		this.setTabIndex(tabIndex);
-		this.setOptionalParams(optionalParams);
 	}
 	
 	// Setters/Getters
 	@JsonIgnore
 	@NotNull
-	@ManyToOne(targetEntity = AppPageName.class, fetch = FetchType.LAZY)
-	@JoinColumn(name = "page_name_id", nullable = false)
-	public AppPageName getPageName() {
-		return pageName;
+	@ManyToOne(targetEntity = PrefName.class, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pref_name_id")
+	public PrefName getPrefName() {
+		return prefName;
 	}
-	public void setPageName(AppPageName pageName) {
-		this.pageName = pageName;
+	public void setPrefName(PrefName prefName) {
+		this.prefName = prefName;
 	}
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
@@ -97,7 +88,7 @@ public class AppPageLabelName extends BaseEntity implements Serializable {
 		this.name = name;
 	}
 	
-	@JsonView({View.Admin.class})
+	@JsonView({View.Admin.class,View.System.class})
 	@ManyToOne(targetEntity = Text.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "text_id")
 	public Text getTitle() {
@@ -105,24 +96,6 @@ public class AppPageLabelName extends BaseEntity implements Serializable {
 	}
 	public void setTitle(Text title) {
 		this.title = title;
-	}
-
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
-	@Column(name = "class_name")
-	public String getClassName() {
-		return className;
-	}
-	public void setClassName(String className) {
-		this.className = className;
-	}
-	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
-	@Column(name = "tab_index")
-	public String getTabIndex() {
-		return tabIndex;
-	}
-	public void setTabIndex(String tabIndex) {
-		this.tabIndex = tabIndex;
 	}
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
@@ -133,13 +106,13 @@ public class AppPageLabelName extends BaseEntity implements Serializable {
 	public void setOptionalParams(String optionalParams) {
 		this.optionalParams = optionalParams;
 	}
-
+	
 	@JsonView({View.Admin.class,View.System.class})
-	@OneToMany(mappedBy = "pageLabelName", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	public Set<AppPageLabelValue> getValues() {
+	@OneToMany(mappedBy = "prefTextName", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	public Set<PrefTextValue> getValues() {
 		return values;
 	}
-	public void setValues(Set<AppPageLabelValue> values) {
+	public void setValues(Set<PrefTextValue> values) {
 		this.values = values;
 	}
 	
@@ -170,13 +143,13 @@ public class AppPageLabelName extends BaseEntity implements Serializable {
 		String field = langMap.get(GlobalConstant.FIELD);
 		langMap.remove(GlobalConstant.FIELD);
 		if (this.values == null) {
-			values = new HashSet<AppPageLabelValue>();
+			values = new HashSet<PrefTextValue>();
 		}
 		// loop through langMap
 		for (String key : langMap.keySet()) {
 			// loop through existing values to find match
 			boolean added = false;
-			for (AppPageLabelValue v : values){
+			for (PrefTextValue v : values){
 				if (v.getLang().equals(key)){
 					switch (field) {
 					case "value":
@@ -192,10 +165,9 @@ public class AppPageLabelName extends BaseEntity implements Serializable {
 			}
 			if (!added) {
 				// lang does not exist create a new one
-				AppPageLabelValue val = new AppPageLabelValue();
+				PrefTextValue val = new PrefTextValue();
 				val.setLang(key);
-				val.setOrder(0l);
-				val.setPageLabelName(this);
+				val.setPrefTextName(this);
 				val.setActive(true);
 				val.setArchive(false);
 				val.setLocked(false);
@@ -211,5 +183,4 @@ public class AppPageLabelName extends BaseEntity implements Serializable {
 			}
 		}
 	}
-
 }

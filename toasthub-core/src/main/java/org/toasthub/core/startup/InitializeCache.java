@@ -27,7 +27,7 @@ import org.springframework.stereotype.Component;
 import org.toasthub.core.general.model.AppCacheMenuUtil;
 import org.toasthub.core.general.model.AppCacheServiceCrawler;
 import org.toasthub.core.general.utils.TenantContext;
-import org.toasthub.core.preference.model.AppCachePageUtil;
+import org.toasthub.core.preference.model.PrefCacheUtil;
 import org.toasthub.core.system.model.AppCacheClientDomainsUtil;
 
 @Component("InitializeCache")
@@ -38,7 +38,7 @@ public class InitializeCache {
 	AppCacheClientDomainsUtil appCacheClientDomainUtil;
 	
 	@Autowired
-	AppCachePageUtil appCachePageUtil;
+	PrefCacheUtil prefCacheUtil;
 	
 	@Autowired
 	AppCacheMenuUtil appCacheMenuUtil;
@@ -57,7 +57,7 @@ public class InitializeCache {
 			TenantContext.setTenantId(tenant);
 			logger.info("loading tenant " + tenant);
 			logger.info("loading language cache ");
-			appCachePageUtil.loadLanguageCache(tenant);
+			prefCacheUtil.loadLanguageCache(tenant);
 			
 			logger.info("loading menu cache ");
 			appCacheMenuUtil.loadMenuCache(tenant);

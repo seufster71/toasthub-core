@@ -42,9 +42,9 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
-@Table(name = "page_form_field_name")
+@Table(name = "pref_form_field_name")
 @JsonInclude(Include.NON_NULL)
-public class AppPageFormFieldName extends BaseEntity implements Serializable{
+public class PrefFormFieldName extends BaseEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	public static final String SELECT = "SELECT";
@@ -52,7 +52,7 @@ public class AppPageFormFieldName extends BaseEntity implements Serializable{
 	public static final String CHECKBOX = "CHECKBOX";
 	public static final String RADIO = "RADIO";
 	
-	private AppPageName pageName;
+	private PrefName prefName;
 	private String name;
 	private Text title;
 	private String fieldType;
@@ -65,21 +65,21 @@ public class AppPageFormFieldName extends BaseEntity implements Serializable{
 	private String subGroup;
 	private String optionalParams;
 	private String classModel;
-	private Set<AppPageFormFieldValue> values;
+	private Set<PrefFormFieldValue> values;
 	
 	// Constructors
-	public AppPageFormFieldName () {
+	public PrefFormFieldName () {
 		super();
 	}
-	public AppPageFormFieldName (AppPageName pageName,String name,Text title,String fieldType) {
+	public PrefFormFieldName (PrefName prefName,String name,Text title,String fieldType) {
 		super();
-		this.setPageName(pageName);
+		this.setPrefName(prefName);
 		this.setName(name);
 		this.setTitle(title);
 		this.setFieldType(fieldType);
 	}
 	
-	public AppPageFormFieldName (String name, String fieldType, String htmlType, String className, String group, String subGroup,
+	public PrefFormFieldName (String name, String fieldType, String htmlType, String className, String group, String subGroup,
 			 String tabIndex, String optionalParams, String classModel) {
 		this.setName(name);
 		this.setFieldType(fieldType);
@@ -94,13 +94,13 @@ public class AppPageFormFieldName extends BaseEntity implements Serializable{
 	
 	// Getters and Setters
 	@JsonIgnore
-	@ManyToOne(targetEntity = AppPageName.class, fetch = FetchType.LAZY)
-	@JoinColumn(name = "page_name_id")
-	public AppPageName getPageName() {
-		return pageName;
+	@ManyToOne(targetEntity = PrefName.class, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pref_name_id")
+	public PrefName getPrefName() {
+		return prefName;
 	}
-	public void setPageName(AppPageName pageName) {
-		this.pageName = pageName;
+	public void setPrefName(PrefName prefName) {
+		this.prefName = prefName;
 	}
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
@@ -123,11 +123,11 @@ public class AppPageFormFieldName extends BaseEntity implements Serializable{
 	}
 	
 	@JsonView({View.Admin.class,View.System.class})
-	@OneToMany(mappedBy = "pageFormFieldName", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	public Set<AppPageFormFieldValue> getValues() {
+	@OneToMany(mappedBy = "prefFormFieldName", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	public Set<PrefFormFieldValue> getValues() {
 		return values;
 	}
-	public void setValues(Set<AppPageFormFieldValue> values) {
+	public void setValues(Set<PrefFormFieldValue> values) {
 		this.values = values;
 	}
 
@@ -248,13 +248,13 @@ public class AppPageFormFieldName extends BaseEntity implements Serializable{
 		String field = langMap.get(GlobalConstant.FIELD);
 		langMap.remove(GlobalConstant.FIELD);
 		if (this.values == null) {
-			this.values = new HashSet<AppPageFormFieldValue>();
+			this.values = new HashSet<PrefFormFieldValue>();
 		}
 		// loop through langMap
 		for (String key : langMap.keySet()) {
 			// loop through existing values to find match
 			boolean added = false;
-			for (AppPageFormFieldValue v : values){
+			for (PrefFormFieldValue v : values){
 				if (v.getLang().equals(key)){
 					switch (field) {
 					case "value":
@@ -276,10 +276,10 @@ public class AppPageFormFieldName extends BaseEntity implements Serializable{
 			}
 			if (!added) {
 				// lang does not exist create a new one
-				AppPageFormFieldValue val = new AppPageFormFieldValue();
+				PrefFormFieldValue val = new PrefFormFieldValue();
 				val.setLang(key);
 				val.setOrder(0l);
-				val.setPageFormFieldName(this);
+				val.setPrefFormFieldName(this);
 				val.setActive(true);
 				val.setArchive(false);
 				val.setLocked(false);

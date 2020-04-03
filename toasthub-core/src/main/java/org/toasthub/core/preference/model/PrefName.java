@@ -40,21 +40,21 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
-@Table(name = "page_name")
+@Table(name = "pref_name")
 @JsonInclude(Include.NON_NULL)
-public class AppPageName extends BaseEntity implements Serializable{
+public class PrefName extends BaseEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	private String name;
 	private Text title;
 	private String category;
-	private Set<AppPageTextName> texts;
-	private Set<AppPageFormFieldName> formFields;
-	private Set<AppPageLabelName> labels;
-	private Set<AppPageOptionName> options;
+	private Set<PrefTextName> texts;
+	private Set<PrefFormFieldName> formFields;
+	private Set<PrefLabelName> labels;
+	private Set<PrefOptionName> options;
 	
 	// Constructor
-	public AppPageName () {
+	public PrefName () {
 		super();
 	}
 	// Methods
@@ -88,38 +88,38 @@ public class AppPageName extends BaseEntity implements Serializable{
 	}
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "pageName", cascade = CascadeType.ALL)
-	public Set<AppPageTextName> getTexts() {
+	@OneToMany(mappedBy = "prefName", cascade = CascadeType.ALL)
+	public Set<PrefTextName> getTexts() {
 		return texts;
 	}
-	public void setTexts(Set<AppPageTextName> texts) {
+	public void setTexts(Set<PrefTextName> texts) {
 		this.texts = texts;
 	}
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "pageName", cascade = CascadeType.ALL)
-	public Set<AppPageFormFieldName> getFormFields() {
+	@OneToMany(mappedBy = "prefName", cascade = CascadeType.ALL)
+	public Set<PrefFormFieldName> getFormFields() {
 		return formFields;
 	}
-	public void setFormFields(Set<AppPageFormFieldName> formFields) {
+	public void setFormFields(Set<PrefFormFieldName> formFields) {
 		this.formFields = formFields;
 	}
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "pageName", cascade = CascadeType.ALL)
-	public Set<AppPageLabelName> getLabels() {
+	@OneToMany(mappedBy = "prefName", cascade = CascadeType.ALL)
+	public Set<PrefLabelName> getLabels() {
 		return labels;
 	}
-	public void setLabels(Set<AppPageLabelName> labels) {
+	public void setLabels(Set<PrefLabelName> labels) {
 		this.labels = labels;
 	}
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "pageName", cascade = CascadeType.ALL)
-	public Set<AppPageOptionName> getOptions() {
+	@OneToMany(mappedBy = "prefName", cascade = CascadeType.ALL)
+	public Set<PrefOptionName> getOptions() {
 		return options;
 	}
-	public void setOptions(Set<AppPageOptionName> options) {
+	public void setOptions(Set<PrefOptionName> options) {
 		this.options = options;
 	}
 	

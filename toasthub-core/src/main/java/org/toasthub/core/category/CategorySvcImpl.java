@@ -24,7 +24,7 @@ import org.toasthub.core.general.handler.ServiceProcessor;
 import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
-import org.toasthub.core.preference.model.AppCachePage;
+import org.toasthub.core.preference.model.PrefCache;
 
 @Service("CategorySvcImpl")
 public class CategorySvcImpl implements ServiceProcessor, CategorySvc {
@@ -37,14 +37,14 @@ public class CategorySvcImpl implements ServiceProcessor, CategorySvc {
 	UtilSvc utilSvc;
 	
 	@Autowired
-	AppCachePage appCachePage;
+	PrefCache prefCache;
 	
 	public void process(RestRequest request, RestResponse response) {
 		String action = (String) request.getParam(GlobalConstant.ACTION);
 		// get option from main
-		request.addParam("sysPageFormName", "MEMBER_CATEGORY");
-		request.addParam("sysPageLabelName", "MEMBER_CATEGORY");
-		request.addParam("sysPageTextName", "MEMBER_CATEGORY");
+		request.addParam("sysPrefFormName", "MEMBER_CATEGORY");
+		request.addParam("sysPrefLabelName", "MEMBER_CATEGORY");
+		request.addParam("sysPrefTextName", "MEMBER_CATEGORY");
 		
 		Long count = 0l;
 		switch (action) {

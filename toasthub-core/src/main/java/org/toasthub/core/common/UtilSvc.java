@@ -45,9 +45,9 @@ import org.toasthub.core.general.model.Language;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 import org.toasthub.core.general.model.StatusMessage;
-import org.toasthub.core.preference.model.AppCachePageUtil;
-import org.toasthub.core.preference.model.AppPageFormFieldValue;
-import org.toasthub.core.preference.model.AppPageOptionValue;
+import org.toasthub.core.preference.model.PrefCacheUtil;
+import org.toasthub.core.preference.model.PrefFormFieldValue;
+import org.toasthub.core.preference.model.PrefOptionValue;
 
 import com.google.gson.Gson;
 
@@ -55,7 +55,7 @@ import com.google.gson.Gson;
 public class UtilSvc {
 	
 	@Autowired 
-	AppCachePageUtil appCachePageUtil;
+	PrefCacheUtil prefCacheUtil;
 /*
 	public String writeResponsePublic(RestResponse response){
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -117,32 +117,32 @@ public class UtilSvc {
 			request.addParam(GlobalConstant.LISTSTART, 0);
 		}
 		
-		AppPageOptionValue globalPageLimit = appCachePageUtil.getAppOption("GLOBAL_PAGE", "GLOBAL_PAGE_PAGELIMIT",(String)request.getParam(GlobalConstant.LANG));
-		AppPageOptionValue globalPageLimitMax = appCachePageUtil.getAppOption("GLOBAL_PAGE", "GLOBAL_PAGE_PAGELIMIT_MAX",(String)request.getParam(GlobalConstant.LANG));
+		PrefOptionValue globalListLimit = prefCacheUtil.getPrefOption("GLOBAL_PAGE", "GLOBAL_PAGE_PAGELIMIT",(String)request.getParam(GlobalConstant.LANG));
+		PrefOptionValue globalListLimitMax = prefCacheUtil.getPrefOption("GLOBAL_PAGE", "GLOBAL_PAGE_PAGELIMIT_MAX",(String)request.getParam(GlobalConstant.LANG));
 		if (request.getParam(GlobalConstant.LISTLIMIT) == null){
-			if (globalPageLimit != null) {
-				if (!"".equals(globalPageLimit.getValue())) {
-					request.addParam(GlobalConstant.LISTLIMIT, Integer.parseInt(globalPageLimit.getValue()));
+			if (globalListLimit != null) {
+				if (!"".equals(globalListLimit.getValue())) {
+					request.addParam(GlobalConstant.LISTLIMIT, Integer.parseInt(globalListLimit.getValue()));
 				} else {
-					request.addParam(GlobalConstant.LISTLIMIT, Integer.parseInt(globalPageLimit.getDefaultValue()));
+					request.addParam(GlobalConstant.LISTLIMIT, Integer.parseInt(globalListLimit.getDefaultValue()));
 				}
 			} else {
 				request.addParam(GlobalConstant.LISTLIMIT, 20);
 			}
 		} else {
 			Integer max = 200;
-			if (globalPageLimitMax != null) {
-				if (!"".equals(globalPageLimitMax.getValue())) {
-					max = Integer.parseInt(globalPageLimitMax.getValue());
+			if (globalListLimitMax != null) {
+				if (!"".equals(globalListLimitMax.getValue())) {
+					max = Integer.parseInt(globalListLimitMax.getValue());
 				} else {
-					max = Integer.parseInt(globalPageLimitMax.getDefaultValue());
+					max = Integer.parseInt(globalListLimitMax.getDefaultValue());
 				}
 			}
 			if ((Integer) request.getParam(GlobalConstant.LISTLIMIT) > max ) {
-				if (!"".equals(globalPageLimit.getValue())) {
-					request.addParam(GlobalConstant.LISTLIMIT, Integer.parseInt(globalPageLimit.getValue()));
+				if (!"".equals(globalListLimit.getValue())) {
+					request.addParam(GlobalConstant.LISTLIMIT, Integer.parseInt(globalListLimit.getValue()));
 				} else {
-					request.addParam(GlobalConstant.LISTLIMIT, Integer.parseInt(globalPageLimit.getDefaultValue()));
+					request.addParam(GlobalConstant.LISTLIMIT, Integer.parseInt(globalListLimit.getDefaultValue()));
 				}
 			}
 		}
@@ -222,13 +222,13 @@ public class UtilSvc {
 		Boolean isValid = true;
 		//Map<String,Object> params = request.getParams();
 		Map<String,Object> inputList = (Map<String, Object>) request.getParam("inputFields");
-		List<String> appForms = (List<String>) request.getParam("appForms");
-		Map<String,Map<String,List<AppPageFormFieldValue>>> appFields = (Map<String, Map<String, List<AppPageFormFieldValue>>>) request.getParam("appPageFormFields");
+		List<String> prefForms = (List<String>) request.getParam(PrefCacheUtil.PREFFORMS);
+		Map<String,Map<String,List<PrefFormFieldValue>>> prefFields = (Map<String, Map<String, List<PrefFormFieldValue>>>) request.getParam("prefFormFields");
 		// loop through each form that was requested
-		for (String formKey : appForms) {
-			List<AppPageFormFieldValue> formFields = (List<AppPageFormFieldValue>) appFields.get(formKey);
+		for (String formKey : prefForms) {
+			List<PrefFormFieldValue> formFields = (List<PrefFormFieldValue>) prefFields.get(formKey);
 			// loop through each field that is available for this form
-			for (AppPageFormFieldValue field : formFields) {
+			for (PrefFormFieldValue field : formFields) {
 				if (inputList.containsKey(field.getName())) {
 					try {
 						switch (field.getFieldType()) {
@@ -314,15 +314,15 @@ public class UtilSvc {
 		
 		Boolean isValid = true;
 		Map<String,Object> inputList = (Map<String, Object>) request.getParam("inputFields");
-		List<String> appForms = (List<String>) request.getParam("appForms");
-		Map<String,Map<String,List<AppPageFormFieldValue>>> appFields = (Map<String, Map<String, List<AppPageFormFieldValue>>>) request.getParam("appPageFormFields");
+		List<String> prefForms = (List<String>) request.getParam(PrefCacheUtil.PREFFORMS);
+		Map<String,Map<String,List<PrefFormFieldValue>>> prefFields = (Map<String, Map<String, List<PrefFormFieldValue>>>) request.getParam("prefFormFields");
 	
 		
 		// loop through each form that was requested
-		for (String formKey : appForms) {
-			List<AppPageFormFieldValue> formFields = (List<AppPageFormFieldValue>) appFields.get(formKey);
+		for (String formKey : prefForms) {
+			List<PrefFormFieldValue> formFields = (List<PrefFormFieldValue>) prefFields.get(formKey);
 			// loop through each field that is available for this form
-			for (AppPageFormFieldValue field : formFields) {
+			for (PrefFormFieldValue field : formFields) {
 				
 				if (inputList.containsKey(field.getName())) {
 					Map<String,Object> paramObj = new Gson().fromJson(field.getClassModel(),Map.class);
@@ -547,7 +547,7 @@ public class UtilSvc {
 						// need to finish
 				}
 			} // for formfields
-		} // for appforms
+		} // for prefforms
 		
 	} // marshallFields
 	

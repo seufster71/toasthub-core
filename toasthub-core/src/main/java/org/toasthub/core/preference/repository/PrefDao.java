@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-package org.toasthub.core.preference.service;
+package org.toasthub.core.preference.repository;
 
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
+import org.toasthub.core.preference.model.PrefName;
 
-public interface AppTextSvc {
+public interface PrefDao {
 
-	public void itemCount(RestRequest request, RestResponse response);
-	public void items(RestRequest request, RestResponse response);
-	public void item(RestRequest request, RestResponse response);
+	public PrefName getPrefName(Long id);
+	public PrefName getPrefName(String name);
 	
+	public void items(RestRequest request, RestResponse response) throws Exception;
+	public void itemCount(RestRequest request, RestResponse response) throws Exception;
+	public void item(RestRequest request, RestResponse response) throws Exception;
 }

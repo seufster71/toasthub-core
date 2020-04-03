@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-package org.toasthub.core.preference.service;
+package org.toasthub.core.preference.repository;
+
+import java.util.List;
 
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
+import org.toasthub.core.preference.model.PrefLabelValue;
 
-public interface AppLabelSvc {
+public interface PrefLabelDao {
 
-	public void itemCount(RestRequest request, RestResponse response);
-	public void items(RestRequest request, RestResponse response);
-	public void item(RestRequest request, RestResponse response);
-	
+	public List<PrefLabelValue> getLabels(String pageName, String lang);
+	public void items(RestRequest request, RestResponse response) throws Exception;
+	public void itemCount(RestRequest request, RestResponse response) throws Exception;
+	public void item(RestRequest request, RestResponse response) throws Exception;
 }

@@ -24,21 +24,22 @@ import org.toasthub.core.general.handler.ServiceProcessor;
 import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
-import org.toasthub.core.preference.model.AppCachePage;
-import org.toasthub.core.preference.repository.AppOptionDao;
+import org.toasthub.core.preference.model.PrefCache;
+import org.toasthub.core.preference.repository.PrefTextDao;
 
-@Service("AppOptionSvc")
-public class AppOptionSvcImpl implements ServiceProcessor, AppOptionSvc {
 
-	@Autowired
-	@Qualifier("AppOptionDao")
-	AppOptionDao appOptionDao;
+@Service("PrefTextSvc")
+public class PrefTextSvcImpl implements ServiceProcessor, PrefTextSvc {
+
+	@Autowired 
+	@Qualifier("PrefTextDao")
+	PrefTextDao prefTextDao;
 	
-	@Autowired
+	@Autowired 
 	UtilSvc utilSvc;
 	
-	@Autowired
-	AppCachePage appCachePage;
+	@Autowired 
+	PrefCache prefCache;
 	
 	public void process(RestRequest request, RestResponse response) {
 		String action = (String) request.getParam(GlobalConstant.ACTION);
@@ -63,7 +64,7 @@ public class AppOptionSvcImpl implements ServiceProcessor, AppOptionSvc {
 	
 	public void itemCount(RestRequest request, RestResponse response) {
 		try {
-			appOptionDao.itemCount(request, response);
+			prefTextDao.itemCount(request, response);
 		} catch (Exception e) {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Count failed", response);
 			e.printStackTrace();
@@ -72,7 +73,7 @@ public class AppOptionSvcImpl implements ServiceProcessor, AppOptionSvc {
 	
 	public void items(RestRequest request, RestResponse response) {
 		try {
-			appOptionDao.items(request, response);
+			prefTextDao.items(request, response);
 		} catch (Exception e) {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "List failed", response);
 			e.printStackTrace();
@@ -81,7 +82,7 @@ public class AppOptionSvcImpl implements ServiceProcessor, AppOptionSvc {
 	
 	public void item(RestRequest request, RestResponse response) {
 		try {
-			appOptionDao.item(request, response);
+			prefTextDao.item(request, response);
 		} catch (Exception e) {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Item Failed", response);
 			e.printStackTrace();

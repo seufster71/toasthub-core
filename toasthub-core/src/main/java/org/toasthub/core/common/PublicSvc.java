@@ -32,7 +32,7 @@ import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 import org.toasthub.core.mail.MailSvc;
 import org.toasthub.core.menu.MenuSvc;
-import org.toasthub.core.preference.model.AppCachePageUtil;
+import org.toasthub.core.preference.model.PrefCacheUtil;
 
 @Service("PublicSvc")
 public class PublicSvc implements ServiceProcessor {
@@ -54,7 +54,7 @@ public class PublicSvc implements ServiceProcessor {
 	AppCacheMenuUtil appCacheMenuUtil;
 	
 	@Autowired 
-	AppCachePageUtil appCachePageUtil;
+	PrefCacheUtil prefCacheUtil;
 
 	// Constructors
 	public PublicSvc() {}
@@ -67,8 +67,8 @@ public class PublicSvc implements ServiceProcessor {
 		switch (action) {
 		case "INIT": 
 			// get options
-			request.addParam(AppCachePageUtil.APPPAGEPARAMLOC, AppCachePageUtil.RESPONSE);
-			appCachePageUtil.getPageInfo(request,response);
+			request.addParam(PrefCacheUtil.PREFPARAMLOC, PrefCacheUtil.RESPONSE);
+			prefCacheUtil.getPrefInfo(request,response);
 			
 			this.init(request, response);
 			// get menus
@@ -92,7 +92,7 @@ public class PublicSvc implements ServiceProcessor {
 		response.addParam(GlobalConstant.APPNAME,entityManagerMainSvc.getAppName());
 		response.addParam(GlobalConstant.HTMLPREFIX, entityManagerMainSvc.getHTMLPrefix());
 		// default language code
-		response.addParam(GlobalConstant.LANG, appCachePageUtil.getDefaultLang());
+		response.addParam(GlobalConstant.LANG, prefCacheUtil.getDefaultLang());
 		
 	}
 	

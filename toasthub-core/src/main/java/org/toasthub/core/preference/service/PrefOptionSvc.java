@@ -14,18 +14,15 @@
  * limitations under the License.
  */
 
-package org.toasthub.core.preference.repository;
-
-import java.util.List;
+package org.toasthub.core.preference.service;
 
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
-import org.toasthub.core.preference.model.AppPageTextValue;
 
-public interface AppTextDao {
+public interface PrefOptionSvc {
 
-	public List<AppPageTextValue> getTexts(String pageName, String lang);
-	public void items(RestRequest request, RestResponse response) throws Exception;
-	public void itemCount(RestRequest request, RestResponse response) throws Exception;
-	public void item(RestRequest request, RestResponse response) throws Exception;
+	public void itemCount(RestRequest request, RestResponse response);
+	public void items(RestRequest request, RestResponse response);
+	public void item(RestRequest request, RestResponse response);
+	
 }
