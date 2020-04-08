@@ -17,6 +17,7 @@
 package org.toasthub.core.preference.model;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Map;
 import java.util.Set;
 
@@ -45,18 +46,28 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 public class PrefName extends BaseEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	private String name;
-	private Text title;
-	private String category;
-	private Set<PrefTextName> texts;
-	private Set<PrefFormFieldName> formFields;
-	private Set<PrefLabelName> labels;
-	private Set<PrefOptionName> options;
+	protected String name;
+	protected Text title;
+	protected String category;
+	protected PrefProduct prefProduct;
+	protected Set<PrefTextName> texts;
+	protected Set<PrefFormFieldName> formFields;
+	protected Set<PrefLabelName> labels;
+	protected Set<PrefOptionName> options;
+	
+	// Transient
+	protected Long prefProductId;
 	
 	// Constructor
 	public PrefName () {
 		super();
+		this.setActive(true);
+		this.setArchive(false);
+		this.setLocked(false);
+		this.setCreated(Instant.now());
 	}
+	
+	
 	// Methods
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@NotNull
@@ -143,5 +154,24 @@ public class PrefName extends BaseEntity implements Serializable{
 			text.setLangTexts(langMap);
 			this.setTitle(text);
 		}
+	}
+	
+	@JsonIgnore
+	@ManyToOne(targetEntity = PrefProduct.class)
+	@JoinColumn(name = "pref_product_id")
+	public PrefProduct getPrefProduct() {
+		return prefProduct;
+	}
+	public void setPrefProduct(PrefProduct prefProduct) {
+		this.prefProduct = prefProduct;
+	}
+
+	@JsonView({View.Admin.class})
+	@Transient
+	public Long getPrefProductId() {
+		return prefProductId;
+	}
+	public void setPrefProductId(Long prefProductId) {
+		this.prefProductId = prefProductId;
 	}
 }

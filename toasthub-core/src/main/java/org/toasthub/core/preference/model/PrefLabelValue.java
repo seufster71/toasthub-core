@@ -50,6 +50,7 @@ public class PrefLabelValue extends BaseEntity implements Serializable{
 	private String name;
 	private String className;
 	private String tabIndex;
+	private String group;
 	private String optionalParams;
 		
 	// Constructor
@@ -57,7 +58,7 @@ public class PrefLabelValue extends BaseEntity implements Serializable{
 		super();
 	}
 	
-	public PrefLabelValue(Long id, String value, String lang, Boolean rendered, Long order, String name, String className, String tabIndex, String optionalParams){
+	public PrefLabelValue(Long id, String value, String lang, Boolean rendered, Long order, String name, String className, String tabIndex, String group, String optionalParams){
 		this.setId(id);
 		this.setValue(value);
 		this.setLang(lang);
@@ -66,6 +67,7 @@ public class PrefLabelValue extends BaseEntity implements Serializable{
 		this.setName(name);
 		this.setClassName(className);
 		this.setTabIndex(tabIndex);
+		this.setGroup(group);
 		this.setOptionalParams(optionalParams);
 	}
 	
@@ -145,11 +147,22 @@ public class PrefLabelValue extends BaseEntity implements Serializable{
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Transient
+	public String getGroup() {
+		return group;
+	}
+	public void setGroup(String group) {
+		this.group = group;
+	}
+	
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
+	@Transient
 	public String getOptionalParams() {
 		return optionalParams;
 	}
 	public void setOptionalParams(String optionalParams) {
 		this.optionalParams = optionalParams;
 	}
+
+	
 
 }

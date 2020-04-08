@@ -43,7 +43,7 @@ public class PrefLabelDaoImpl implements PrefLabelDao {
 	public List<PrefLabelValue> getLabels(String prefName, String lang) {
 		@SuppressWarnings("unchecked")
 		List<PrefLabelValue> labels = entityManagerDataSvc.getInstance()
-			.createQuery("SELECT NEW PrefLabelValue(l.id, l.value, l.lang, l.rendered, l.order, l.prefLabelName.name, l.prefLabelName.className, l.prefLabelName.tabIndex,l.prefLabelName.optionalParams) FROM PrefLabelValue l WHERE l.lang =:lang AND l.prefLabelName.prefName.name =:prefName AND l.prefLabelName.archive = false ORDER BY l.order ASC")
+			.createQuery("SELECT NEW PrefLabelValue(l.id, l.value, l.lang, l.rendered, l.order, l.prefLabelName.name, l.prefLabelName.className, l.prefLabelName.tabIndex, l.prefLabelName.group, l.prefLabelName.optionalParams) FROM PrefLabelValue l WHERE l.lang =:lang AND l.prefLabelName.prefName.name =:prefName AND l.prefLabelName.archive = false ORDER BY l.order ASC")
 			.setParameter("prefName", prefName)
 			.setParameter("lang", lang)
 			.getResultList();

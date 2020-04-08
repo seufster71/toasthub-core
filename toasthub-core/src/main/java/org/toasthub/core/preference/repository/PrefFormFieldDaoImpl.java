@@ -92,8 +92,8 @@ public class PrefFormFieldDaoImpl implements PrefFormFieldDao {
 	public void item(RestRequest request, RestResponse response) throws Exception {
 		if (request.containsParam(GlobalConstant.ITEMID) && !"".equals(request.getParam(GlobalConstant.ITEMID))) {
 			String queryStr = "SELECT f FROM PrefFormFieldName AS f JOIN FETCH f.title AS t JOIN FETCH t.langTexts as l JOIN FETCH f.values WHERE f.id =:id";
-			Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
 			
+			Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
 			query.setParameter("id", new Long((Integer) request.getParam(GlobalConstant.ITEMID)));
 			PrefFormFieldName prefFormFieldName = (PrefFormFieldName) query.getSingleResult();
 		
