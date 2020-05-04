@@ -134,7 +134,7 @@ public class PrefDaoImpl implements PrefDao {
 					}
 					if (item.get(GlobalConstant.ORDERCOLUMN).equals("ADMIN_PREFERENCE_TABLE_CODE")){
 						if (comma) { orderItems.append(","); }
-						orderItems.append("p.code ").append(item.get(GlobalConstant.ORDERDIR));
+						orderItems.append("p.name ").append(item.get(GlobalConstant.ORDERDIR));
 						comma = true;
 					}
 					if (item.get(GlobalConstant.ORDERCOLUMN).equals("ADMIN_PREFERENCE_TABLE_CATEGORY")){
@@ -202,6 +202,7 @@ public class PrefDaoImpl implements PrefDao {
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void itemCount(RestRequest request, RestResponse response) throws Exception {
 		String queryStr = "SELECT COUNT(DISTINCT p) FROM PrefName AS p JOIN p.title AS t JOIN t.langTexts AS lt WHERE lt.lang =:lang ";
@@ -233,7 +234,7 @@ public class PrefDaoImpl implements PrefDao {
 					}
 					if (item.get(GlobalConstant.SEARCHCOLUMN).equals("ADMIN_PREFERENCE_TABLE_CODE")){
 						if (or) { lookupStr += " OR "; }
-						lookupStr += "p.code LIKE :codeValue"; 
+						lookupStr += "p.name LIKE :codeValue"; 
 						or = true;
 					}
 					if (item.get(GlobalConstant.SEARCHCOLUMN).equals("ADMIN_PREFERENCE_TABLE_CATEGORY")){

@@ -58,7 +58,7 @@ public class PrefFormFieldValue extends BaseEntity implements Serializable{
 	private String className;
 	private String group;
 	private String subGroup;
-	private String tabIndex;
+	private Integer tabIndex;
 	private String optionalParams;
 	private String classModel;
 	
@@ -67,10 +67,21 @@ public class PrefFormFieldValue extends BaseEntity implements Serializable{
 		super();
 	}
 	
+	public PrefFormFieldValue(String lang) {
+		super();
+		setLang(lang);
+		setRendered(false);
+		setRequired(false);
+		setActive(true);
+		setArchive(false);
+		setLocked(false);
+		setOrder(0l);
+	}
+	
 	// Contructor for fields 
 	public PrefFormFieldValue(Long id,String value, String label, String lang, Boolean rendered, 
 			Boolean required, Long order, String validation, String image, String name, String fieldType,
-			String htmlType, String className, String group, String subGroup, String tabIndex, 
+			String htmlType, String className, String group, String subGroup, Integer tabIndex, 
 			String optionalParams, String classModel) {
 		this.setId(id);
 		this.setValue(value);
@@ -245,10 +256,10 @@ public class PrefFormFieldValue extends BaseEntity implements Serializable{
 
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Transient
-	public String getTabIndex() {
+	public Integer getTabIndex() {
 		return tabIndex;
 	}
-	public void setTabIndex(String tabIndex) {
+	public void setTabIndex(Integer tabIndex) {
 		this.tabIndex = tabIndex;
 	}
 

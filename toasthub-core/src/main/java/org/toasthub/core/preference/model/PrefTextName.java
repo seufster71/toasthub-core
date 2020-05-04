@@ -139,46 +139,23 @@ public class PrefTextName extends BaseEntity implements Serializable{
 	}
 	
 	@Transient
-	public void setMValues(Map<String,String> langMap) {
-		String field = langMap.get(GlobalConstant.FIELD);
-		langMap.remove(GlobalConstant.FIELD);
-		if (this.values == null) {
+	public void addToValues(Object value) {
+		PrefTextValue val = (PrefTextValue) value;
+		val.setPrefTextName(this);
+		if (values == null) {
 			values = new HashSet<PrefTextValue>();
-		}
-		// loop through langMap
-		for (String key : langMap.keySet()) {
-			// loop through existing values to find match
-			boolean added = false;
-			for (PrefTextValue v : values){
-				if (v.getLang().equals(key)){
-					switch (field) {
-					case "value":
-						v.setValue(langMap.get(key));
-						break;
-					case "rendered":
-						v.setRendered(Boolean.parseBoolean(langMap.get(key)));
-						break;
-					}
-					added = true;
-					break;
-				} 
-			}
-			if (!added) {
-				// lang does not exist create a new one
-				PrefTextValue val = new PrefTextValue();
-				val.setLang(key);
-				val.setPrefTextName(this);
-				val.setActive(true);
-				val.setArchive(false);
-				val.setLocked(false);
-				switch (field) {
-				case "value":
-					val.setValue(langMap.get(key));
-					break;
-				case "rendered":
-					val.setRendered(Boolean.parseBoolean(langMap.get(key)));
+			values.add(val);
+		} else {
+			boolean exists = false;
+			for (PrefTextValue v : values) {
+				if (v.getLang().equals(val.getLang())) {
+					v.setValue(val.getValue());
+					v.setRendered(val.getRendered());
+					exists = true;
 					break;
 				}
+			}
+			if (exists == false) {
 				values.add(val);
 			}
 		}

@@ -56,6 +56,15 @@ public class PrefOptionValue extends BaseEntity implements Serializable {
 		super();
 	}
 	
+	public PrefOptionValue(String lang) {
+		super();
+		setLang(lang);
+		setRendered(false);
+		setActive(true);
+		setArchive(false);
+		setLocked(false);
+	}
+	
 	public PrefOptionValue(Long id, String value, String lang, Boolean rendered, String validation, String name,
 			String valueType, String defaultValue, Boolean useDefault) {
 		this.setId(id);

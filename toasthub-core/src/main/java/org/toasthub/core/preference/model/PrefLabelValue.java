@@ -49,7 +49,7 @@ public class PrefLabelValue extends BaseEntity implements Serializable{
 	// make output simple on preference object
 	private String name;
 	private String className;
-	private String tabIndex;
+	private Integer tabIndex;
 	private String group;
 	private String optionalParams;
 		
@@ -58,7 +58,17 @@ public class PrefLabelValue extends BaseEntity implements Serializable{
 		super();
 	}
 	
-	public PrefLabelValue(Long id, String value, String lang, Boolean rendered, Long order, String name, String className, String tabIndex, String group, String optionalParams){
+	public PrefLabelValue(String lang) {
+		super();
+		setLang(lang);
+		setRendered(false);
+		setActive(true);
+		setArchive(false);
+		setLocked(false);
+		setOrder(0l);
+	}
+	
+	public PrefLabelValue(Long id, String value, String lang, Boolean rendered, Long order, String name, String className, Integer tabIndex, String group, String optionalParams){
 		this.setId(id);
 		this.setValue(value);
 		this.setLang(lang);
@@ -138,10 +148,10 @@ public class PrefLabelValue extends BaseEntity implements Serializable{
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Transient
-	public String getTabIndex() {
+	public Integer getTabIndex() {
 		return tabIndex;
 	}
-	public void setTabIndex(String tabIndex) {
+	public void setTabIndex(Integer tabIndex) {
 		this.tabIndex = tabIndex;
 	}
 	

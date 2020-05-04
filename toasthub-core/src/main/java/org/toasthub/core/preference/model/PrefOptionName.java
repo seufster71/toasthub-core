@@ -61,6 +61,7 @@ public class PrefOptionName extends BaseEntity implements Serializable{
 		super();
 	}
 	
+	
 	// Setters/Getter
 	@JsonIgnore
 	@ManyToOne(targetEntity = PrefName.class, fetch = FetchType.LAZY)
@@ -159,47 +160,23 @@ public class PrefOptionName extends BaseEntity implements Serializable{
 	}
 	
 	@Transient
-	public void setMValues(Map<String,String> langMap) {
-		String field = langMap.get(GlobalConstant.FIELD);
-		langMap.remove(GlobalConstant.FIELD);
-		if (this.values == null) {
+	public void addToValues(Object value) {
+		PrefOptionValue val = (PrefOptionValue) value;
+		val.setPrefOptionName(this);
+		if (values == null) {
 			values = new HashSet<PrefOptionValue>();
-		}
-		// loop through langMap
-		for (String key : langMap.keySet()) {
-			// loop through existing values to find match
-			boolean added = false;
-			for (PrefOptionValue v : values){
-				if (v.getLang().equals(key)){
-					switch (field) {
-					case "value":
-						v.setValue(langMap.get(key));
-						break;
-					case "rendered":
-						v.setRendered(Boolean.parseBoolean(langMap.get(key)));
-						break;
-					}
-					added = true;
-					break;
-				} 
-			}
-			if (!added) {
-				// lang does not exist create a new one
-				PrefOptionValue val = new PrefOptionValue();
-				val.setLang(key);
-				val.setPrefOptionName(this);
-				val.setValidation("");
-				val.setActive(true);
-				val.setArchive(false);
-				val.setLocked(false);
-				switch (field) {
-				case "value":
-					val.setValue(langMap.get(key));
-					break;
-				case "rendered":
-					val.setRendered(Boolean.parseBoolean(langMap.get(key)));
+			values.add(val);
+		} else {
+			boolean exists = false;
+			for (PrefOptionValue v : values) {
+				if (v.getLang().equals(val.getLang())) {
+					v.setValue(val.getValue());
+					v.setRendered(val.getRendered());
+					exists = true;
 					break;
 				}
+			}
+			if (exists == false) {
 				values.add(val);
 			}
 		}

@@ -52,6 +52,15 @@ public class PrefTextValue extends BaseEntity implements Serializable{
 		super();
 	}
 	
+	public PrefTextValue(String lang) {
+		super();
+		setLang(lang);
+		setRendered(false);
+		setActive(true);
+		setArchive(false);
+		setLocked(false);
+	}
+	
 	public PrefTextValue(Long id, String value, String lang, Boolean rendered, String name){
 		this.setId(id);
 		this.setValue(value);

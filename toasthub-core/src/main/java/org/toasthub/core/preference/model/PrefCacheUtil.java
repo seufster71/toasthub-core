@@ -41,14 +41,17 @@ public class PrefCacheUtil {
 	public static final String RESPONSE = "response";
 	public static final String REQUEST = "request";
 	public static final String PREFPARAMLOC = "prefParamLoc";
-	public static final String PREFFORMS = "prefForms";
+	public static final String PREFFORMKEYS = "prefFormKeys";
 	public static final String PREFFORMNAME = "prefFormName";
 	public static final String PREFFORMFIELDS = "prefFormFields";
 	public static final String PREFLABELNAME = "prefLabelName";
+	public static final String PREFLABELKEYS = "prefLabelKeys";
 	public static final String PREFLABELS = "prefLabels";
 	public static final String PREFTEXTNAME = "prefTextName";
+	public static final String PREFTEXTKEYS = "prefTextKeys";
 	public static final String PREFTEXTS = "prefTexts";
 	public static final String PREFOPTIONNAME = "prefOptionName";
+	public static final String PREFOPTIONKEYS = "prefOptionKeys";
 	public static final String PREFOPTIONS = "prefOptions";
 	public static final String PREFGLOBAL = "prefGlobal";
 	public static final String LANGUAGES = "LANGUAGES";
@@ -88,26 +91,26 @@ public class PrefCacheUtil {
 	
 	@SuppressWarnings("unchecked")
 	public void getPrefInfo(RestRequest request, RestResponse response) {
-		if (request.containsParam(PREFFORMS) && !request.getParam(PREFFORMS).equals("") && request.getParam(PREFFORMS) instanceof List){
-			for (String item : (List<String>) request.getParam(PREFFORMS)) {
+		if (request.containsParam(PREFFORMKEYS) && !request.getParam(PREFFORMKEYS).equals("") && request.getParam(PREFFORMKEYS) instanceof List){
+			for (String item : (List<String>) request.getParam(PREFFORMKEYS)) {
 				request.addParam(PREFFORMNAME, item);
 				getPrefFormFields(request,response);
 			}
 		}
-		if (request.containsParam(PREFLABELS) && !request.getParam(PREFLABELS).equals("") && request.getParam(PREFLABELS) instanceof List){
-			for (String item : (List<String>) request.getParam(PREFLABELS)) {
+		if (request.containsParam(PREFLABELKEYS) && !request.getParam(PREFLABELKEYS).equals("") && request.getParam(PREFLABELKEYS) instanceof List){
+			for (String item : (List<String>) request.getParam(PREFLABELKEYS)) {
 				request.addParam(PREFLABELNAME, item);
 				getPrefLabels(request,response);
 			}
 		}
-		if (request.containsParam(PREFTEXTS) && !request.getParam(PREFTEXTS).equals("") && request.getParam(PREFTEXTS) instanceof List){
-			for (String item : (List<String>) request.getParam(PREFTEXTS)) {
+		if (request.containsParam(PREFTEXTKEYS) && !request.getParam(PREFTEXTKEYS).equals("") && request.getParam(PREFTEXTKEYS) instanceof List){
+			for (String item : (List<String>) request.getParam(PREFTEXTKEYS)) {
 				request.addParam(PREFTEXTNAME, item);
 				getPrefTexts(request,response);
 			}
 		}
-		if (request.containsParam(PREFOPTIONS) && !request.getParam(PREFOPTIONS).equals("") && request.getParam(PREFOPTIONS) instanceof List){
-			for (String item : (List<String>) request.getParam(PREFOPTIONS)) {
+		if (request.containsParam(PREFOPTIONKEYS) && !request.getParam(PREFOPTIONKEYS).equals("") && request.getParam(PREFOPTIONKEYS) instanceof List){
+			for (String item : (List<String>) request.getParam(PREFOPTIONKEYS)) {
 				request.addParam(PREFOPTIONNAME, item);
 				getPrefOptions(request,response);
 			}
@@ -664,34 +667,34 @@ public class PrefCacheUtil {
 	// Add 
 	@SuppressWarnings("unchecked")
 	public static void addPrefForm(RestRequest request, String... pageName) {
-		if (!request.containsParam(PREFFORMS)) {
+		if (!request.containsParam(PREFFORMKEYS)) {
 			List<String> prefForms = new ArrayList<String>();
-			request.addParam(PREFFORMS, prefForms);
+			request.addParam(PREFFORMKEYS, prefForms);
 		}
 		for (String item : pageName) {
-			((List<String>) request.getParam(PREFFORMS)).add(item);
+			((List<String>) request.getParam(PREFFORMKEYS)).add(item);
 		}
 	}
 	
 	@SuppressWarnings("unchecked")
 	public static void addPrefText(RestRequest request, String... pageName) {
-		if (!request.containsParam(PREFTEXTS)) {
+		if (!request.containsParam(PREFTEXTKEYS)) {
 			List<String> prefTexts = new ArrayList<String>();
-			request.addParam(PREFTEXTS, prefTexts);
+			request.addParam(PREFTEXTKEYS, prefTexts);
 		}
 		for (String item : pageName) {
-			((List<String>) request.getParam(PREFTEXTS)).add(item);
+			((List<String>) request.getParam(PREFTEXTKEYS)).add(item);
 		}
 	}
 	
 	@SuppressWarnings("unchecked")
 	public static void addPrefOption(RestRequest request, String... pageName) {
-		if (!request.containsParam(PREFOPTIONS)) {
+		if (!request.containsParam(PREFOPTIONKEYS)) {
 			List<String> prefOptions = new ArrayList<String>();
-			request.addParam(PREFOPTIONS, prefOptions);
+			request.addParam(PREFOPTIONKEYS, prefOptions);
 		}
 		for (String item : pageName) {
-			((List<String>) request.getParam(PREFOPTIONS)).add(item);
+			((List<String>) request.getParam(PREFOPTIONKEYS)).add(item);
 		}
 	}
 	

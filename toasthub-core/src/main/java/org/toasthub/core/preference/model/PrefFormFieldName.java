@@ -57,7 +57,7 @@ public class PrefFormFieldName extends BaseEntity implements Serializable{
 	private Text title;
 	private String fieldType;
 	private String htmlType;
-	private String tabIndex;
+	private Integer tabIndex;
 	private Integer rows;
 	private Integer cols;
 	private String className;
@@ -80,7 +80,7 @@ public class PrefFormFieldName extends BaseEntity implements Serializable{
 	}
 	
 	public PrefFormFieldName (String name, String fieldType, String htmlType, String className, String group, String subGroup,
-			 String tabIndex, String optionalParams, String classModel) {
+			 Integer tabIndex, String optionalParams, String classModel) {
 		this.setName(name);
 		this.setFieldType(fieldType);
 		this.setHtmlType(htmlType);
@@ -196,10 +196,10 @@ public class PrefFormFieldName extends BaseEntity implements Serializable{
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "tab_index")
-	public String getTabIndex() {
+	public Integer getTabIndex() {
 		return tabIndex;
 	}
-	public void setTabIndex(String tabIndex) {
+	public void setTabIndex(Integer tabIndex) {
 		this.tabIndex = tabIndex;
 	}
 	
@@ -302,4 +302,33 @@ public class PrefFormFieldName extends BaseEntity implements Serializable{
 			}
 		}
 	}
+	
+	@Transient
+	public void addToValues(Object value) {
+		PrefFormFieldValue val = (PrefFormFieldValue) value;
+		val.setPrefFormFieldName(this);
+		if (values == null) {
+			values = new HashSet<PrefFormFieldValue>();
+			values.add(val);
+		} else {
+			boolean exists = false;
+			for (PrefFormFieldValue v : values) {
+				if (v.getLang().equals(val.getLang())) {
+					v.setValue(val.getValue());
+					v.setLabel(val.getLabel());
+					v.setRendered(val.getRendered());
+					v.setRequired(val.getRequired());
+					v.setOrder(val.getOrder());
+					exists = true;
+					break;
+				}
+			}
+			if (exists == false) {
+				values.add(val);
+			}
+		}
+		
+		
+	}
+	
 }

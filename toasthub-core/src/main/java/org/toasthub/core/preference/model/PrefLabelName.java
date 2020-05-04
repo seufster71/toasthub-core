@@ -53,7 +53,7 @@ public class PrefLabelName extends BaseEntity implements Serializable {
 	private Text title;
 	private String className;
 	private String group;
-	private String tabIndex;
+	private Integer tabIndex;
 	private String optionalParams;
 	private Set<PrefLabelValue> values;
 	
@@ -69,7 +69,7 @@ public class PrefLabelName extends BaseEntity implements Serializable {
 		this.setTitle(title);
 	}
 	
-	public PrefLabelName (String name, String className, String tabIndex, String optionalParams) {
+	public PrefLabelName (String name, String className, Integer tabIndex, String optionalParams) {
 		this.setName(name);
 		this.setClassName(className);
 		this.setTabIndex(tabIndex);
@@ -128,10 +128,10 @@ public class PrefLabelName extends BaseEntity implements Serializable {
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "tab_index")
-	public String getTabIndex() {
+	public Integer getTabIndex() {
 		return tabIndex;
 	}
-	public void setTabIndex(String tabIndex) {
+	public void setTabIndex(Integer tabIndex) {
 		this.tabIndex = tabIndex;
 	}
 	
@@ -221,5 +221,28 @@ public class PrefLabelName extends BaseEntity implements Serializable {
 			}
 		}
 	}
-
+	
+	@Transient
+	public void addToValues(Object value) {
+		PrefLabelValue val = (PrefLabelValue) value;
+		val.setPrefLabelName(this);
+		if (values == null) {
+			values = new HashSet<PrefLabelValue>();
+			values.add(val);
+		} else {
+			boolean exists = false;
+			for (PrefLabelValue v : values) {
+				if (v.getLang().equals(val.getLang())) {
+					v.setValue(val.getValue());
+					v.setRendered(val.getRendered());
+					v.setOrder(val.getOrder());
+					exists = true;
+					break;
+				}
+			}
+			if (exists == false) {
+				values.add(val);
+			}
+		}
+	}
 }

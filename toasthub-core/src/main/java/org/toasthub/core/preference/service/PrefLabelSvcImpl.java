@@ -16,6 +16,8 @@
 
 package org.toasthub.core.preference.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,7 @@ import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 import org.toasthub.core.preference.model.PrefCache;
+import org.toasthub.core.preference.model.PrefLabelName;
 import org.toasthub.core.preference.repository.PrefLabelDao;
 
 @Service("PrefLabelSvc")
@@ -73,6 +76,11 @@ public class PrefLabelSvcImpl implements ServiceProcessor, PrefLabelSvc {
 	public void items(RestRequest request, RestResponse response) {
 		try {
 			prefLabelDao.items(request, response);
+			// null values because they are lazy loaded but empty
+			List<PrefLabelName> items = (List<PrefLabelName>) response.getParam(GlobalConstant.ITEMS);
+			for (PrefLabelName item : items) {
+				item.setValues(null);
+			}
 		} catch (Exception e) {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "List failed", response);
 			e.printStackTrace();
