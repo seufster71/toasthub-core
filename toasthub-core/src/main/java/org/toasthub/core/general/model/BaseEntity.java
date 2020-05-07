@@ -26,6 +26,8 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 import org.toasthub.core.general.api.View;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
 @MappedSuperclass()
@@ -128,7 +130,7 @@ public class BaseEntity implements Serializable{
 		this.created = created;
 	}
 	
-	@JsonView({View.Admin.class})
+	@JsonIgnore
 	@Version 
 	@Column(name = "version")
 	public Long getVersion() {
