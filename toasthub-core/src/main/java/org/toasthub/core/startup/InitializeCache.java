@@ -64,6 +64,9 @@ public class InitializeCache {
 			
 			logger.info("Load service cache ");
 			appCacheServiceCrawler.loadServiceCache(tenant);
+			
+			logger.info("Load global cache ");
+			prefCacheUtil.loadGlobalCache(tenant);
 		}
 	}
 }

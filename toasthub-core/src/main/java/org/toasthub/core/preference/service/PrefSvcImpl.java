@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.toasthub.core.common.UtilSvc;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
+import org.toasthub.core.preference.model.PrefCacheUtil;
 import org.toasthub.core.preference.model.PrefFormFieldValue;
 import org.toasthub.core.preference.model.PrefLabelValue;
 import org.toasthub.core.preference.model.PrefName;
@@ -60,6 +61,9 @@ public class PrefSvcImpl implements PrefSvc {
 	@Autowired
 	@Qualifier("PrefOptionDao")
 	PrefOptionDao prefOptionDao;
+	
+	@Autowired 
+	PrefCacheUtil prefCacheUtil;
 	
 	@Autowired 
 	UtilSvc utilSvc;
@@ -123,13 +127,9 @@ public class PrefSvcImpl implements PrefSvc {
 	@Override
 	public void itemCount(RestRequest request, RestResponse response) {
 		try {
-			//if (request.containsParam("category")) {
-				prefDao.itemCount(request, response);
-			//} else {
-			//	utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Missing category param", response);
-			//}
+			prefDao.itemCount(request, response);
 		} catch (Exception e) {
-			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Count failed", response);
+			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, prefCacheUtil.getPrefText("GLOBAL_SERVICE", "GLOBAL_SERVICE_EXECUTION_FAIL",prefCacheUtil.getLang(request)), response);
 			e.printStackTrace();
 		}
 		
@@ -138,13 +138,9 @@ public class PrefSvcImpl implements PrefSvc {
 	@Override
 	public void items(RestRequest request, RestResponse response) {
 		try {
-			//if (request.containsParam("category")) {
-				prefDao.items(request, response);
-			//} else {
-			//	utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Missing category param", response);
-			//}
+			prefDao.items(request, response);
 		} catch (Exception e) {
-			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "List failed", response);
+			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, prefCacheUtil.getPrefText("GLOBAL_SERVICE", "GLOBAL_SERVICE_EXECUTION_FAIL",prefCacheUtil.getLang(request)), response);
 			e.printStackTrace();
 		}
 		
@@ -155,7 +151,7 @@ public class PrefSvcImpl implements PrefSvc {
 		try {
 			prefDao.item(request, response);
 		} catch (Exception e) {
-			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Item Failed", response);
+			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, prefCacheUtil.getPrefText("GLOBAL_SERVICE", "GLOBAL_SERVICE_EXECUTION_FAIL",prefCacheUtil.getLang(request)), response);
 			e.printStackTrace();
 		}
 		

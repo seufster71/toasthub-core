@@ -17,7 +17,7 @@
 package org.toasthub.core.preference.model;
 
 import java.util.ArrayList;
-
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -55,6 +55,7 @@ public class PrefCacheUtil {
 	public static final String PREFOPTIONS = "prefOptions";
 	public static final String PREFGLOBAL = "prefGlobal";
 	public static final String LANGUAGES = "LANGUAGES";
+	
 	
 	@Autowired
 	@Qualifier("PrefSvc")
@@ -533,6 +534,33 @@ public class PrefCacheUtil {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	public void loadGlobalCache(String tenant) {
+		String lang = "en";
+		List<Language> languages = prefCache.getLanguages().get(tenant);
+		if (languages != null && !languages.isEmpty()) {
+			for (Language language : languages) {
+				if (language.isDefaultLang()){
+					lang = language.getCode();
+				}
+			}
+		}
+		List<String> texts =  new ArrayList<String>(Arrays.asList("GLOBAL_PAGE"));
+		
+		for (String item : texts) {
+			StringBuilder key = new StringBuilder();
+			key.append(tenant);
+			key.append("_");
+			key.append(item);
+			key.append("_");
+			key.append(lang);
+			
+			Map<String,PrefTextValue> prefTexts = prefSvc.getTextsMap(item, lang);
+			prefCache.addPrefText(key.toString(), prefTexts);	
+		}
+		
+	}
+	
 	public void setLanguages(List<Language> languages) {
 		String tenant = TenantContext.getURLDomain();
 		String key = appCacheClientDomains.getClientDomain(tenant).getCustDomain();
@@ -587,6 +615,14 @@ public class PrefCacheUtil {
 		prefCache.clearLanguageCache();
 	}
 	
+	public String getLang(RestRequest request) {
+		if (request.containsParam(GlobalConstant.LANG)) {
+			return (String) request.getParam(GlobalConstant.LANG);
+		} else {
+			return getDefaultLang();
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	public static PrefOptionValue getPrefOption(RestRequest request, String pageName, String valueName) {
 		PrefOptionValue optionValue = null;
@@ -618,7 +654,7 @@ public class PrefCacheUtil {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public String getGlobalText(String pageName, String valueName, String lang) {
+	public String getPrefText(String pageName, String valueName, String lang) {
 		String result = "";
 		try {
 			String tenant = TenantContext.getURLDomain();
@@ -630,9 +666,20 @@ public class PrefCacheUtil {
 			key.append(lang);
 			if (prefCache.getPrefTexts() != null && prefCache.getPrefTexts().containsKey(key.toString())){
 				Map<String,PrefTextValue> prefTextValues = prefCache.getPrefTexts().get(key.toString());
-				//PrefTextValue prefTextValue = prefCache.getPrefTexts().get(key.toString()).get(valueName);
 				result = prefTextValues.get(valueName).getValue();
+			} else {
+				synchronized (this) {
+					if (prefCache.getPrefTexts() != null && prefCache.getPrefTexts().containsKey(key.toString())){
+						Map<String,PrefTextValue> prefTextValues = prefCache.getPrefTexts().get(key.toString());
+						result = prefTextValues.get(valueName).getValue();
+					} else {
+						Map<String,PrefTextValue> prefTextValues = prefSvc.getTextsMap(pageName, lang);
+						prefCache.addPrefText(key.toString(), prefTextValues);
+						result = prefTextValues.get(valueName).getValue();
+					}
+				}
 			}
+			
 		} catch (Exception e) {
 			// eat error 
 			StringBuilder r = new StringBuilder();
