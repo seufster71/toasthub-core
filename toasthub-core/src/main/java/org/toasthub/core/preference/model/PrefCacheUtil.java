@@ -534,7 +534,6 @@ public class PrefCacheUtil {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public void loadGlobalCache(String tenant) {
 		String lang = "en";
 		List<Language> languages = prefCache.getLanguages().get(tenant);
@@ -639,21 +638,21 @@ public class PrefCacheUtil {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static PrefTextValue getPrefText(RestRequest request, String pageName, String valueName) {
-		PrefTextValue textValue = null;
+	public static String getPrefText(RestRequest request, String pageName, String valueName) {
+		String textValue = "";
 		if (request.containsParam(PREFTEXTS)) {
 			Map<String,Object> items = (Map<String,Object>)request.getParam(PREFTEXTS);
 			if (items != null) {
 				Map<String,Object> item = (Map<String,Object>)(items).get(pageName);
 				if (item != null){
-					textValue = (PrefTextValue) (item).get(valueName);
+					PrefTextValue v = (PrefTextValue) (item).get(valueName);
+					textValue = v.getValue();
 				}
 			}
 		}
 		return textValue;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public String getPrefText(String pageName, String valueName, String lang) {
 		String result = "";
 		try {

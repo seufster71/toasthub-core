@@ -20,7 +20,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.security.NoSuchAlgorithmException;
@@ -162,7 +161,6 @@ public class UtilSvc {
 	
 	} // setupDefaults
 	
-	@SuppressWarnings("unchecked")
 	public void addStatus(String level, String status, String message, RestResponse response) {
 		
 		response.setStatus(status);
@@ -267,6 +265,23 @@ public class UtilSvc {
 								if (paramObj.containsKey("regex")) {
 									String regex = (String) paramObj.get("regex");
 									if (value.matches(regex)){
+										String test = "";
+									}
+								}
+							}
+							break;
+						case "TXTAREA":
+							// check if required
+							String area = (String) inputList.get(fieldName);
+							if ( field.getRequired() && (area == null || (area != null && area.isEmpty())) ){
+								isValid = false;
+							}
+							// check against validation
+							if (field.getValidation() != null && !"".equals(field.getValidation())) {
+								Map<String,Object> paramObj = new Gson().fromJson(field.getValidation(),Map.class);
+								if (paramObj.containsKey("regex")) {
+									String regex = (String) paramObj.get("regex");
+									if (area.matches(regex)){
 										String test = "";
 									}
 								}
@@ -501,6 +516,26 @@ public class UtilSvc {
 					try {
 						switch (field.getFieldType()) {
 						case "TXT":
+							value = (String) inputList.get(fieldName);
+							if (value != null){
+								if (paramObj.containsKey("method")) {
+									String methodName = (String) paramObj.get("method");
+									if (methodName != null) {
+										Method m = instanceClass.getDeclaredMethod(methodName,stringParams);
+										m.invoke(item, value);
+									}
+								} else {
+									String paramField = (String) paramObj.get("field");
+									if (paramField != null){
+										Field f = instanceClass.getDeclaredField(paramField);
+										f.setAccessible(true);
+										f.set(item, value);
+									}
+									
+								}
+							}
+							break;
+						case "TXTAREA":
 							value = (String) inputList.get(fieldName);
 							if (value != null){
 								if (paramObj.containsKey("method")) {

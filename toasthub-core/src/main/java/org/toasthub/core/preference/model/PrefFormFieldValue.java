@@ -272,7 +272,7 @@ public class PrefFormFieldValue extends BaseEntity implements Serializable{
 		this.optionalParams = optionalParams;
 	}
 
-	@JsonView({View.Admin.class,View.System.class})
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
 	@Transient
 	public String getClassModel() {
 		return classModel;
