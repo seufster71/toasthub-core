@@ -701,13 +701,15 @@ public class UtilSvc {
 							break;	
 						case "DATE":
 							String dateString = (String) inputList.get(fieldName);
-							Instant instant = Instant.parse(dateString);
-							if (instant != null){
-								String paramField = (String) paramObj.get("field");
-								if (paramField != null){
-									Field f = instanceClass.getDeclaredField(paramField);
-									f.setAccessible(true);
-									f.set(item, instant);
+							if (!"".equals(dateString)) {
+								Instant instant = Instant.parse(dateString);
+								if (instant != null){
+									String paramField = (String) paramObj.get("field");
+									if (paramField != null){
+										Field f = instanceClass.getDeclaredField(paramField);
+										f.setAccessible(true);
+										f.set(item, instant);
+									}
 								}
 							}
 							break;
