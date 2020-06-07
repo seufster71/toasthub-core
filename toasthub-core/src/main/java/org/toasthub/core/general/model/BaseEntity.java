@@ -34,72 +34,20 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class BaseEntity implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	private Long id;
-	private Boolean active;
-	private Boolean archive;
-	private Boolean locked;
-	private Long lockOwnerRefId;
-	private Instant lockTime;
-	private Instant modified;
-	private Instant created;
-	private Long version;
+	protected Long id;
+	protected Boolean active;
+	protected Boolean archive;
+	protected Boolean locked;
+	protected Long lockOwnerRefId;
+	protected Instant lockTime;
+	protected Instant modified;
+	protected Instant created;
+	protected Long version;
 	
 	// Constructor
 	public BaseEntity() {
 	}
 	
-	// Helper for user input
-	/*public void userInputHelper(RestRequest request, RestResponse response, String formName) {
-		List<SysPageFormFieldValue> formFields = ((Map<String, List<SysPageFormFieldValue>>) request.getParams().get("sysPageFormFields")).get(formName);
-		Map<String,String> json = (Map<String,String>) request.getParams().get("userInput");
-			
-		for(SysPageFormFieldValue field : formFields){
-			try {
-				if ("TXT".equals(field.getPageFormFieldName().getFieldType())){
-					String v = json.get(field.getPageFormFieldName().getName());
-					
-					if (v != null && !v.contains("-")){
-						String name = field.getPageFormFieldName().getFieldName();
-						if (name != null){
-							Field f = this.getClass().getDeclaredField(name);
-							f.setAccessible(true);
-							f.set(this, v);
-						}
-					}
-				} else if ("TXTDOUBLE".equals(field.getPageFormFieldName().getFieldType())){
-					double v = Double.parseDouble(json.get(field.getPageFormFieldName().getName()));
-						String name = field.getPageFormFieldName().getFieldName();
-						if (name != null){
-							Field f = this.getClass().getDeclaredField(name);
-							f.setAccessible(true);
-							f.set(this, v);
-						}
-					
-				} else if ("TXTFLOAT".equals(field.getPageFormFieldName().getFieldType())){
-					float v = Float.parseFloat(json.get(field.getPageFormFieldName().getName()));
-					String name = field.getPageFormFieldName().getFieldName();
-					if (name != null){
-						Field f = this.getClass().getDeclaredField(name);
-						f.setAccessible(true);
-						f.set(this, v);
-					}
-				}
-			} catch (NoSuchFieldException e) {
-				
-			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		}
-	}
-	*/
 	// Setter/Getter
 	@JsonView({View.Admin.class,View.Member.class,View.System.class})
 	@Id	
