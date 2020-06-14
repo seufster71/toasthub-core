@@ -624,6 +624,35 @@ public class UtilSvc {
 								}
 							}
 							break;
+						case "SLTMULTI":
+							if (inputList.get(fieldName) instanceof Integer) {
+								value = String.valueOf(inputList.get(fieldName));
+							} else {
+								value = new Gson().toJson(inputList.get(fieldName));
+							}
+							if (value != null){
+								if (paramObj.containsKey("method")) {
+									String methodName = (String) paramObj.get("method");
+									if (methodName != null) {
+										if ("Long".equalsIgnoreCase((String) paramObj.get("type"))) {
+											Long id = Long.parseLong(value);
+											Method m = instanceClass.getDeclaredMethod(methodName,longParams);
+											m.invoke(item, id);
+										} else {
+											Method m = instanceClass.getDeclaredMethod(methodName,stringParams);
+											m.invoke(item, value);
+										}
+									}
+								} else {
+									String paramField = (String) paramObj.get("field");
+									if (paramField != null){
+										Field f = instanceClass.getDeclaredField(paramField);
+										f.setAccessible(true);
+										f.set(item, value);
+									}
+								}
+							}
+							break;
 						case "LTXT":
 							Map<String,String> valueMap = (Map<String,String>) inputList.get(fieldName);
 							if (valueMap != null){

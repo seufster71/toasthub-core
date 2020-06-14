@@ -19,6 +19,8 @@ public class GlobalConstant {
 	public static final String PARENTID = "parentId";
 	public static final String ID = "id";
 	public static final String INPUTFIELDS = "inputFields";
+	public static final String MOVESELECTEDITEMID = "moveSelectedItemId";
+	public static final String CODE = "code";
 	
 	public static final String SEARCHCRITERIA = "searchCriteria";
 	public static final String SEARCHVALUE = "searchValue";
