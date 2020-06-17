@@ -627,7 +627,7 @@ public class UtilSvc {
 						case "SLTMULTI":
 							if (inputList.get(fieldName) instanceof Integer) {
 								value = String.valueOf(inputList.get(fieldName));
-							} else {
+							} else if (inputList.get(fieldName) != null && !"".equals(inputList.get(fieldName))){
 								value = new Gson().toJson(inputList.get(fieldName));
 							}
 							if (value != null){
