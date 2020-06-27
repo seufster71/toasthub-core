@@ -41,26 +41,26 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 public class PrefFormFieldValue extends BaseEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	private PrefFormFieldName prefFormFieldName;
-	private String value;
-	private String label;
-	private String lang;
-	private Boolean rendered;
-	private Boolean required;
-	private Long order;
-	private String validation;
-	private String image;
-	private PrefFormFieldValue subElement;
+	protected PrefFormFieldName prefFormFieldName;
+	protected String value;
+	protected String label;
+	protected String lang;
+	protected Boolean rendered;
+	protected Boolean required;
+	protected String validation;
+	protected String image;
+	protected PrefFormFieldValue subElement;
 	// make output simple for preference object
-	private String name;
-	private String fieldType;
-	private String htmlType;
-	private String className;
-	private String group;
-	private String subGroup;
-	private Integer tabIndex;
-	private String optionalParams;
-	private String classModel;
+	protected String name;
+	protected String fieldType;
+	protected String htmlType;
+	protected String className;
+	protected String group;
+	protected String subGroup;
+	protected Integer tabIndex;
+	protected String optionalParams;
+	protected String classModel;
+	protected int sortOrder;
 	
 	// Constructor
 	public PrefFormFieldValue() {
@@ -75,21 +75,19 @@ public class PrefFormFieldValue extends BaseEntity implements Serializable{
 		setActive(true);
 		setArchive(false);
 		setLocked(false);
-		setOrder(0l);
 	}
 	
 	// Contructor for fields 
 	public PrefFormFieldValue(Long id,String value, String label, String lang, Boolean rendered, 
-			Boolean required, Long order, String validation, String image, String name, String fieldType,
+			Boolean required, String validation, String image, String name, String fieldType,
 			String htmlType, String className, String group, String subGroup, Integer tabIndex, 
-			String optionalParams, String classModel) {
+			String optionalParams, String classModel, int sortOrder) {
 		this.setId(id);
 		this.setValue(value);
 		this.setLabel(label);
 		this.setLang(lang);
 		this.setRendered(rendered);
 		this.setRequired(required);
-		this.setOrder(order);
 		this.setValidation(validation);
 		this.setImage(image);
 		// 
@@ -102,6 +100,7 @@ public class PrefFormFieldValue extends BaseEntity implements Serializable{
 		this.setTabIndex(tabIndex);
 		this.setOptionalParams(optionalParams);
 		this.setClassModel(classModel);
+		this.setSortOrder(sortOrder);
 	}
 	
 	
@@ -151,15 +150,6 @@ public class PrefFormFieldValue extends BaseEntity implements Serializable{
 	}
 	public void setRequired(Boolean required) {
 		this.required = required;
-	}
-	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
-	@Column(name = "sort_order")
-	public Long getOrder() {
-		return order;
-	}
-	public void setOrder(Long order) {
-		this.order = order;
 	}
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
@@ -281,4 +271,12 @@ public class PrefFormFieldValue extends BaseEntity implements Serializable{
 		this.classModel = classModel;
 	}
 
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
+	@Transient
+	public int getSortOrder() {
+		return sortOrder;
+	}
+	public void setSortOrder(int sortOrder) {
+		this.sortOrder = sortOrder;
+	}
 }

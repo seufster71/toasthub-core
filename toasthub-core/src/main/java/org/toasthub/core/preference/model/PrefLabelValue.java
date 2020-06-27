@@ -41,17 +41,17 @@ public class PrefLabelValue extends BaseEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	private PrefLabelName prefLabelName;
-	private String value;
-	private String lang;
-	private Boolean rendered;
-	private Long order;
+	protected PrefLabelName prefLabelName;
+	protected String value;
+	protected String lang;
+	protected Boolean rendered;
 	// make output simple on preference object
-	private String name;
-	private String className;
-	private Integer tabIndex;
-	private String group;
-	private String optionalParams;
+	protected String name;
+	protected String className;
+	protected Integer tabIndex;
+	protected String group;
+	protected String optionalParams;
+	protected int sortOrder;
 		
 	// Constructor
 	public PrefLabelValue() {
@@ -65,20 +65,19 @@ public class PrefLabelValue extends BaseEntity implements Serializable{
 		setActive(true);
 		setArchive(false);
 		setLocked(false);
-		setOrder(0l);
 	}
 	
-	public PrefLabelValue(Long id, String value, String lang, Boolean rendered, Long order, String name, String className, Integer tabIndex, String group, String optionalParams){
+	public PrefLabelValue(Long id, String value, String lang, Boolean rendered, String name, String className, Integer tabIndex, String group, String optionalParams, int sortOrder){
 		this.setId(id);
 		this.setValue(value);
 		this.setLang(lang);
 		this.setRendered(rendered);
-		this.setOrder(order);
 		this.setName(name);
 		this.setClassName(className);
 		this.setTabIndex(tabIndex);
 		this.setGroup(group);
 		this.setOptionalParams(optionalParams);
+		this.setSortOrder(sortOrder);
 	}
 	
 	// Setters/Getters
@@ -117,15 +116,6 @@ public class PrefLabelValue extends BaseEntity implements Serializable{
 	}
 	public void setRendered(Boolean rendered) {
 		this.rendered = rendered;
-	}
-	
-	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
-	@Column(name = "sort_order")
-	public Long getOrder() {
-		return order;
-	}
-	public void setOrder(Long order) {
-		this.order = order;
 	}
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
@@ -173,6 +163,13 @@ public class PrefLabelValue extends BaseEntity implements Serializable{
 		this.optionalParams = optionalParams;
 	}
 
-	
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
+	@Transient
+	public int getSortOrder() {
+		return sortOrder;
+	}
+	public void setSortOrder(int sortOrder) {
+		this.sortOrder = sortOrder;
+	}
 
 }

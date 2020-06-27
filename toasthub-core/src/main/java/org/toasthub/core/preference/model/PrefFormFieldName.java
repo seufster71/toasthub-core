@@ -52,20 +52,21 @@ public class PrefFormFieldName extends BaseEntity implements Serializable{
 	public static final String CHECKBOX = "CHECKBOX";
 	public static final String RADIO = "RADIO";
 	
-	private PrefName prefName;
-	private String name;
-	private Text title;
-	private String fieldType;
-	private String htmlType;
-	private Integer tabIndex;
-	private Integer rows;
-	private Integer cols;
-	private String className;
-	private String group;
-	private String subGroup;
-	private String optionalParams;
-	private String classModel;
-	private Set<PrefFormFieldValue> values;
+	protected PrefName prefName;
+	protected String name;
+	protected Text title;
+	protected String fieldType;
+	protected String htmlType;
+	protected Integer tabIndex;
+	protected Integer rows;
+	protected Integer cols;
+	protected String className;
+	protected String group;
+	protected String subGroup;
+	protected String optionalParams;
+	protected String classModel;
+	protected int sortOrder;
+	protected Set<PrefFormFieldValue> values;
 	
 	// Constructors
 	public PrefFormFieldName () {
@@ -220,6 +221,15 @@ public class PrefFormFieldName extends BaseEntity implements Serializable{
 	public void setClassModel(String classModel) {
 		this.classModel = classModel;
 	}
+	
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
+	@Column(name = "sort_order")
+	public int getSortOrder() {
+		return sortOrder;
+	}
+	public void setSortOrder(int sortOrder) {
+		this.sortOrder = sortOrder;
+	}
 
 	@Transient
 	public void setTitleDefaultText(String defaultText){
@@ -278,7 +288,6 @@ public class PrefFormFieldName extends BaseEntity implements Serializable{
 				// lang does not exist create a new one
 				PrefFormFieldValue val = new PrefFormFieldValue();
 				val.setLang(key);
-				val.setOrder(0l);
 				val.setPrefFormFieldName(this);
 				val.setActive(true);
 				val.setArchive(false);
@@ -318,7 +327,6 @@ public class PrefFormFieldName extends BaseEntity implements Serializable{
 					v.setLabel(val.getLabel());
 					v.setRendered(val.getRendered());
 					v.setRequired(val.getRequired());
-					v.setOrder(val.getOrder());
 					exists = true;
 					break;
 				}

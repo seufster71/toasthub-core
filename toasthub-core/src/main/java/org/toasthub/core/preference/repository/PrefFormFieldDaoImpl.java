@@ -46,7 +46,7 @@ public class PrefFormFieldDaoImpl implements PrefFormFieldDao {
 	public List<PrefFormFieldValue> getFormFields(String prefName, String lang) {
 		@SuppressWarnings("unchecked")
 		List<PrefFormFieldValue> formFields = entityManagerDataSvc.getInstance()
-			.createQuery("SELECT NEW PrefFormFieldValue(f.id, f.value, f.label, f.lang, f.rendered, f.required, f.order, f.validation, f.image, f.prefFormFieldName.name, f.prefFormFieldName.fieldType, f.prefFormFieldName.htmlType, f.prefFormFieldName.className, f.prefFormFieldName.group, f.prefFormFieldName.subGroup, f.prefFormFieldName.tabIndex, f.prefFormFieldName.optionalParams, f.prefFormFieldName.classModel) FROM PrefFormFieldValue f WHERE f.lang =:lang AND f.prefFormFieldName.prefName.name =:prefName AND f.prefFormFieldName.archive = false ORDER BY f.prefFormFieldName.group ASC, f.order ASC")
+			.createQuery("SELECT NEW PrefFormFieldValue(f.id, f.value, f.label, f.lang, f.rendered, f.required, f.validation, f.image, f.prefFormFieldName.name, f.prefFormFieldName.fieldType, f.prefFormFieldName.htmlType, f.prefFormFieldName.className, f.prefFormFieldName.group, f.prefFormFieldName.subGroup, f.prefFormFieldName.tabIndex, f.prefFormFieldName.optionalParams, f.prefFormFieldName.classModel, f.prefFormFieldName.sortOrder) FROM PrefFormFieldValue f WHERE f.lang =:lang AND f.prefFormFieldName.prefName.name =:prefName AND f.prefFormFieldName.archive = false ORDER BY f.prefFormFieldName.group ASC, f.prefFormFieldName.sortOrder ASC")
 			.setParameter("prefName", prefName)
 			.setParameter("lang", lang)
 			.getResultList();
@@ -160,7 +160,7 @@ public class PrefFormFieldDaoImpl implements PrefFormFieldDao {
 			queryStr += " ORDER BY ".concat(orderItems.toString());
 		} else {
 			// default order
-			queryStr += " ORDER BY lt.text";
+			queryStr += " ORDER BY f.sortOrder ASC";
 		}
 		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
 		

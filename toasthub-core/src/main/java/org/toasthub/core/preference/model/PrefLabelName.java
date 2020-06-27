@@ -48,14 +48,15 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 public class PrefLabelName extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private PrefName prefName;
-	private String name;
-	private Text title;
-	private String className;
-	private String group;
-	private Integer tabIndex;
-	private String optionalParams;
-	private Set<PrefLabelValue> values;
+	protected PrefName prefName;
+	protected String name;
+	protected Text title;
+	protected String className;
+	protected String group;
+	protected Integer tabIndex;
+	protected String optionalParams;
+	protected int sortOrder;
+	protected Set<PrefLabelValue> values;
 	
 	// Constructor
 	public PrefLabelName() {
@@ -143,7 +144,16 @@ public class PrefLabelName extends BaseEntity implements Serializable {
 	public void setOptionalParams(String optionalParams) {
 		this.optionalParams = optionalParams;
 	}
-
+	
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
+	@Column(name = "sort_order")
+	public int getSortOrder() {
+		return sortOrder;
+	}
+	public void setSortOrder(int sortOrder) {
+		this.sortOrder = sortOrder;
+	}
+	
 	@JsonView({View.Admin.class,View.System.class})
 	@OneToMany(mappedBy = "prefLabelName", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	public Set<PrefLabelValue> getValues() {
@@ -204,7 +214,6 @@ public class PrefLabelName extends BaseEntity implements Serializable {
 				// lang does not exist create a new one
 				PrefLabelValue val = new PrefLabelValue();
 				val.setLang(key);
-				val.setOrder(0l);
 				val.setPrefLabelName(this);
 				val.setActive(true);
 				val.setArchive(false);
@@ -235,7 +244,6 @@ public class PrefLabelName extends BaseEntity implements Serializable {
 				if (v.getLang().equals(val.getLang())) {
 					v.setValue(val.getValue());
 					v.setRendered(val.getRendered());
-					v.setOrder(val.getOrder());
 					exists = true;
 					break;
 				}
