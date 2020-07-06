@@ -45,7 +45,7 @@ public class LanguageDaoImpl implements LanguageDao {
 	@Override
 	public void items(RestRequest request, RestResponse response) throws Exception {
 		
-		String queryStr = "SELECT DISTINCT l FROM Language AS l JOIN FETCH l.title AS t JOIN FETCH t.langTexts as lt WHERE lt.lang =:lang";
+		String queryStr = "SELECT DISTINCT l FROM Language AS l JOIN FETCH l.title AS t JOIN FETCH t.langTexts as lt WHERE lt.lang =:lang ";
 		
 		if (request.containsParam(GlobalConstant.ACTIVE)) {
 			queryStr += "AND r.active =:active ";

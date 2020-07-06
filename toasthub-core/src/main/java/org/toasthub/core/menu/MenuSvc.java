@@ -25,12 +25,15 @@ import org.toasthub.core.general.model.RestResponse;
 
 public interface MenuSvc extends ServiceProcessor {
 
-	public void getMenu(RestRequest request, RestResponse response);
-	public void getMenus(RestRequest request, RestResponse response);
-	public void getMenuCount(RestRequest request, RestResponse response);
-	public void getMenuItemCount(RestRequest request, RestResponse response);
-	public void getMenuItems(RestRequest request, RestResponse response);
-	public List<MenuItem> getMenuItems(String menuName, String lang);
-	public List<MenuItem> getMenu(String menuName, String apiVersion, String appVersion, String lang);
+	public void item(RestRequest request, RestResponse response);
+	public void items(RestRequest request, RestResponse response);
+	public void itemCount(RestRequest request, RestResponse response);
+	
+	public void subItem(RestRequest request, RestResponse response);
+	public void subItems(RestRequest request, RestResponse response);
+	public void subItemCount(RestRequest request, RestResponse response);
+	
+	public List<MenuItem> subItems(String menuName, String lang);
+	public List<MenuItem> item(String menuName, String apiVersion, String appVersion, String lang);
 	
 }

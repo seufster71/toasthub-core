@@ -55,7 +55,7 @@ public class AppCacheMenuUtil {
 				if (appCacheMenu.getMenus() != null && appCacheMenu.getMenus().containsKey(key.toString())){
 					menu = appCacheMenu.getMenus().get(key.toString());
 				} else {
-					menu = menuSvc.getMenu(menuName,apiVersion,appVersion,lang);
+					menu = menuSvc.item(menuName,apiVersion,appVersion,lang);
 					appCacheMenu.getMenus().put(key.toString(),menu);
 				}
 			}
@@ -72,7 +72,7 @@ public class AppCacheMenuUtil {
 			request.addParam(GlobalConstant.ACTIVE, true);
 			request.addParam("category", categories[i]);
 			RestResponse response = new RestResponse();
-			menuSvc.getMenus(request,response);
+			menuSvc.items(request,response);
 			// load each menu
 			List<Menu> myMenus = (List<Menu>) response.getParam(GlobalConstant.ITEMS);
 			for(Menu m : myMenus) {
@@ -80,7 +80,7 @@ public class AppCacheMenuUtil {
 				List<String> codes = prefCacheUtil.getAvailableLanguageCodes(tenant);
 				for(String lang : codes) {
 					logger.info("Code: "+m.getCode()+" lang "+lang);
-					List<MenuItem> menu = menuSvc.getMenu(m.getCode(),m.getApiVersion(),m.getAppVersion(),lang);
+					List<MenuItem> menu = menuSvc.item(m.getCode(),m.getApiVersion(),m.getAppVersion(),lang);
 						if (menu != null) {
 						StringBuilder key = new StringBuilder();
 						key.append(m.getCode());

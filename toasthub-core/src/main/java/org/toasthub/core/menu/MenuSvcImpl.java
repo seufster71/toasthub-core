@@ -60,12 +60,11 @@ public class MenuSvcImpl implements ServiceProcessor, MenuSvc {
 			prefCacheUtil.getPrefInfo(request,response);
 			
 			this.initParams(request);
-			this.itemColumns(request, response);
 			
-			this.getMenuCount(request, response);
+			this.itemCount(request, response);
 			count = (Long) response.getParam(GlobalConstant.ITEMCOUNT);
 			if (count != null && count > 0){
-				this.getMenus(request, response);
+				this.items(request, response);
 			}
 
 			break;
@@ -74,17 +73,16 @@ public class MenuSvcImpl implements ServiceProcessor, MenuSvc {
 			prefCacheUtil.getPrefInfo(request,response);
 			
 			this.initParams(request);
-			this.itemColumns(request, response);
 			
-			this.getMenuCount(request, response);
+			this.itemCount(request, response);
 			count = (Long) response.getParam(GlobalConstant.ITEMCOUNT);
 			if (count != null && count > 0){
-				this.getMenus(request, response);
+				this.items(request, response);
 			}
 
 			break;
-		case "SHOW":
-			this.getMenu(request, response);
+		case "ITEM":
+			this.item(request, response);
 			if (request.containsParam(GlobalConstant.PARENTID)){
 				response.addParam(GlobalConstant.PARENTID,(Integer) request.getParam(GlobalConstant.PARENTID));
 			}
@@ -98,9 +96,10 @@ public class MenuSvcImpl implements ServiceProcessor, MenuSvc {
 		
 	}
 	
-	public void getMenu(RestRequest request, RestResponse response) {
+	@Override
+	public void item(RestRequest request, RestResponse response) {
 		try {
-			menuDao.getMenu(request, response);
+			menuDao.item(request, response);
 		} catch (Exception e) {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Item failed", response);
 			e.printStackTrace();
@@ -109,27 +108,40 @@ public class MenuSvcImpl implements ServiceProcessor, MenuSvc {
 		//response.addParam("menuItems", items);
 	}
 	
-	public void getMenus(RestRequest request, RestResponse response) {
+	@Override
+	public void items(RestRequest request, RestResponse response) {
 		try {
-			menuDao.getMenus(request, response);
+			menuDao.items(request, response);
 		} catch (Exception e) {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "List failed", response);
 			e.printStackTrace();
 		}
 	}
 	
-	public void getMenuCount(RestRequest request, RestResponse response) {
+	@Override
+	public void itemCount(RestRequest request, RestResponse response) {
 		try {
-			menuDao.getMenuCount(request, response);
+			menuDao.itemCount(request, response);
 		} catch (Exception e) {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Count failed", response);
 			e.printStackTrace();
 		}
 	}
 	
-	public void getMenuItemCount(RestRequest request, RestResponse response) {
+	@Override
+	public void subItem(RestRequest request, RestResponse response) {
 		try {
-			menuDao.getMenuItemCount(request, response);
+			menuDao.subItem(request, response);
+		} catch (Exception e) {
+			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Item failed", response);
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void subItemCount(RestRequest request, RestResponse response) {
+		try {
+			menuDao.subItemCount(request, response);
 		} catch (Exception e) {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Count failed", response);
 			e.printStackTrace();
@@ -137,9 +149,10 @@ public class MenuSvcImpl implements ServiceProcessor, MenuSvc {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void getMenuItems(RestRequest request, RestResponse response) {
+	@Override
+	public void subItems(RestRequest request, RestResponse response) {
 		try {
-			menuDao.getMenuItems(request, response);
+			menuDao.subItems(request, response);
 		} catch (Exception e) {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "List failed", response);
 			e.printStackTrace();
@@ -154,18 +167,18 @@ public class MenuSvcImpl implements ServiceProcessor, MenuSvc {
 		}
 	}
 	
-	public List<MenuItem> getMenuItems(String menuName, String lang) {
+	public List<MenuItem> subItems(String menuName, String lang) {
 		try {
-			return menuDao.getMenuItems(menuName, lang);
+			return menuDao.subItems(menuName, lang);
 		} catch (Exception e) {
 			return null;
 		}
 	}
 
-	public List<MenuItem> getMenu(String menuName, String apiVersion, String appVersion, String lang) {
+	public List<MenuItem> item(String menuName, String apiVersion, String appVersion, String lang) {
 		Menu menu = null;
 		try {
-			menu = menuDao.getMenu(menuName,apiVersion, appVersion, lang);
+			menu = menuDao.item(menuName,apiVersion, appVersion, lang);
 		} catch (Exception e) {
 			return null;
 		}
@@ -230,4 +243,6 @@ public class MenuSvcImpl implements ServiceProcessor, MenuSvc {
 			request.addParam(GlobalConstant.ITEMNAME, "Menu");
 		}
 	}
+
+	
 }

@@ -149,7 +149,7 @@ public class PrefLabelDaoImpl implements PrefLabelDao {
 			queryStr += " ORDER BY ".concat(orderItems.toString());
 		} else {
 			// default order
-			queryStr += " ORDER BY l.sortOrder";
+			queryStr += " ORDER BY l.sortOrder ASC";
 		}
 		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
 		

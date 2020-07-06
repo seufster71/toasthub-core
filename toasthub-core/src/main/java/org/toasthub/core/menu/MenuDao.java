@@ -26,12 +26,14 @@ import org.toasthub.core.general.model.RestResponse;
 
 public interface MenuDao {
 
-	public List<MenuItem> getMenuItems(String menuName,String lang) throws Exception; 
-	public Menu getMenu(String menuName, String apiVersion, String appVersion, String lang) throws Exception;
-	public void getMenuItems(RestRequest request, RestResponse response) throws Exception;
-	public void getMenus(RestRequest request, RestResponse response) throws Exception;
-	public void getMenuCount(RestRequest request, RestResponse response) throws Exception;
-	public void getMenuItemCount(RestRequest request, RestResponse response) throws Exception;
-	public void getMenu(RestRequest request, RestResponse response) throws Exception;
+	public List<MenuItem> subItems(String menuName,String lang) throws Exception; 
+	public Menu item(String menuName, String apiVersion, String appVersion, String lang) throws Exception;
+	
 	public void item(RestRequest request, RestResponse response) throws Exception;
+	public void items(RestRequest request, RestResponse response) throws Exception;
+	public void itemCount(RestRequest request, RestResponse response) throws Exception;
+	
+	public void subItem(RestRequest request, RestResponse response) throws Exception;
+	public void subItems(RestRequest request, RestResponse response) throws Exception;
+	public void subItemCount(RestRequest request, RestResponse response) throws Exception;
 }
