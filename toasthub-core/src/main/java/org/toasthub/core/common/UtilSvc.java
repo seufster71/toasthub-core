@@ -498,6 +498,10 @@ public class UtilSvc {
 		
 		Class longParams[] = new Class[1];
 		longParams[0] = Long.class;
+		
+		Class mapParams[] = new Class[1];
+		mapParams[0] = Map.class;
+		
 		String existingObjName = item.getClass().getName();
 		
 		if (inputList.containsKey(fieldName)) {
@@ -649,6 +653,30 @@ public class UtilSvc {
 										Field f = instanceClass.getDeclaredField(paramField);
 										f.setAccessible(true);
 										f.set(item, value);
+									}
+								}
+							}
+							break;
+						case "ASLT":
+							Map<String,?> sltMap = null;
+							if (inputList.get(fieldName) instanceof Map) {
+								sltMap = (Map<String,?>) inputList.get(fieldName);
+							}
+							if (sltMap != null){
+								if (paramObj.containsKey("method")) {
+									String methodName = (String) paramObj.get("method");
+									if (methodName != null) {
+										if ("Map".equalsIgnoreCase((String) paramObj.get("type"))) {
+											Method m = instanceClass.getDeclaredMethod(methodName,mapParams);
+											m.invoke(item, sltMap);
+										}
+									}
+								} else {
+									String paramField = (String) paramObj.get("field");
+									if (paramField != null){
+										Field f = instanceClass.getDeclaredField(paramField);
+										f.setAccessible(true);
+										f.set(item, new Long((Integer) sltMap.get("value")));
 									}
 								}
 							}
