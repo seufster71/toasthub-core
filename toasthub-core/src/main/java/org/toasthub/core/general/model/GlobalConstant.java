@@ -17,6 +17,7 @@ public class GlobalConstant {
 	public static final String LISTLIMIT = "listLimit";
 	public static final String DIRECTORY = "directory";
 	public static final String PARENTID = "parentId";
+	public static final String PARENTTYPE = "parentType";
 	public static final String ID = "id";
 	public static final String INPUTFIELDS = "inputFields";
 	public static final String MOVESELECTEDITEMID = "moveSelectedItemId";
