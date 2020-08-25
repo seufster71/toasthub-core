@@ -43,15 +43,16 @@ public class MenuItem extends BaseEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	private String code;
-	private Menu menu;
-	private MenuItem parent;
-	private Long menuId;
-	private Long parentId;
-	private String permissionCode;
-	private int order;
-	private Set<MenuItemValue> values;
-	private List<MenuItem> children;
+	protected String code;
+	protected Menu menu;
+	protected MenuItem parent;
+	protected Long menuId;
+	protected Long parentId;
+	protected String permissionCode;
+	protected String optionalParams;
+	protected int order;
+	protected Set<MenuItemValue> values;
+	protected List<MenuItem> children;
 	
 	// Constructor
 	public MenuItem() {
@@ -87,6 +88,15 @@ public class MenuItem extends BaseEntity implements Serializable{
 		this.parent = parent;
 	}
 
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
+	@Column(name = "optional_params")
+	public String getOptionalParams() {
+		return optionalParams;
+	}
+	public void setOptionalParams(String optionalParams) {
+		this.optionalParams = optionalParams;
+	}
+	
 	@JsonView({View.Admin.class})
 	@Column(name = "sort_order")
 	public int getOrder() {

@@ -36,12 +36,12 @@ public class MenuItemValue extends BaseEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	private MenuItem menuItem;
-	private String value;
-	private String href;
-	private String image;
-	private String lang;
-	private boolean rendered;
+	protected MenuItem menuItem;
+	protected String value;
+	protected String href;
+	protected String image;
+	protected String lang;
+	protected boolean rendered;
 	
 	// Constructors
 	public MenuItemValue() {

@@ -46,12 +46,12 @@ public class Menu extends BaseEntity implements Serializable{
 	public static final String ID = "menuId";
 	public static final String MENUNAME = "menuName";
 	
-	private String code;
-	private String category;
-	private Text title;
-	private String apiVersion;
-	private String appVersion;
-	private Set<MenuItem> menuItems;
+	protected String code;
+	protected String category;
+	protected Text title;
+	protected String apiVersion;
+	protected String appVersion;
+	protected Set<MenuItem> menuItems;
 	// Constructor
 	public Menu () {
 		super();
