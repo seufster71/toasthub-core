@@ -16,6 +16,8 @@
 
 package org.toasthub.core.serviceCrawler;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -75,17 +77,68 @@ public class ServiceCrawlerDaoImpl implements ServiceCrawlerDao {
 			and = true;
 		}
 		
-		if (request.containsParam(GlobalConstant.SEARCHCOLUMN) && request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
-			if (!and) { queryStr += " WHERE "; }
-			queryStr += "lower(s." + request.getParam(GlobalConstant.SEARCHCOLUMN) + ") LIKE :searchValue"; 
-			and = true;
-		}
-		if (request.containsParam(GlobalConstant.ORDERCOLUMN)) {
-			String direction = "DESC";
-			if (request.containsParam(GlobalConstant.ORDERDIR)) {
-				direction = (String) request.getParam(GlobalConstant.ORDERDIR);
+		// search
+		ArrayList<LinkedHashMap<String,String>> searchCriteria = null;
+		if (request.containsParam(GlobalConstant.SEARCHCRITERIA) && !request.getParam(GlobalConstant.SEARCHCRITERIA).equals("")) {
+			if (request.getParam(GlobalConstant.SEARCHCRITERIA) instanceof Map) {
+				searchCriteria = new ArrayList<>();
+				searchCriteria.add((LinkedHashMap<String, String>) request.getParam(GlobalConstant.SEARCHCRITERIA));
+			} else {
+				searchCriteria = (ArrayList<LinkedHashMap<String, String>>) request.getParam(GlobalConstant.SEARCHCRITERIA);
 			}
-			queryStr += " ORDER BY "+(String) request.getParam(GlobalConstant.ORDERCOLUMN)+" "+direction;
+			
+			// Loop through all the criteria
+			boolean or = false;
+			
+			String lookupStr = "";
+			for (LinkedHashMap<String,String> item : searchCriteria) {
+				if (item.containsKey(GlobalConstant.SEARCHVALUE) && !"".equals(item.get(GlobalConstant.SEARCHVALUE)) && item.containsKey(GlobalConstant.SEARCHCOLUMN)) {
+					if (item.get(GlobalConstant.SEARCHCOLUMN).equals("ADMIN_SERVICES_TABLE_SERVICE_NAME")){
+						if (or) { lookupStr += " OR "; }
+						lookupStr += "s.serviceName LIKE :serviceNameValue"; 
+						or = true;
+					}
+				}
+			}
+			if (!"".equals(lookupStr)) {
+				if (!and) { 
+					queryStr += " WHERE ( " + lookupStr + " ) ";
+				} else {
+					queryStr += " AND ( " + lookupStr + " ) ";
+				}
+			}
+			
+		}
+		// order by
+		ArrayList<LinkedHashMap<String,String>> orderCriteria = null;
+		StringBuilder orderItems = new StringBuilder();
+		if (request.containsParam(GlobalConstant.ORDERCRITERIA) && !request.getParam(GlobalConstant.ORDERCRITERIA).equals("")) {
+			if (request.getParam(GlobalConstant.ORDERCRITERIA) instanceof Map) {
+				orderCriteria = new ArrayList<>();
+				orderCriteria.add((LinkedHashMap<String, String>) request.getParam(GlobalConstant.ORDERCRITERIA));
+			} else {
+				orderCriteria = (ArrayList<LinkedHashMap<String, String>>) request.getParam(GlobalConstant.ORDERCRITERIA);
+			}
+			
+			// Loop through all the criteria
+			boolean comma = false;
+			
+			
+			for (LinkedHashMap<String,String> item : orderCriteria) {
+				if (item.containsKey(GlobalConstant.ORDERCOLUMN) && item.containsKey(GlobalConstant.ORDERDIR)) {
+					if (item.get(GlobalConstant.ORDERCOLUMN).equals("ADMIN_SERVICES_TABLE_SERVICE_NAME")){
+						if (comma) { orderItems.append(","); }
+						orderItems.append("s.serviceName ").append(item.get(GlobalConstant.ORDERDIR));
+						comma = true;
+					}
+				}
+			}
+		}
+		if (!"".equals(orderItems.toString())) {
+			queryStr += " ORDER BY ".concat(orderItems.toString());
+		} else {
+			// default order
+			queryStr += " ORDER BY s.serviceName";
 		}
 		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
 		
@@ -94,7 +147,7 @@ public class ServiceCrawlerDaoImpl implements ServiceCrawlerDao {
 		} 
 		
 		if (request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
-			query.setParameter("searchValue", "%"+((String)request.getParam(GlobalConstant.SEARCHVALUE)).toLowerCase()+"%");
+			query.setParameter("serviceNameValue", "%"+((String)request.getParam(GlobalConstant.SEARCHVALUE)).toLowerCase()+"%");
 		}
 		if (request.containsParam(GlobalConstant.LISTLIMIT) && (Integer) request.getParam(GlobalConstant.LISTLIMIT) != 0){
 			query.setFirstResult((Integer) request.getParam(GlobalConstant.LISTSTART));
@@ -118,10 +171,36 @@ public class ServiceCrawlerDaoImpl implements ServiceCrawlerDao {
 			and = true;
 		}
 		
-		if (request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
-			if (!and) { queryStr += " WHERE "; }
-			queryStr += "s.serviceName LIKE :searchValue"; 
-			and = true;
+		ArrayList<LinkedHashMap<String,String>> searchCriteria = null;
+		if (request.containsParam(GlobalConstant.SEARCHCRITERIA) && !request.getParam(GlobalConstant.SEARCHCRITERIA).equals("")) {
+			if (request.getParam(GlobalConstant.SEARCHCRITERIA) instanceof Map) {
+				searchCriteria = new ArrayList<>();
+				searchCriteria.add((LinkedHashMap<String, String>) request.getParam(GlobalConstant.SEARCHCRITERIA));
+			} else {
+				searchCriteria = (ArrayList<LinkedHashMap<String, String>>) request.getParam(GlobalConstant.SEARCHCRITERIA);
+			}
+			
+			// Loop through all the criteria
+			boolean or = false;
+			
+			String lookupStr = "";
+			for (LinkedHashMap<String,String> item : searchCriteria) {
+				if (item.containsKey(GlobalConstant.SEARCHVALUE) && !"".equals(item.get(GlobalConstant.SEARCHVALUE)) && item.containsKey(GlobalConstant.SEARCHCOLUMN)) {
+					if (item.get(GlobalConstant.SEARCHCOLUMN).equals("ADMIN_SERVICES_TABLE_SERVICE_NAME")){
+						if (or) { lookupStr += " OR "; }
+						lookupStr += "s.serviceName LIKE :serviceNameValue"; 
+						or = true;
+					}
+				}
+			}
+			if (!"".equals(lookupStr)) {
+				if (!and) { 
+					queryStr += " WHERE ( " + lookupStr + " ) ";
+				} else {
+					queryStr += " AND ( " + lookupStr + " ) ";
+				}
+			}
+			
 		}
 
 		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
@@ -130,8 +209,14 @@ public class ServiceCrawlerDaoImpl implements ServiceCrawlerDao {
 			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
 		} 
 		
-		if (request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
-			query.setParameter("searchValue", "%"+((String)request.getParam(GlobalConstant.SEARCHVALUE)).toLowerCase()+"%");
+		if (searchCriteria != null){
+			for (LinkedHashMap<String,String> item : searchCriteria) {
+				if (item.containsKey(GlobalConstant.SEARCHVALUE) && !"".equals(item.get(GlobalConstant.SEARCHVALUE)) && item.containsKey(GlobalConstant.SEARCHCOLUMN)) {  
+					if (item.get(GlobalConstant.SEARCHCOLUMN).equals("ADMIN_SERVICES_TABLE_SERVICE_NAME")){
+						query.setParameter("serviceNameValue", "%"+((String)item.get(GlobalConstant.SEARCHVALUE)).toLowerCase()+"%");
+					}
+				}
+			}
 		}
 		
 		Long count = (Long) query.getSingleResult();
@@ -149,7 +234,7 @@ public class ServiceCrawlerDaoImpl implements ServiceCrawlerDao {
 			String queryStr = "SELECT s FROM ServiceClass AS s WHERE s.id =:id";
 			Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
 		
-			query.setParameter("id", new Long((String) request.getParam(GlobalConstant.ITEMID)));
+			query.setParameter("id", new Long((Integer) request.getParam(GlobalConstant.ITEMID)));
 			ServiceClass serviceClass = (ServiceClass) query.getSingleResult();
 			
 			response.addParam(GlobalConstant.ITEM, serviceClass);

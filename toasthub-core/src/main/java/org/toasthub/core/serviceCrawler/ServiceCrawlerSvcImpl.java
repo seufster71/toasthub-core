@@ -27,6 +27,7 @@ import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 import org.toasthub.core.general.model.ServiceClass;
+import org.toasthub.core.preference.model.PrefCacheUtil;
 
 @Service("ServiceCrawlerSvc")
 public class ServiceCrawlerSvcImpl implements ServiceProcessor, ServiceCrawlerSvc {
@@ -37,6 +38,9 @@ public class ServiceCrawlerSvcImpl implements ServiceProcessor, ServiceCrawlerSv
 	
 	@Autowired
 	protected UtilSvc utilSvc;
+	
+	@Autowired 
+	PrefCacheUtil prefCacheUtil;
 	
 	@Override
 	public void process(RestRequest request, RestResponse response) {
