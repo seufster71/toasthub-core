@@ -30,7 +30,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
 
 import org.toasthub.core.general.api.View;
 import org.toasthub.core.general.model.BaseEntity;
@@ -68,7 +67,6 @@ public class PrefTextName extends BaseEntity implements Serializable{
 	
 	// Setters/Getters
 	@JsonIgnore
-	@NotNull
 	@ManyToOne(targetEntity = PrefName.class, fetch = FetchType.LAZY)
 	@JoinColumn(name = "pref_name_id")
 	public PrefName getPrefName() {
@@ -79,7 +77,6 @@ public class PrefTextName extends BaseEntity implements Serializable{
 	}
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
-	@NotNull
 	@Column(name = "name")
 	public String getName() {
 		return name;

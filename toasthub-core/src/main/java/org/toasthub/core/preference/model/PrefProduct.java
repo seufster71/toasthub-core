@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import org.toasthub.core.general.api.View;
 import org.toasthub.core.general.model.BaseEntity;
@@ -49,7 +48,6 @@ public class PrefProduct extends BaseEntity implements Serializable {
 	}
 
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
-	@NotNull
 	@Column(name = "product_code")
 	public String getProductCode() {
 		return productCode;

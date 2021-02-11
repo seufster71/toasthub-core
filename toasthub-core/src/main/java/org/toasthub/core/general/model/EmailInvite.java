@@ -22,10 +22,7 @@ import java.time.Instant;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.NotEmpty;
 import org.toasthub.core.general.api.View;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
@@ -75,9 +72,6 @@ public class EmailInvite extends BaseEntity implements SendMailIntf,Serializable
 		
 	// setter/getters
 	@JsonView({View.Member.class,View.Admin.class})
-	@NotNull
-	@NotEmpty
-	@Size(min = 1, max = 2048)
 	@Column(name = "message")
 	public String getMessage() {
 		return message;
@@ -87,8 +81,6 @@ public class EmailInvite extends BaseEntity implements SendMailIntf,Serializable
 	}
 	
 	@JsonView({View.Member.class,View.Admin.class})
-	@NotNull
-	@NotEmpty
 	@Column(name = "status")
 	public String getStatus() {
 		return status;
@@ -107,9 +99,6 @@ public class EmailInvite extends BaseEntity implements SendMailIntf,Serializable
 	}
 	
 	@JsonView({View.Member.class,View.Admin.class})
-	@NotNull
-	@NotEmpty
-	@Size(min = 1, max = 255)
 	@Column(name = "receiver_email")
 	public String getReceiverEmail() {
 		return receiverEmail;
@@ -119,9 +108,6 @@ public class EmailInvite extends BaseEntity implements SendMailIntf,Serializable
 	}
 	
 	@JsonView({View.Member.class,View.Admin.class})
-	@NotNull
-	@NotEmpty
-	@Size(min = 1, max = 255)
 	@Column(name = "subject")
 	public String getSubject() {
 		return subject;
