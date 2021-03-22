@@ -53,4 +53,5 @@ public class GlobalConstant {
 	public static final String MICROSERVICEPATH = "microServicePath";
 	
 	public static final String USERREF = "userRef";
+	public static final String HARDDELETE = "hardDelete";
 }
