@@ -93,7 +93,7 @@ public class ServiceCrawlerDaoImpl implements ServiceCrawlerDao {
 			String lookupStr = "";
 			for (LinkedHashMap<String,String> item : searchCriteria) {
 				if (item.containsKey(GlobalConstant.SEARCHVALUE) && !"".equals(item.get(GlobalConstant.SEARCHVALUE)) && item.containsKey(GlobalConstant.SEARCHCOLUMN)) {
-					if (item.get(GlobalConstant.SEARCHCOLUMN).equals("ADMIN_SERVICES_TABLE_SERVICE_NAME")){
+					if (item.get(GlobalConstant.SEARCHCOLUMN).equals("SYSTEM_SERVICES_TABLE_SERVICE_NAME")){
 						if (or) { lookupStr += " OR "; }
 						lookupStr += "s.serviceName LIKE :serviceNameValue"; 
 						or = true;
@@ -126,7 +126,7 @@ public class ServiceCrawlerDaoImpl implements ServiceCrawlerDao {
 			
 			for (LinkedHashMap<String,String> item : orderCriteria) {
 				if (item.containsKey(GlobalConstant.ORDERCOLUMN) && item.containsKey(GlobalConstant.ORDERDIR)) {
-					if (item.get(GlobalConstant.ORDERCOLUMN).equals("ADMIN_SERVICES_TABLE_SERVICE_NAME")){
+					if (item.get(GlobalConstant.ORDERCOLUMN).equals("SYSTEM_SERVICES_TABLE_SERVICE_NAME")){
 						if (comma) { orderItems.append(","); }
 						orderItems.append("s.serviceName ").append(item.get(GlobalConstant.ORDERDIR));
 						comma = true;
@@ -186,7 +186,7 @@ public class ServiceCrawlerDaoImpl implements ServiceCrawlerDao {
 			String lookupStr = "";
 			for (LinkedHashMap<String,String> item : searchCriteria) {
 				if (item.containsKey(GlobalConstant.SEARCHVALUE) && !"".equals(item.get(GlobalConstant.SEARCHVALUE)) && item.containsKey(GlobalConstant.SEARCHCOLUMN)) {
-					if (item.get(GlobalConstant.SEARCHCOLUMN).equals("ADMIN_SERVICES_TABLE_SERVICE_NAME")){
+					if (item.get(GlobalConstant.SEARCHCOLUMN).equals("SYSTEM_SERVICES_TABLE_SERVICE_NAME")){
 						if (or) { lookupStr += " OR "; }
 						lookupStr += "s.serviceName LIKE :serviceNameValue"; 
 						or = true;
