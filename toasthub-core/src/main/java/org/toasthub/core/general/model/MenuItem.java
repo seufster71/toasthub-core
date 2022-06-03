@@ -168,11 +168,17 @@ public class MenuItem extends BaseEntity implements Serializable{
 					case "value":
 						v.setValue(langMap.get(key));
 						break;
-					case "href":
-						v.setHref(langMap.get(key));
+					case "routeWeb":
+						v.setRouteWeb(langMap.get(key));
 						break;
-					case "image":
-						v.setImage(langMap.get(key));
+					case "routeNative":
+						v.setRouteNative(langMap.get(key));
+						break;
+					case "iconWeb":
+						v.setIconWeb(langMap.get(key));
+						break;
+					case "iconNative":
+						v.setIconNative(langMap.get(key));
 						break;
 					case "rendered":
 						v.setRendered(Boolean.parseBoolean(langMap.get(key)));
@@ -195,11 +201,17 @@ public class MenuItem extends BaseEntity implements Serializable{
 				case "value":
 					val.setValue(langMap.get(key));
 					break;
-				case "href":
-					val.setHref(langMap.get(key));
+				case "routeWeb":
+					val.setRouteWeb(langMap.get(key));
 					break;
-				case "image":
-					val.setImage(langMap.get(key));
+				case "routeNative":
+					val.setRouteNative(langMap.get(key));
+					break;
+				case "iconWeb":
+					val.setIconWeb(langMap.get(key));
+					break;
+				case "iconNative":
+					val.setIconNative(langMap.get(key));
 					break;
 				case "rendered":
 					val.setRendered(Boolean.parseBoolean(langMap.get(key)));

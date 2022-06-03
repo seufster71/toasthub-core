@@ -38,8 +38,10 @@ public class MenuItemValue extends BaseEntity implements Serializable{
 	
 	protected MenuItem menuItem;
 	protected String value;
-	protected String href;
-	protected String image;
+	protected String routeWeb;
+	protected String routeNative;
+	protected String iconWeb;
+	protected String iconNative;
 	protected String lang;
 	protected boolean rendered;
 	
@@ -68,21 +70,39 @@ public class MenuItemValue extends BaseEntity implements Serializable{
 	}
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
-	@Column(name = "href")
-	public String getHref() {
-		return href;
+	@Column(name = "route_web")
+	public String getRouteWeb() {
+		return routeWeb;
 	}
-	public void setHref(String href) {
-		this.href = href;
+	public void setRouteWeb(String routeWeb) {
+		this.routeWeb = routeWeb;
 	}
 	
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
-	@Column(name = "image")
-	public String getImage() {
-		return image;
+	@Column(name = "route_native")
+	public String getRouteNative() {
+		return routeNative;
 	}
-	public void setImage(String image) {
-		this.image = image;
+	public void setRouteNative(String routeNative) {
+		this.routeNative = routeNative;
+	}
+	
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
+	@Column(name = "icon_web")
+	public String getIconWeb() {
+		return iconWeb;
+	}
+	public void setIconWeb(String iconWeb) {
+		this.iconWeb = iconWeb;
+	}
+	
+	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})
+	@Column(name = "icon_native")
+	public String getIconNative() {
+		return iconNative;
+	}
+	public void setIconNative(String iconNative) {
+		this.iconNative = iconNative;
 	}
 
 	@JsonView({View.Public.class,View.Member.class,View.Admin.class,View.System.class})

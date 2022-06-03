@@ -60,7 +60,7 @@ public class BaseEntity implements Serializable{
 		this.id = id;
 	}
 	
-	@JsonView({View.Admin.class})
+	@JsonView({View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "modified",updatable = false, insertable = false)
 	public Instant getModified() {
 		return modified;
@@ -106,7 +106,7 @@ public class BaseEntity implements Serializable{
 		this.archive = archive;
 	}
 	
-	@JsonView({View.Admin.class})
+	@JsonView({View.Member.class,View.Admin.class,View.System.class})
 	@Column(name = "is_locked")
 	public Boolean isLocked() {
 		return locked;
