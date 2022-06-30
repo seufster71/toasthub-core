@@ -73,7 +73,7 @@ public class BaseDaoImpl implements BaseDao {
 			query.setParameter(GlobalConstant.SEARCHVALUE, "%"+((String)request.getParam(GlobalConstant.SEARCHVALUE)).toLowerCase()+"%");
 		}
 		if (request.containsParam(GlobalConstant.OWNER)) {
-			query.setParameter("uid", new Long((String) request.getParam(GlobalConstant.OWNER)));
+			query.setParameter("uid", Long.valueOf((String) request.getParam(GlobalConstant.OWNER)));
 		} 
 		if (request.containsParam(GlobalConstant.ACTIVE)) {
 			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
@@ -112,7 +112,7 @@ public class BaseDaoImpl implements BaseDao {
 			query.setParameter(GlobalConstant.SEARCHVALUE, "%"+((String) request.getParam(GlobalConstant.SEARCHVALUE)).toLowerCase()+"%");
 		}
 		if (request.containsParam(GlobalConstant.OWNER)) {
-			query.setParameter("uid", new Long((String) request.getParam(GlobalConstant.OWNER)));
+			query.setParameter("uid", Long.valueOf((String) request.getParam(GlobalConstant.OWNER)));
 		} 
 		if (request.containsParam(GlobalConstant.ACTIVE)) {
 			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
@@ -132,7 +132,7 @@ public class BaseDaoImpl implements BaseDao {
 		if (tableName != null){
 			String queryStr = "FROM " + tableName + " WHERE id = :id";
 			Query query = entityManagerDataSvc.getInstance().createQuery(queryStr)
-					.setParameter("id",new Long((Integer) request.getParam(GlobalConstant.ITEMID)));
+					.setParameter("id",Long.valueOf((Integer) request.getParam(GlobalConstant.ITEMID)));
 			response.addParam(GlobalConstant.ITEM, query.getSingleResult());
 		} else {
 			

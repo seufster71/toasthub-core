@@ -213,7 +213,7 @@ public class UtilSvc {
 		for (String key : params.keySet()) {
 			if (paramTypes.containsKey(key)){
 				if (paramTypes.get(key).equals("Long")){
-					Long value = new Long((Integer) params.get(key));
+					Long value = Long.valueOf((Integer) params.get(key));
 					params.put(key, value);
 				}
 			}
@@ -515,6 +515,7 @@ public class UtilSvc {
 			}
 
 				String value = null;
+				Map<String,?> sltMap = null;
 				Class<?> instanceClass = item.getClass();
 				while(instanceClass != null) {
 					try {
@@ -602,25 +603,30 @@ public class UtilSvc {
 						case "SLT":
 							if (inputList.get(fieldName) instanceof Integer) {
 								value = String.valueOf(inputList.get(fieldName));
+							} else if (inputList.get(fieldName) instanceof Map) {
+								sltMap = (Map<String,?>) inputList.get(fieldName);
 							} else {
 								value = (String) inputList.get(fieldName);
 							}
-							if (value != null){
+							if (value != null || sltMap != null){
 								if (paramObj.containsKey("method")) {
 									String methodName = (String) paramObj.get("method");
 									if (methodName != null) {
-										if ("Long".equalsIgnoreCase((String) paramObj.get("type"))) {
+										if ("Map".equalsIgnoreCase((String) paramObj.get("type")) && sltMap != null) {
+											Method m = instanceClass.getDeclaredMethod(methodName,mapParams);
+											m.invoke(item, sltMap);
+										} else if ("Long".equalsIgnoreCase((String) paramObj.get("type")) && value != null) {
 											Long id = Long.parseLong(value);
 											Method m = instanceClass.getDeclaredMethod(methodName,longParams);
 											m.invoke(item, id);
-										} else {
+										} else if (value != null) {
 											Method m = instanceClass.getDeclaredMethod(methodName,stringParams);
 											m.invoke(item, value);
 										}
 									}
 								} else {
 									String paramField = (String) paramObj.get("field");
-									if (paramField != null){
+									if (paramField != null && value != null){
 										Field f = instanceClass.getDeclaredField(paramField);
 										f.setAccessible(true);
 										f.set(item, value);
@@ -658,17 +664,25 @@ public class UtilSvc {
 							}
 							break;
 						case "ASLT":
-							Map<String,?> sltMap = null;
-							if (inputList.get(fieldName) instanceof Map) {
+							if (inputList.get(fieldName) instanceof Integer) {
+								value = String.valueOf(inputList.get(fieldName));
+							} else if (inputList.get(fieldName) instanceof Map) {
 								sltMap = (Map<String,?>) inputList.get(fieldName);
 							}
-							if (sltMap != null){
+							if (value != null || sltMap != null){
 								if (paramObj.containsKey("method")) {
 									String methodName = (String) paramObj.get("method");
 									if (methodName != null) {
 										if ("Map".equalsIgnoreCase((String) paramObj.get("type"))) {
 											Method m = instanceClass.getDeclaredMethod(methodName,mapParams);
 											m.invoke(item, sltMap);
+										} else if ("Long".equalsIgnoreCase((String) paramObj.get("type")) && value != null) {
+											Long id = Long.parseLong(value);
+											Method m = instanceClass.getDeclaredMethod(methodName,longParams);
+											m.invoke(item, id);
+										} else if (value != null) {
+											Method m = instanceClass.getDeclaredMethod(methodName,stringParams);
+											m.invoke(item, value);
 										}
 									}
 								} else {
@@ -676,7 +690,7 @@ public class UtilSvc {
 									if (paramField != null){
 										Field f = instanceClass.getDeclaredField(paramField);
 										f.setAccessible(true);
-										f.set(item, new Long((Integer) sltMap.get("value")));
+										f.set(item, Long.valueOf((Integer) sltMap.get("value")));
 									}
 								}
 							}

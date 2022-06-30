@@ -257,7 +257,7 @@ public class CategoryDaoImpl extends BaseDaoImpl implements CategoryDao {
 			String queryStr = "SELECT c FROM Category AS c JOIN FETCH c.title AS t JOIN FETCH t.langTexts WHERE c.id =:id";
 			Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
 		
-			query.setParameter("id", new Long((Integer) request.getParam(GlobalConstant.ITEMID)));
+			query.setParameter("id", Long.valueOf((Integer) request.getParam(GlobalConstant.ITEMID)));
 			Category category = (Category) query.getSingleResult();
 			
 			response.addParam(GlobalConstant.ITEM, category);

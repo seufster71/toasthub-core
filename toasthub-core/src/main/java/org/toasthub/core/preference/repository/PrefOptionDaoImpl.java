@@ -150,7 +150,7 @@ public class PrefOptionDaoImpl implements PrefOptionDao {
 			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
 		} 
 		
-		query.setParameter("prefNameId", new Long((Integer)request.getParam(GlobalConstant.PARENTID)));
+		query.setParameter("prefNameId", Long.valueOf((Integer)request.getParam(GlobalConstant.PARENTID)));
 		
 		// search criteria
 		if (searchCriteria != null){
@@ -237,7 +237,7 @@ public class PrefOptionDaoImpl implements PrefOptionDao {
 		
 		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
 		
-		query.setParameter("prefNameId", new Long((Integer)request.getParam(GlobalConstant.PARENTID)));
+		query.setParameter("prefNameId", Long.valueOf((Integer)request.getParam(GlobalConstant.PARENTID)));
 		query.setParameter("lang",request.getParam(GlobalConstant.LANG));
 		if (request.containsParam(GlobalConstant.ACTIVE)) {
 			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
@@ -279,7 +279,7 @@ public class PrefOptionDaoImpl implements PrefOptionDao {
 			String queryStr = "SELECT po FROM PrefOptionName AS po JOIN FETCH po.title AS t JOIN FETCH t.langTexts as l JOIN FETCH po.values WHERE po.id =:id";
 			
 			Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
-			query.setParameter("id", new Long((Integer) request.getParam(GlobalConstant.ITEMID)));
+			query.setParameter("id", Long.valueOf((Integer) request.getParam(GlobalConstant.ITEMID)));
 			PrefOptionName prefOptionName = (PrefOptionName) query.getSingleResult();
 		
 			response.addParam(GlobalConstant.ITEM, prefOptionName);

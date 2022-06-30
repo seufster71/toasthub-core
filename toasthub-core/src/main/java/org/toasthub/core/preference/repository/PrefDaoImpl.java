@@ -300,7 +300,7 @@ public class PrefDaoImpl implements PrefDao {
 			String HQLQuery = "SELECT p FROM PrefName AS p JOIN FETCH p.title AS t JOIN FETCH t.langTexts WHERE p.id = :id ";
 			
 			Query query = entityManagerDataSvc.getInstance().createQuery(HQLQuery);
-			query.setParameter("id", new Long((Integer) request.getParam(GlobalConstant.ITEMID)) );
+			query.setParameter("id", Long.valueOf((Integer) request.getParam(GlobalConstant.ITEMID)) );
 			response.addParam(GlobalConstant.ITEM, query.getSingleResult());
 		} else {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Missing ID", response);

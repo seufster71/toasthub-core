@@ -303,7 +303,7 @@ public class ClientDomainDaoImpl implements ClientDomainDao {
 			String queryStr = "SELECT c FROM ClientDomain AS c JOIN FETCH c.title AS t JOIN FETCH t.langTexts WHERE c.id =:id";
 			Query query = entityManagerMainSvc.getEntityMgrMain().createQuery(queryStr);
 		
-			query.setParameter("id", new Long((String) request.getParam(GlobalConstant.ITEMID)));
+			query.setParameter("id", Long.valueOf((String) request.getParam(GlobalConstant.ITEMID)));
 			ClientDomain clientDomain = (ClientDomain) query.getSingleResult();
 			
 			response.addParam(GlobalConstant.ITEM, clientDomain);

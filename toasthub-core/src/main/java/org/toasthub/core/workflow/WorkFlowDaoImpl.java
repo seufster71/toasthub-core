@@ -119,7 +119,7 @@ public class WorkFlowDaoImpl implements WorkFlowDao {
 			String queryStr = "SELECT w FROM WorkFlow AS w JOIN FETCH w.name AS t JOIN FETCH t.langTexts WHERE l.id =:id";
 			Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
 		
-			query.setParameter("id", new Long((String) request.getParam(GlobalConstant.ITEMID)));
+			query.setParameter("id", Long.valueOf((String) request.getParam(GlobalConstant.ITEMID)));
 			WorkFlow workFlow = (WorkFlow) query.getSingleResult();
 			
 			response.addParam(GlobalConstant.ITEM, workFlow);
