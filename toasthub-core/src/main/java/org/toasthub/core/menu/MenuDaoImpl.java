@@ -79,7 +79,7 @@ public class MenuDaoImpl implements MenuDao {
 				return;
 			}
 			Query query = entityManagerDataSvc.getInstance().createQuery(HQLQuery);
-			query.setParameter("id", Long.valueOf((Integer) request.getParam(GlobalConstant.ITEMID)) );
+			query.setParameter("id", request.getParamLong(GlobalConstant.ITEMID));
 			response.addParam(GlobalConstant.ITEM, query.getSingleResult());
 		} else {
 			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Missing ID", response);
@@ -365,9 +365,9 @@ public class MenuDaoImpl implements MenuDao {
 	public void subItem(RestRequest request, RestResponse response) throws Exception {
 		String HQLQuery = "SELECT DISTINCT items FROM MenuItem AS items JOIN FETCH items.values AS values WHERE items.menu.id = :id AND ((:parentId is null and items.parent.id is null) or items.parent.id = :parentId) AND values.lang =:lang order by items.order ";
 		Query query = entityManagerDataSvc.getInstance().createQuery(HQLQuery);
-		query.setParameter("id",Long.valueOf((Integer) request.getParam(Menu.ID))).setParameter("lang", request.getParam(GlobalConstant.LANG));
+		query.setParameter("id",request.getParamLong(Menu.ID)).setParameter("lang", request.getParam(GlobalConstant.LANG));
 		if (request.containsParam(GlobalConstant.PARENTID)){
-			query.setParameter("parentId", Long.valueOf((Integer) request.getParam(GlobalConstant.PARENTID)));
+			query.setParameter("parentId", request.getParamLong(GlobalConstant.PARENTID));
 		} else {
 			query.setParameter("parentId",null);
 		}
@@ -384,9 +384,9 @@ public class MenuDaoImpl implements MenuDao {
 		}
 		Query query = entityManagerDataSvc.getInstance().createQuery(HQLQuery);
 		if (request.containsParam(GlobalConstant.PARENTID)) {
-			query.setParameter("parentId", Long.valueOf((Integer)request.getParam(GlobalConstant.PARENTID)));
+			query.setParameter("parentId", request.getParamLong(GlobalConstant.PARENTID));
 		} else {
-			query.setParameter("menuId", Long.valueOf((Integer)request.getParam(Menu.ID)));
+			query.setParameter("menuId", request.getParamLong(Menu.ID));
 		}
 		List<?> results = query.getResultList(); 
 		response.addParam(GlobalConstant.ITEMS, results);
@@ -402,9 +402,9 @@ public class MenuDaoImpl implements MenuDao {
 		}
 		query = entityManagerDataSvc.getInstance().createQuery(HQLQuery);
 		if (request.containsParam(GlobalConstant.PARENTID)) {
-			query.setParameter("parentId", Long.valueOf((Integer)request.getParam(GlobalConstant.PARENTID)));
+			query.setParameter("parentId", request.getParamLong(GlobalConstant.PARENTID));
 		} else {
-			query.setParameter("menuId", Long.valueOf((Integer)request.getParam(Menu.ID)));
+			query.setParameter("menuId", request.getParamLong(Menu.ID));
 		}
 		response.addParam(GlobalConstant.ITEMCOUNT, (Long) query.getSingleResult());
 	}

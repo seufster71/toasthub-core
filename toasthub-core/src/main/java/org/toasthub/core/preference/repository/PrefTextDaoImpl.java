@@ -150,7 +150,7 @@ public class PrefTextDaoImpl implements PrefTextDao {
 			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
 		} 
 		
-		query.setParameter("prefNameId", Long.valueOf((Integer)request.getParam(GlobalConstant.PARENTID)));
+		query.setParameter("prefNameId", request.getParamLong(GlobalConstant.PARENTID));
 		
 		// search criteria
 		if (searchCriteria != null){
@@ -235,7 +235,7 @@ public class PrefTextDaoImpl implements PrefTextDao {
 		
 		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
 				
-		query.setParameter("prefNameId", Long.valueOf((Integer)request.getParam(GlobalConstant.PARENTID)));
+		query.setParameter("prefNameId", request.getParamLong(GlobalConstant.PARENTID));
 		query.setParameter("lang",request.getParam(GlobalConstant.LANG));
 		if (request.containsParam(GlobalConstant.ACTIVE)) {
 			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
@@ -275,7 +275,7 @@ public class PrefTextDaoImpl implements PrefTextDao {
 			String queryStr = "SELECT pt FROM PrefTextName AS pt JOIN FETCH pt.title AS t JOIN FETCH t.langTexts as l JOIN FETCH pt.values WHERE pt.id =:id";
 			
 			Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
-			query.setParameter("id", Long.valueOf((Integer) request.getParam(GlobalConstant.ITEMID)));
+			query.setParameter("id", request.getParamLong(GlobalConstant.ITEMID));
 			PrefTextName prefTextName = (PrefTextName) query.getSingleResult();
 		
 			response.addParam(GlobalConstant.ITEM, prefTextName);

@@ -56,22 +56,73 @@ public class RestRequest {
 	public void setParams(Map<String,Object> params) {
 		this.params = params;
 	}
+	
 	public void addParam(String key, Object value) {
 		if (params == null) {
 			params = new HashMap<String,Object>();
 		}
 		params.put(key, value);
 	}
+	
 	public Object getParam(String key){
 		if (params != null && params.containsKey(key)){
 			return params.get(key);
 		}
 		return null;
 	}
+	
 	public boolean containsParam(String key){
 		if (params != null && params.containsKey(key)){
 			return true;
 		}
 		return false;
+	}
+	
+	public Long getParamLong(String key) {
+		if (params != null && params.containsKey(key)){
+			// try to cast to long
+			try {
+				return (Long) params.get(key);
+			} catch (Exception e) {
+				// ignore error
+			}
+			// Try to cast to integer then long
+			try {
+				return Long.valueOf((Integer) params.get(key));
+			} catch (Exception e) {
+				// ignore error
+			}
+			// Try to cast to string then long
+			try {
+				return Long.valueOf((String) params.get(key));
+			} catch (Exception e) {
+				// ignore error
+			}
+		}
+		return null;
+	}
+	
+	public String getParamString(String key) {
+		if (params != null && params.containsKey(key)){
+			// Try to cast to string then long
+			try {
+				return (String) params.get(key);
+			} catch (Exception e) {
+				// ignore error
+			}
+		}
+		return null;
+	}
+	
+	public Integer getParamInteger(String key) {
+		if (params != null && params.containsKey(key)){
+			// Try to cast to string then long
+			try {
+				return (Integer) params.get(key);
+			} catch (Exception e) {
+				// ignore error
+			}
+		}
+		return null;
 	}
 }

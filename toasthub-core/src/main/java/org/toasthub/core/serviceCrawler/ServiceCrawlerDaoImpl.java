@@ -234,7 +234,7 @@ public class ServiceCrawlerDaoImpl implements ServiceCrawlerDao {
 			String queryStr = "SELECT s FROM ServiceClass AS s WHERE s.id =:id";
 			Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
 		
-			query.setParameter("id", Long.valueOf((Integer) request.getParam(GlobalConstant.ITEMID)));
+			query.setParameter("id", request.getParamLong(GlobalConstant.ITEMID));
 			ServiceClass serviceClass = (ServiceClass) query.getSingleResult();
 			
 			response.addParam(GlobalConstant.ITEM, serviceClass);

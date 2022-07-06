@@ -311,7 +311,7 @@ public class LanguageDaoImpl implements LanguageDao {
 			String queryStr = "SELECT l FROM Language AS l JOIN FETCH l.title AS t JOIN FETCH t.langTexts WHERE l.id =:id";
 			Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
 		
-			query.setParameter("id", Long.valueOf((Integer) request.getParam(GlobalConstant.ITEMID)));
+			query.setParameter("id", request.getParamLong(GlobalConstant.ITEMID));
 			Language language = (Language) query.getSingleResult();
 			
 			response.addParam(GlobalConstant.ITEM, language);

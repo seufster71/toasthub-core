@@ -170,7 +170,7 @@ public class PrefFormFieldDaoImpl implements PrefFormFieldDao {
 			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
 		} 
 		
-		query.setParameter("prefNameId", Long.valueOf((Integer)request.getParam(GlobalConstant.PARENTID)));
+		query.setParameter("prefNameId", request.getParamLong(GlobalConstant.PARENTID));
 		
 		// search criteria
 		if (searchCriteria != null){
@@ -271,7 +271,7 @@ public class PrefFormFieldDaoImpl implements PrefFormFieldDao {
 			
 		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
 		
-		query.setParameter("prefNameId", Long.valueOf((Integer)request.getParam(GlobalConstant.PARENTID)));
+		query.setParameter("prefNameId", request.getParamLong(GlobalConstant.PARENTID));
 		query.setParameter("lang",request.getParam(GlobalConstant.LANG));
 		if (request.containsParam(GlobalConstant.ACTIVE)) {
 			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
@@ -318,7 +318,7 @@ public class PrefFormFieldDaoImpl implements PrefFormFieldDao {
 			String queryStr = "SELECT f FROM PrefFormFieldName AS f JOIN FETCH f.title AS t JOIN FETCH t.langTexts as l JOIN FETCH f.values WHERE f.id =:id";
 			
 			Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
-			query.setParameter("id", Long.valueOf((Integer) request.getParam(GlobalConstant.ITEMID)));
+			query.setParameter("id", request.getParamLong(GlobalConstant.ITEMID));
 			PrefFormFieldName prefFormFieldName = (PrefFormFieldName) query.getSingleResult();
 		
 			response.addParam(GlobalConstant.ITEM, prefFormFieldName);

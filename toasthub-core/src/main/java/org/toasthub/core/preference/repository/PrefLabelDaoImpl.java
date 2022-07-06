@@ -159,7 +159,7 @@ public class PrefLabelDaoImpl implements PrefLabelDao {
 			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
 		} 
 		
-		query.setParameter("prefNameId", Long.valueOf((Integer)request.getParam(GlobalConstant.PARENTID)));
+		query.setParameter("prefNameId", request.getParamLong(GlobalConstant.PARENTID));
 		
 		// search criteria
 		if (searchCriteria != null){
@@ -252,7 +252,7 @@ public class PrefLabelDaoImpl implements PrefLabelDao {
 		
 		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
 		
-		query.setParameter("prefNameId", Long.valueOf((Integer)request.getParam(GlobalConstant.PARENTID)));
+		query.setParameter("prefNameId", request.getParamLong(GlobalConstant.PARENTID));
 		query.setParameter("lang",request.getParam(GlobalConstant.LANG));
 		if (request.containsParam(GlobalConstant.ACTIVE)) {
 			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
@@ -296,7 +296,7 @@ public class PrefLabelDaoImpl implements PrefLabelDao {
 			String queryStr = "SELECT l FROM PrefLabelName AS l JOIN FETCH l.title AS t JOIN FETCH t.langTexts AS lt JOIN FETCH l.values WHERE l.id =:id";
 			
 			Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
-			query.setParameter("id", Long.valueOf((Integer) request.getParam(GlobalConstant.ITEMID)));
+			query.setParameter("id", request.getParamLong(GlobalConstant.ITEMID));
 			PrefLabelName prefLabelName = (PrefLabelName) query.getSingleResult();
 		
 			response.addParam(GlobalConstant.ITEM, prefLabelName);
