@@ -138,5 +138,17 @@ public class BaseDaoImpl implements BaseDao {
 			
 		}
 	}
+
+	@Override
+	public void delete(RestRequest request, RestResponse response) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void save(RestRequest request, RestResponse response) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
