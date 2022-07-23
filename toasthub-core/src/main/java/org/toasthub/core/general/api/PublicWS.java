@@ -26,6 +26,8 @@ import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 import org.toasthub.core.general.model.ServiceClass;
 import org.toasthub.core.general.utils.TenantContext;
+import org.toasthub.core.preference.model.PrefCacheUtil;
+import org.toasthub.core.preference.model.PrefOptionValue;
 import org.toasthub.core.serviceCrawler.MicroServiceClient;
 import org.toasthub.core.common.UtilSvc;
 import org.toasthub.core.general.model.AppCacheServiceCrawler;
@@ -45,6 +47,9 @@ public class PublicWS {
 	@Autowired
 	MicroServiceClient microServiceClient;
 	
+	@Autowired 
+	PrefCacheUtil prefCacheUtil;
+	
 	@JsonView(View.Public.class)
 	@RequestMapping(value = "callService", method = RequestMethod.POST)
 	public RestResponse callService(@RequestBody RestRequest request) {
@@ -56,7 +61,9 @@ public class PublicWS {
 			utilSvc.metricsAPIStart(request);
 			
 			// set defaults
-			utilSvc.setupDefaults(request);
+			PrefOptionValue globalListLimit = prefCacheUtil.getPrefOption("GLOBAL_PAGE", "GLOBAL_PAGE_PAGELIMIT",(String)request.getParam(GlobalConstant.LANG));
+			PrefOptionValue globalListLimitMax = prefCacheUtil.getPrefOption("GLOBAL_PAGE", "GLOBAL_PAGE_PAGELIMIT_MAX",(String)request.getParam(GlobalConstant.LANG));
+			utilSvc.setupDefaults(request,globalListLimit, globalListLimitMax);
 			
 			// validate request
 	

@@ -39,6 +39,7 @@ public class PrefDaoImpl implements PrefDao {
 
 	@Autowired 
 	protected EntityManagerDataSvc entityManagerDataSvc;
+	
 	@Autowired
 	protected UtilSvc utilSvc;
 	

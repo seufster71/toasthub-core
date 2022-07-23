@@ -55,9 +55,6 @@ import com.google.gson.Gson;
 @Service("UtilSvc")
 public class UtilSvc {
 	
-	@Autowired 
-	PrefCacheUtil prefCacheUtil;
-	
 	@Autowired
 	protected ApplicationContext context;
 /*
@@ -111,7 +108,7 @@ public class UtilSvc {
 		return "{\"status\":\"ERROR\",\"statusMessage\":\"JSON write error check Stack Trace\"}";
 	}
 	*/
-	public void setupDefaults(RestRequest request){
+	public void setupDefaults(RestRequest request, PrefOptionValue globalListLimit, PrefOptionValue globalListLimitMax){
 		
 		if (request.getParam(GlobalConstant.LANG) == null){
 			request.addParam(GlobalConstant.LANG,"en");
@@ -121,8 +118,6 @@ public class UtilSvc {
 			request.addParam(GlobalConstant.LISTSTART, 0);
 		}
 		
-		PrefOptionValue globalListLimit = prefCacheUtil.getPrefOption("GLOBAL_PAGE", "GLOBAL_PAGE_PAGELIMIT",(String)request.getParam(GlobalConstant.LANG));
-		PrefOptionValue globalListLimitMax = prefCacheUtil.getPrefOption("GLOBAL_PAGE", "GLOBAL_PAGE_PAGELIMIT_MAX",(String)request.getParam(GlobalConstant.LANG));
 		if (request.getParam(GlobalConstant.LISTLIMIT) == null){
 			if (globalListLimit != null) {
 				if (!"".equals(globalListLimit.getValue())) {
