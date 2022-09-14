@@ -26,7 +26,6 @@ import org.springframework.stereotype.Service;
 import org.toasthub.core.common.UtilSvc;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
-import org.toasthub.core.preference.model.PrefCacheUtil;
 import org.toasthub.core.preference.model.PrefFormFieldValue;
 import org.toasthub.core.preference.model.PrefLabelValue;
 import org.toasthub.core.preference.model.PrefName;
@@ -61,9 +60,6 @@ public class PrefSvcImpl implements PrefSvc {
 	@Autowired
 	@Qualifier("PrefOptionDao")
 	PrefOptionDao prefOptionDao;
-	
-	@Autowired 
-	PrefCacheUtil prefCacheUtil;
 	
 	@Autowired 
 	UtilSvc utilSvc;
@@ -129,7 +125,7 @@ public class PrefSvcImpl implements PrefSvc {
 		try {
 			prefDao.itemCount(request, response);
 		} catch (Exception e) {
-			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, prefCacheUtil.getPrefText("GLOBAL_SERVICE", "GLOBAL_SERVICE_EXECUTION_FAIL",prefCacheUtil.getLang(request)), response);
+			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Service execution fail", response);
 			e.printStackTrace();
 		}
 		
@@ -140,7 +136,7 @@ public class PrefSvcImpl implements PrefSvc {
 		try {
 			prefDao.items(request, response);
 		} catch (Exception e) {
-			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, prefCacheUtil.getPrefText("GLOBAL_SERVICE", "GLOBAL_SERVICE_EXECUTION_FAIL",prefCacheUtil.getLang(request)), response);
+			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Service execution fail", response);
 			e.printStackTrace();
 		}
 		
@@ -151,7 +147,7 @@ public class PrefSvcImpl implements PrefSvc {
 		try {
 			prefDao.item(request, response);
 		} catch (Exception e) {
-			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, prefCacheUtil.getPrefText("GLOBAL_SERVICE", "GLOBAL_SERVICE_EXECUTION_FAIL",prefCacheUtil.getLang(request)), response);
+			utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Service execution fail", response);
 			e.printStackTrace();
 		}
 		

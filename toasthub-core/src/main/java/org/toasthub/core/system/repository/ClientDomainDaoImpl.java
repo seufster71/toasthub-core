@@ -323,4 +323,16 @@ public class ClientDomainDaoImpl implements ClientDomainDao {
 		List<ClientDomain> clientDomains = entityManagerMainSvc.getEntityMgrMain().createQuery("FROM ClientDomain").getResultList();
 		return clientDomains;
 	}
+
+	@Override
+	public void delete(RestRequest request, RestResponse response) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void save(RestRequest request, RestResponse response) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }
