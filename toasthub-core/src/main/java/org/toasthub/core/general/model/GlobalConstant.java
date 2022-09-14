@@ -30,6 +30,7 @@ public class GlobalConstant {
 	public static final String COLUMNVALUE = "columnValue";
 	public static final String DELETEDCOUNT = "deletedCount";
 	public static final String ACTIVE = "active";
+	public static final String ARCHIVE = "archive";
 	public static final String OWNER = "owner";
 	public static final String CREATOR = "creator";
 	public static final String PARENT = "parent";
