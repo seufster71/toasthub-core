@@ -5,7 +5,7 @@ import javax.persistence.NoResultException;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 
-public interface BaseDao {
+public interface BaseMemberDao {
 
 	public void items(RestRequest request, RestResponse response) throws Exception;
 	public void itemCount(RestRequest request, RestResponse response) throws Exception;

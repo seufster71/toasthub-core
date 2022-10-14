@@ -27,7 +27,7 @@ import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.toasthub.core.common.EntityManagerDataSvc;
+import org.toasthub.core.common.EntityManagerMemberSvc;
 import org.toasthub.core.common.UtilSvc;
 import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
@@ -36,11 +36,11 @@ import org.toasthub.core.general.model.ServiceClass;
 
 
 @Repository("ServiceCrawlerDao")
-@Transactional("TransactionManagerData")
+@Transactional("TransactionManagerMember")
 public class ServiceCrawlerDaoImpl implements ServiceCrawlerDao {
 
 	@Autowired 
-	protected EntityManagerDataSvc entityManagerDataSvc;
+	protected EntityManagerMemberSvc entityManagerSvc;
 	@Autowired
 	protected UtilSvc utilSvc;
 
@@ -48,7 +48,7 @@ public class ServiceCrawlerDaoImpl implements ServiceCrawlerDao {
 	@Override
 	public Map<String,Map<String,ServiceClass>> getServices() {
 		String queryStr = "FROM ServiceClass AS sc where active = true";
-		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+		Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 		// get all services
 		List<ServiceClass> services = (List<ServiceClass>) query.getResultList();
 		
@@ -140,7 +140,7 @@ public class ServiceCrawlerDaoImpl implements ServiceCrawlerDao {
 			// default order
 			queryStr += " ORDER BY s.serviceName";
 		}
-		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+		Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 		
 		if (request.containsParam(GlobalConstant.ACTIVE)) {
 			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
@@ -203,7 +203,7 @@ public class ServiceCrawlerDaoImpl implements ServiceCrawlerDao {
 			
 		}
 
-		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+		Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 		
 		if (request.containsParam(GlobalConstant.ACTIVE)) {
 			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
@@ -232,7 +232,7 @@ public class ServiceCrawlerDaoImpl implements ServiceCrawlerDao {
 	public void item(RestRequest request, RestResponse response) throws Exception {
 		if (request.containsParam(GlobalConstant.ITEMID) && !"".equals(request.getParam(GlobalConstant.ITEMID))) {
 			String queryStr = "SELECT s FROM ServiceClass AS s WHERE s.id =:id";
-			Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+			Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 		
 			query.setParameter("id", request.getParamLong(GlobalConstant.ITEMID));
 			ServiceClass serviceClass = (ServiceClass) query.getSingleResult();

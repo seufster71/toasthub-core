@@ -26,7 +26,7 @@ import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.toasthub.core.common.EntityManagerDataSvc;
+import org.toasthub.core.common.EntityManagerMemberSvc;
 import org.toasthub.core.common.UtilSvc;
 import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
@@ -35,17 +35,17 @@ import org.toasthub.core.preference.model.PrefOptionName;
 import org.toasthub.core.preference.model.PrefOptionValue;
 
 @Repository("PrefOptionDao")
-@Transactional("TransactionManagerData")
+@Transactional("TransactionManagerMember")
 public class PrefOptionDaoImpl implements PrefOptionDao {
 
 	@Autowired 
-	protected EntityManagerDataSvc entityManagerDataSvc;
+	protected EntityManagerMemberSvc entityManagerSvc;
 	@Autowired
 	protected UtilSvc utilSvc;
 
 	public List<PrefOptionValue> getOptions(String prefName, String lang) {
 		@SuppressWarnings("unchecked")
-		List<PrefOptionValue> options = entityManagerDataSvc.getInstance()
+		List<PrefOptionValue> options = entityManagerSvc.getInstance()
 			.createQuery("SELECT NEW PrefOptionValue(o.id, o.value, o.lang, o.rendered, o.validation, o.prefOptionName.name, o.prefOptionName.valueType, o.prefOptionName.defaultValue, o.prefOptionName.useDefault) FROM PrefOptionValue o WHERE o.lang =:lang AND o.prefOptionName.prefName.name =:prefName AND o.prefOptionName.archive = false")
 			.setParameter("prefName", prefName)
 			.setParameter("lang", lang)
@@ -142,7 +142,7 @@ public class PrefOptionDaoImpl implements PrefOptionDao {
 			queryStr += " ORDER BY lt.text";
 		}
 		
-		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+		Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 		
 		query.setParameter("lang",request.getParam(GlobalConstant.LANG));
 		
@@ -235,7 +235,7 @@ public class PrefOptionDaoImpl implements PrefOptionDao {
 		}
 		
 		
-		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+		Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 		
 		query.setParameter("prefNameId", request.getParamLong(GlobalConstant.PARENTID));
 		query.setParameter("lang",request.getParam(GlobalConstant.LANG));
@@ -278,7 +278,7 @@ public class PrefOptionDaoImpl implements PrefOptionDao {
 		if (request.containsParam(GlobalConstant.ITEMID) && !"".equals(request.getParam(GlobalConstant.ITEMID))) {
 			String queryStr = "SELECT po FROM PrefOptionName AS po JOIN FETCH po.title AS t JOIN FETCH t.langTexts as l JOIN FETCH po.values WHERE po.id =:id";
 			
-			Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+			Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 			query.setParameter("id", request.getParamLong(GlobalConstant.ITEMID));
 			PrefOptionName prefOptionName = (PrefOptionName) query.getSingleResult();
 		

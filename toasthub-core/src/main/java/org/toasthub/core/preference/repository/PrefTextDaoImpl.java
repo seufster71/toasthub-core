@@ -26,7 +26,7 @@ import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.toasthub.core.common.EntityManagerDataSvc;
+import org.toasthub.core.common.EntityManagerMemberSvc;
 import org.toasthub.core.common.UtilSvc;
 import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
@@ -35,17 +35,17 @@ import org.toasthub.core.preference.model.PrefTextName;
 import org.toasthub.core.preference.model.PrefTextValue;
 
 @Repository("PrefTextDao")
-@Transactional("TransactionManagerData")
+@Transactional("TransactionManagerMember")
 public class PrefTextDaoImpl implements PrefTextDao {
 
 	@Autowired 
-	protected EntityManagerDataSvc entityManagerDataSvc;
+	protected EntityManagerMemberSvc entityManagerSvc;
 	@Autowired
 	protected UtilSvc utilSvc;
 
 	public List<PrefTextValue> getTexts(String prefName, String lang) {
 		@SuppressWarnings("unchecked")
-		List<PrefTextValue> texts = entityManagerDataSvc.getInstance()
+		List<PrefTextValue> texts = entityManagerSvc.getInstance()
 			.createQuery("SELECT NEW PrefTextValue(t.id, t.value, t.lang, t.rendered, t.prefTextName.name) FROM PrefTextValue t WHERE t.lang =:lang AND t.prefTextName.prefName.name =:prefName AND t.prefTextName.archive = false")
 			.setParameter("prefName", prefName)
 			.setParameter("lang", lang)
@@ -142,7 +142,7 @@ public class PrefTextDaoImpl implements PrefTextDao {
 			queryStr += " ORDER BY lt.text";
 		}
 		
-		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+		Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 		
 		query.setParameter("lang",request.getParam(GlobalConstant.LANG));
 		
@@ -233,7 +233,7 @@ public class PrefTextDaoImpl implements PrefTextDao {
 			
 		}
 		
-		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+		Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 				
 		query.setParameter("prefNameId", request.getParamLong(GlobalConstant.PARENTID));
 		query.setParameter("lang",request.getParam(GlobalConstant.LANG));
@@ -274,7 +274,7 @@ public class PrefTextDaoImpl implements PrefTextDao {
 		if (request.containsParam(GlobalConstant.ITEMID) && !"".equals(request.getParam(GlobalConstant.ITEMID))) {
 			String queryStr = "SELECT pt FROM PrefTextName AS pt JOIN FETCH pt.title AS t JOIN FETCH t.langTexts as l JOIN FETCH pt.values WHERE pt.id =:id";
 			
-			Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+			Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 			query.setParameter("id", request.getParamLong(GlobalConstant.ITEMID));
 			PrefTextName prefTextName = (PrefTextName) query.getSingleResult();
 		

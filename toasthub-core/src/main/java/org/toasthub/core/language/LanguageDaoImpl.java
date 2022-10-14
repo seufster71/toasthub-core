@@ -26,7 +26,7 @@ import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.toasthub.core.common.EntityManagerDataSvc;
+import org.toasthub.core.common.EntityManagerMemberSvc;
 import org.toasthub.core.common.UtilSvc;
 import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.Language;
@@ -34,11 +34,11 @@ import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 
 @Repository("LanguageDao")
-@Transactional("TransactionManagerData")
+@Transactional("TransactionManagerMember")
 public class LanguageDaoImpl implements LanguageDao {
 
 	@Autowired 
-	protected EntityManagerDataSvc entityManagerDataSvc;
+	protected EntityManagerMemberSvc entityManagerSvc;
 	@Autowired
 	protected UtilSvc utilSvc;
 
@@ -150,7 +150,7 @@ public class LanguageDaoImpl implements LanguageDao {
 			queryStr += " ORDER BY lt.text";
 		}
 		
-		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+		Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 		
 		query.setParameter("lang",request.getParam(GlobalConstant.LANG));
 		
@@ -260,7 +260,7 @@ public class LanguageDaoImpl implements LanguageDao {
 			
 		}
 
-		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+		Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 		
 		if (request.containsParam(GlobalConstant.ACTIVE)) {
 			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
@@ -309,7 +309,7 @@ public class LanguageDaoImpl implements LanguageDao {
 	public void item(RestRequest request, RestResponse response) throws Exception {
 		if (request.containsParam(GlobalConstant.ITEMID) && !"".equals(request.getParam(GlobalConstant.ITEMID))) {
 			String queryStr = "SELECT l FROM Language AS l JOIN FETCH l.title AS t JOIN FETCH t.langTexts WHERE l.id =:id";
-			Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+			Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 		
 			query.setParameter("id", request.getParamLong(GlobalConstant.ITEMID));
 			Language language = (Language) query.getSingleResult();
@@ -324,7 +324,7 @@ public class LanguageDaoImpl implements LanguageDao {
 	public void getDefault(RestRequest request, RestResponse response) throws Exception {
 
 		String queryStr = "SELECT l FROM Language AS l JOIN FETCH l.title AS t JOIN FETCH t.langTexts WHERE l.defaultLang =:defaultLang";
-		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+		Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 
 		query.setParameter("defaultLang", true);
 		Language language = (Language) query.getSingleResult();
@@ -344,7 +344,7 @@ public class LanguageDaoImpl implements LanguageDao {
 			and = true;
 		}
 		
-		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+		Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 		
 		if (request.containsParam(GlobalConstant.ACTIVE)) {
 			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
