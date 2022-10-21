@@ -16,11 +16,11 @@
 
 package org.toasthub.core.category;
 
-import org.toasthub.core.common.BaseDao;
+import org.toasthub.core.common.BaseMemberDao;
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 
-public interface CategoryDao extends BaseDao {
+public interface CategoryDao extends BaseMemberDao {
 
 	public void save(RestRequest request, RestResponse response) throws Exception;
 	

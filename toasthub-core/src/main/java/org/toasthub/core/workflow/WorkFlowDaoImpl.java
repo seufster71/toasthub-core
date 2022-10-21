@@ -23,7 +23,7 @@ import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.toasthub.core.common.EntityManagerDataSvc;
+import org.toasthub.core.common.EntityManagerMemberSvc;
 import org.toasthub.core.common.UtilSvc;
 import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.Language;
@@ -32,11 +32,11 @@ import org.toasthub.core.general.model.RestResponse;
 import org.toasthub.core.general.model.WorkFlow;
 
 @Repository("WorkFlowDao")
-@Transactional("TransactionManagerData")
+@Transactional("TransactionManagerMember")
 public class WorkFlowDaoImpl implements WorkFlowDao {
 
 	@Autowired 
-	protected EntityManagerDataSvc entityManagerDataSvc;
+	protected EntityManagerMemberSvc entityManagerSvc;
 	@Autowired
 	protected UtilSvc utilSvc;
 
@@ -58,7 +58,7 @@ public class WorkFlowDaoImpl implements WorkFlowDao {
 			and = true;
 		}
 		
-		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+		Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 		
 		if (request.containsParam(GlobalConstant.ACTIVE)) {
 			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
@@ -94,7 +94,7 @@ public class WorkFlowDaoImpl implements WorkFlowDao {
 			and = true;
 		}
 
-		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+		Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 		
 		if (request.containsParam(GlobalConstant.ACTIVE)) {
 			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
@@ -117,7 +117,7 @@ public class WorkFlowDaoImpl implements WorkFlowDao {
 	public void item(RestRequest request, RestResponse response) throws Exception {
 		if (request.containsParam(GlobalConstant.ITEMID) && !"".equals(request.getParam(GlobalConstant.ITEMID))) {
 			String queryStr = "SELECT w FROM WorkFlow AS w JOIN FETCH w.name AS t JOIN FETCH t.langTexts WHERE l.id =:id";
-			Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+			Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 		
 			query.setParameter("id", request.getParamLong(GlobalConstant.ITEMID));
 			WorkFlow workFlow = (WorkFlow) query.getSingleResult();

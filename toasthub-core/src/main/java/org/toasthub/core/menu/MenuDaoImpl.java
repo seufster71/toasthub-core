@@ -26,7 +26,7 @@ import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.toasthub.core.common.EntityManagerDataSvc;
+import org.toasthub.core.common.EntityManagerMemberSvc;
 import org.toasthub.core.common.UtilSvc;
 import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.Menu;
@@ -35,18 +35,18 @@ import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
 
 @Repository("MenuDao")
-@Transactional("TransactionManagerData")
+@Transactional("TransactionManagerMember")
 public class MenuDaoImpl implements MenuDao {
 
 	@Autowired
-	protected EntityManagerDataSvc entityManagerDataSvc;
+	protected EntityManagerMemberSvc entityManagerSvc;
 	@Autowired
 	protected UtilSvc utilSvc;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<MenuItem> subItems(String menuName,String lang) throws Exception {
-		List<MenuItem> results = entityManagerDataSvc.getInstance().createQuery("from MenuItem where menu.code = :menuName")
+		List<MenuItem> results = entityManagerSvc.getInstance().createQuery("from MenuItem where menu.code = :menuName")
 				.setParameter("menuName", menuName)
 				.getResultList(); 
 		return results;
@@ -55,7 +55,7 @@ public class MenuDaoImpl implements MenuDao {
 	@Override
 	public Menu item(String menuName, String apiVersion, String appVersion, String lang) throws Exception {
 		
-		return (Menu) entityManagerDataSvc.getInstance().createQuery("SELECT DISTINCT m FROM Menu AS m JOIN FETCH m.menuItems AS items JOIN FETCH items.values AS values WHERE m.code = :menuName AND m.apiVersion = :apiVersion AND m.appVersion = :appVersion AND values.lang =:lang ")
+		return (Menu) entityManagerSvc.getInstance().createQuery("SELECT DISTINCT m FROM Menu AS m JOIN FETCH m.menuItems AS items JOIN FETCH items.values AS values WHERE m.code = :menuName AND m.apiVersion = :apiVersion AND m.appVersion = :appVersion AND values.lang =:lang ")
 				.setParameter("menuName", menuName)
 				.setParameter("apiVersion", apiVersion)
 				.setParameter("appVersion", appVersion)
@@ -78,7 +78,7 @@ public class MenuDaoImpl implements MenuDao {
 				utilSvc.addStatus(RestResponse.ERROR, RestResponse.ACTIONFAILED, "Missing Item Type", response);
 				return;
 			}
-			Query query = entityManagerDataSvc.getInstance().createQuery(HQLQuery);
+			Query query = entityManagerSvc.getInstance().createQuery(HQLQuery);
 			query.setParameter("id", request.getParamLong(GlobalConstant.ITEMID));
 			response.addParam(GlobalConstant.ITEM, query.getSingleResult());
 		} else {
@@ -203,7 +203,7 @@ public class MenuDaoImpl implements MenuDao {
 			queryStr += " ORDER BY lt.text";
 		}
 		
-		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+		Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 		
 		query.setParameter("lang",request.getParam(GlobalConstant.LANG));
 
@@ -319,7 +319,7 @@ public class MenuDaoImpl implements MenuDao {
 			
 		}
 
-		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+		Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 		
 		if (request.containsParam(GlobalConstant.ACTIVE)) {
 			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
@@ -364,7 +364,7 @@ public class MenuDaoImpl implements MenuDao {
 
 	public void subItem(RestRequest request, RestResponse response) throws Exception {
 		String HQLQuery = "SELECT DISTINCT items FROM MenuItem AS items JOIN FETCH items.values AS values WHERE items.menu.id = :id AND ((:parentId is null and items.parent.id is null) or items.parent.id = :parentId) AND values.lang =:lang order by items.order ";
-		Query query = entityManagerDataSvc.getInstance().createQuery(HQLQuery);
+		Query query = entityManagerSvc.getInstance().createQuery(HQLQuery);
 		query.setParameter("id",request.getParamLong(Menu.ID)).setParameter("lang", request.getParam(GlobalConstant.LANG));
 		if (request.containsParam(GlobalConstant.PARENTID)){
 			query.setParameter("parentId", request.getParamLong(GlobalConstant.PARENTID));
@@ -382,7 +382,7 @@ public class MenuDaoImpl implements MenuDao {
 		} else {
 			HQLQuery += "m.menu.id = :menuId AND m.parent.id = null";
 		}
-		Query query = entityManagerDataSvc.getInstance().createQuery(HQLQuery);
+		Query query = entityManagerSvc.getInstance().createQuery(HQLQuery);
 		if (request.containsParam(GlobalConstant.PARENTID)) {
 			query.setParameter("parentId", request.getParamLong(GlobalConstant.PARENTID));
 		} else {
@@ -400,7 +400,7 @@ public class MenuDaoImpl implements MenuDao {
 		} else {
 			HQLQuery += "m.menu.id = :menuId AND m.parent.id = null";
 		}
-		query = entityManagerDataSvc.getInstance().createQuery(HQLQuery);
+		query = entityManagerSvc.getInstance().createQuery(HQLQuery);
 		if (request.containsParam(GlobalConstant.PARENTID)) {
 			query.setParameter("parentId", request.getParamLong(GlobalConstant.PARENTID));
 		} else {
