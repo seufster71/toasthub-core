@@ -26,7 +26,7 @@ import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.toasthub.core.common.EntityManagerDataSvc;
+import org.toasthub.core.common.EntityManagerMemberSvc;
 import org.toasthub.core.common.UtilSvc;
 import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
@@ -35,17 +35,17 @@ import org.toasthub.core.preference.model.PrefFormFieldName;
 import org.toasthub.core.preference.model.PrefFormFieldValue;
 
 @Repository("PrefFormFieldDao")
-@Transactional("TransactionManagerData")
+@Transactional("TransactionManagerMember")
 public class PrefFormFieldDaoImpl implements PrefFormFieldDao {
 
 	@Autowired 
-	protected EntityManagerDataSvc entityManagerDataSvc;
+	protected EntityManagerMemberSvc entityManagerSvc;
 	@Autowired
 	protected UtilSvc utilSvc;
 	
 	public List<PrefFormFieldValue> getFormFields(String prefName, String lang) {
 		@SuppressWarnings("unchecked")
-		List<PrefFormFieldValue> formFields = entityManagerDataSvc.getInstance()
+		List<PrefFormFieldValue> formFields = entityManagerSvc.getInstance()
 			.createQuery("SELECT NEW PrefFormFieldValue(f.id, f.value, f.label, f.lang, f.rendered, f.required, f.validation, f.image, f.prefFormFieldName.name, f.prefFormFieldName.fieldType, f.prefFormFieldName.htmlType, f.prefFormFieldName.className, f.prefFormFieldName.group, f.prefFormFieldName.subGroup, f.prefFormFieldName.tabIndex, f.prefFormFieldName.optionalParams, f.prefFormFieldName.classModel, f.prefFormFieldName.sortOrder) FROM PrefFormFieldValue f WHERE f.lang =:lang AND f.prefFormFieldName.prefName.name =:prefName AND f.prefFormFieldName.archive = false ORDER BY f.prefFormFieldName.group ASC, f.prefFormFieldName.sortOrder ASC")
 			.setParameter("prefName", prefName)
 			.setParameter("lang", lang)
@@ -162,7 +162,7 @@ public class PrefFormFieldDaoImpl implements PrefFormFieldDao {
 			// default order
 			queryStr += " ORDER BY f.sortOrder ASC";
 		}
-		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+		Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 		
 		query.setParameter("lang",request.getParam(GlobalConstant.LANG));
 		
@@ -269,7 +269,7 @@ public class PrefFormFieldDaoImpl implements PrefFormFieldDao {
 			
 		}
 			
-		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+		Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 		
 		query.setParameter("prefNameId", request.getParamLong(GlobalConstant.PARENTID));
 		query.setParameter("lang",request.getParam(GlobalConstant.LANG));
@@ -317,7 +317,7 @@ public class PrefFormFieldDaoImpl implements PrefFormFieldDao {
 		if (request.containsParam(GlobalConstant.ITEMID) && !"".equals(request.getParam(GlobalConstant.ITEMID))) {
 			String queryStr = "SELECT f FROM PrefFormFieldName AS f JOIN FETCH f.title AS t JOIN FETCH t.langTexts as l JOIN FETCH f.values WHERE f.id =:id";
 			
-			Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+			Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 			query.setParameter("id", request.getParamLong(GlobalConstant.ITEMID));
 			PrefFormFieldName prefFormFieldName = (PrefFormFieldName) query.getSingleResult();
 		

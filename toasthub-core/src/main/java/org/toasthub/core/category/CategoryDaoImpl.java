@@ -26,7 +26,7 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.toasthub.core.common.BaseDaoImpl;
+import org.toasthub.core.common.BaseMemberDaoImpl;
 import org.toasthub.core.general.model.Category;
 import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
@@ -34,8 +34,8 @@ import org.toasthub.core.general.model.RestResponse;
 
 
 @Repository("CategoryDao")
-@Transactional("TransactionManagerData")
-public class CategoryDaoImpl extends BaseDaoImpl implements CategoryDao {
+@Transactional("TransactionManagerMember")
+public class CategoryDaoImpl extends BaseMemberDaoImpl implements CategoryDao {
 
 	
 	@Override
@@ -126,7 +126,7 @@ public class CategoryDaoImpl extends BaseDaoImpl implements CategoryDao {
 			queryStr += " ORDER BY lt.text";
 		}
 		
-		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+		Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 		
 		query.setParameter("lang",request.getParam(GlobalConstant.LANG));
 		
@@ -216,7 +216,7 @@ public class CategoryDaoImpl extends BaseDaoImpl implements CategoryDao {
 			
 		}
 
-		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+		Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 		
 		if (request.containsParam(GlobalConstant.ACTIVE)) {
 			query.setParameter("active", (Boolean) request.getParam(GlobalConstant.ACTIVE));
@@ -255,7 +255,7 @@ public class CategoryDaoImpl extends BaseDaoImpl implements CategoryDao {
 	public void item(RestRequest request, RestResponse response) throws Exception {
 		if (request.containsParam(GlobalConstant.ITEMID) && !"".equals(request.getParam(GlobalConstant.ITEMID))) {
 			String queryStr = "SELECT c FROM Category AS c JOIN FETCH c.title AS t JOIN FETCH t.langTexts WHERE c.id =:id";
-			Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+			Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 		
 			query.setParameter("id", request.getParamLong(GlobalConstant.ITEMID));
 			Category category = (Category) query.getSingleResult();
@@ -270,7 +270,7 @@ public class CategoryDaoImpl extends BaseDaoImpl implements CategoryDao {
 	//@Authorize
 	public void save(RestRequest request, RestResponse response) throws Exception {
 		Category category = (Category) request.getParam("category");
-		EntityManager multi = entityManagerDataSvc.getInstance();
+		EntityManager multi = entityManagerSvc.getInstance();
 
 		multi.merge(category);
 	}

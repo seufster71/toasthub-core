@@ -18,10 +18,10 @@ package org.toasthub.core.system.repository;
 
 import java.util.List;
 
-import org.toasthub.core.common.BaseDao;
+import org.toasthub.core.common.BaseMemberDao;
 import org.toasthub.core.system.model.ClientDomain;
 
-public interface ClientDomainDao extends BaseDao {
+public interface ClientDomainDao extends BaseMemberDao {
 
 	public ClientDomain getClientDomain(String url) throws Exception;
 	public List<ClientDomain> loadCache() throws Exception;

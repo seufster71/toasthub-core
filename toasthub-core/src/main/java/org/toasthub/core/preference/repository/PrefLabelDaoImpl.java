@@ -26,7 +26,7 @@ import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.toasthub.core.common.EntityManagerDataSvc;
+import org.toasthub.core.common.EntityManagerMemberSvc;
 import org.toasthub.core.common.UtilSvc;
 import org.toasthub.core.general.model.GlobalConstant;
 import org.toasthub.core.general.model.RestRequest;
@@ -35,17 +35,17 @@ import org.toasthub.core.preference.model.PrefLabelName;
 import org.toasthub.core.preference.model.PrefLabelValue;
 
 @Repository("PrefLabelDao")
-@Transactional("TransactionManagerData")
+@Transactional("TransactionManagerMember")
 public class PrefLabelDaoImpl implements PrefLabelDao {
 
 	@Autowired 
-	protected EntityManagerDataSvc entityManagerDataSvc;
+	protected EntityManagerMemberSvc entityManagerSvc;
 	@Autowired
 	protected UtilSvc utilSvc;
 
 	public List<PrefLabelValue> getLabels(String prefName, String lang) {
 		@SuppressWarnings("unchecked")
-		List<PrefLabelValue> labels = entityManagerDataSvc.getInstance()
+		List<PrefLabelValue> labels = entityManagerSvc.getInstance()
 			.createQuery("SELECT NEW PrefLabelValue(l.id, l.value, l.lang, l.rendered, l.prefLabelName.name, l.prefLabelName.className, l.prefLabelName.tabIndex, l.prefLabelName.group, l.prefLabelName.optionalParams, l.prefLabelName.sortOrder) FROM PrefLabelValue l WHERE l.lang =:lang AND l.prefLabelName.prefName.name =:prefName AND l.prefLabelName.archive = false ORDER BY l.prefLabelName.sortOrder ASC")
 			.setParameter("prefName", prefName)
 			.setParameter("lang", lang)
@@ -151,7 +151,7 @@ public class PrefLabelDaoImpl implements PrefLabelDao {
 			// default order
 			queryStr += " ORDER BY l.sortOrder ASC";
 		}
-		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+		Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 		
 		query.setParameter("lang",request.getParam(GlobalConstant.LANG));
 		
@@ -250,7 +250,7 @@ public class PrefLabelDaoImpl implements PrefLabelDao {
 			
 		}
 		
-		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+		Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 		
 		query.setParameter("prefNameId", request.getParamLong(GlobalConstant.PARENTID));
 		query.setParameter("lang",request.getParam(GlobalConstant.LANG));
@@ -295,7 +295,7 @@ public class PrefLabelDaoImpl implements PrefLabelDao {
 		if (request.containsParam(GlobalConstant.ITEMID) && !"".equals(request.getParam(GlobalConstant.ITEMID))) {
 			String queryStr = "SELECT l FROM PrefLabelName AS l JOIN FETCH l.title AS t JOIN FETCH t.langTexts AS lt JOIN FETCH l.values WHERE l.id =:id";
 			
-			Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+			Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 			query.setParameter("id", request.getParamLong(GlobalConstant.ITEMID));
 			PrefLabelName prefLabelName = (PrefLabelName) query.getSingleResult();
 		

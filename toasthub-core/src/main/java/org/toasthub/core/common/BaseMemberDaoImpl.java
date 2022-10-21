@@ -28,11 +28,11 @@ import org.toasthub.core.general.model.RestResponse;
 import org.toasthub.core.general.utils.Utils;
 
 
-@Repository("BaseDao")
-public class BaseDaoImpl implements BaseDao {
+@Repository("BaseMemberDao")
+public class BaseMemberDaoImpl implements BaseMemberDao {
 	
 	@Autowired
-	protected EntityManagerDataSvc entityManagerDataSvc;
+	protected EntityManagerMemberSvc entityManagerSvc;
 	@Autowired
 	protected UtilSvc utilSvc;
 
@@ -68,7 +68,7 @@ public class BaseDaoImpl implements BaseDao {
 			}
 			queryStr += " ORDER BY "+(String) request.getParam(GlobalConstant.ORDERCOLUMN)+" "+direction;
 		}
-		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+		Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 		if (request.containsParam(GlobalConstant.SEARCHCOLUMN) && request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
 			query.setParameter(GlobalConstant.SEARCHVALUE, "%"+((String)request.getParam(GlobalConstant.SEARCHVALUE)).toLowerCase()+"%");
 		}
@@ -107,7 +107,7 @@ public class BaseDaoImpl implements BaseDao {
 		if (and) { queryStr += " AND "; } else { queryStr += " WHERE "; }
 		queryStr += "active = :active";
 		
-		Query query = entityManagerDataSvc.getInstance().createQuery(queryStr);
+		Query query = entityManagerSvc.getInstance().createQuery(queryStr);
 		if (request.containsParam(GlobalConstant.SEARCHCOLUMN) && request.containsParam(GlobalConstant.SEARCHVALUE) && !request.getParam(GlobalConstant.SEARCHVALUE).equals("")){
 			query.setParameter(GlobalConstant.SEARCHVALUE, "%"+((String) request.getParam(GlobalConstant.SEARCHVALUE)).toLowerCase()+"%");
 		}
@@ -131,7 +131,7 @@ public class BaseDaoImpl implements BaseDao {
 		String tableName = (String) request.getParam(GlobalConstant.ITEMNAME);
 		if (tableName != null){
 			String queryStr = "FROM " + tableName + " WHERE id = :id";
-			Query query = entityManagerDataSvc.getInstance().createQuery(queryStr)
+			Query query = entityManagerSvc.getInstance().createQuery(queryStr)
 					.setParameter("id",request.getParamLong(GlobalConstant.ITEMID));
 			response.addParam(GlobalConstant.ITEM, query.getSingleResult());
 		} else {
