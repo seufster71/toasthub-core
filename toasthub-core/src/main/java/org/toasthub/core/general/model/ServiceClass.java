@@ -18,10 +18,10 @@ package org.toasthub.core.general.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 import org.toasthub.core.general.api.View;
 import org.toasthub.core.general.handler.ServiceProcessor;

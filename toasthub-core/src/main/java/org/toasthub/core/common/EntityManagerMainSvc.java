@@ -1,6 +1,6 @@
 package org.toasthub.core.common;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 public interface EntityManagerMainSvc {
 

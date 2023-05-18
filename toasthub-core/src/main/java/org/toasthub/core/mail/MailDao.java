@@ -21,12 +21,12 @@ import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javax.mail.Message;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.Message;
+import jakarta.mail.PasswordAuthentication;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 
 import org.springframework.stereotype.Repository;
 import org.toasthub.core.general.model.EmailInvite;
@@ -57,7 +57,7 @@ public class MailDao implements Serializable {
 		executor.submit(() -> {
 			
 			Session session = Session.getInstance(props,
-				  new javax.mail.Authenticator() {
+				  new jakarta.mail.Authenticator() {
 					protected PasswordAuthentication getPasswordAuthentication() {
 						return new PasswordAuthentication(adminName, password);
 					}
@@ -87,7 +87,7 @@ public class MailDao implements Serializable {
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		executor.submit(() -> {
 		Session session = Session.getInstance(props,
-		  new javax.mail.Authenticator() {
+		  new jakarta.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
 				return new PasswordAuthentication(adminName, password);
 			}
@@ -114,7 +114,7 @@ public class MailDao implements Serializable {
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		executor.submit(() -> {
 			Session session = Session.getInstance(props,
-					new javax.mail.Authenticator() {
+					new jakarta.mail.Authenticator() {
 					protected PasswordAuthentication getPasswordAuthentication() {
 						return new PasswordAuthentication(adminName, password);
 					}
@@ -139,7 +139,7 @@ public class MailDao implements Serializable {
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		executor.submit(() -> {
 			Session session = Session.getInstance(props,
-				new javax.mail.Authenticator() {
+				new jakarta.mail.Authenticator() {
 				protected PasswordAuthentication getPasswordAuthentication() {
 					return new PasswordAuthentication(adminName, password);
 				}

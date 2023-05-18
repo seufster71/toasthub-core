@@ -1,6 +1,6 @@
 package org.toasthub.core.common;
 
-import javax.persistence.NoResultException;
+import jakarta.persistence.NoResultException;
 
 import org.toasthub.core.general.model.RestRequest;
 import org.toasthub.core.general.model.RestResponse;
